@@ -15,21 +15,23 @@ public class MyApp extends Application {
 	public void start(Stage stage) {
 		System.out.println(FileName.getNameLogFile());
 		stage.setTitle("Gestionnaire de Courses");
-		
 		try{
 			IMapper mapper = new Mapper();
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MyApp.class.getResource("../views/Main.fxml"));
+			loader.setLocation(MyApp.class.getClassLoader().getResource("views/Main.fxml"));
 			loader.setController(new MainControllerFXML(mapper));
 			AnchorPane pane = (AnchorPane)loader.load();
 			Scene scene = new Scene(pane);
 			stage.setResizable(false);
 			stage.setScene(scene);
 			stage.setOnCloseRequest(event -> System.exit(0));
+			stage.setMaximized(true);
 			stage.show();
 		}catch(Exception e) {
 			e.printStackTrace();
+			System.exit(-1);
 		}
+		
 	}
 
 	public static void main(String[] args) {
