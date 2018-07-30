@@ -8,9 +8,9 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
-import models.list.CourseList;
+import models.Chauffeur;
 
-public class CourseListCell extends ListCell<CourseList> {
+public class ChauffeurListCell extends ListCell<Chauffeur>{
 	@FXML
     private AnchorPane userContent;
     @FXML
@@ -18,7 +18,7 @@ public class CourseListCell extends ListCell<CourseList> {
     @FXML
     private Label prenom;
     
-    public CourseListCell() {
+    public ChauffeurListCell() {
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("nomPrenomItem.fxml"));
         fxmlLoader.setController(this);
         try
@@ -32,14 +32,14 @@ public class CourseListCell extends ListCell<CourseList> {
     }
     
     @Override 
-    protected void updateItem(CourseList item, boolean empty) {
+    protected void updateItem(Chauffeur item, boolean empty) {
         super.updateItem(item, empty);
         setGraphic(null); 
         setText(null); 
         setContentDisplay(ContentDisplay.LEFT); 
         if (!empty && item != null) {
-        	nom.setText(item.getAppelant());
-        	prenom.setText(item.getAdresseDest());
+        	nom.setText(item.getName());
+        	prenom.setText(item.getFirstname());
             setText(null); 
             setGraphic(userContent); 
             //setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 

@@ -5,6 +5,9 @@
 		<class>models.Chauffeur</class>
 		<class>models.Appelant</class>
 		<class>models.Course</class>
+		<class>models.Hopital</class>
+		<class>models.Residence</class>
+		<class>models.Settings</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby: C:\databasesJPA\DbGestionnaireDeCourses;create=true" />

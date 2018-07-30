@@ -4,11 +4,11 @@ import java.util.GregorianCalendar;
 
 public class FileName {
 	
-	public static String getNameLogFile() {
+	public static String getNameFile() {
 		GregorianCalendar c = new GregorianCalendar();
 		int year = c.get(GregorianCalendar.YEAR);
 		int month = c.get(GregorianCalendar.MONTH);
-		StringBuilder name = new StringBuilder("Log");
+		StringBuilder name = new StringBuilder();
 		name.append(year%100);
 		if(month<10)
 			name.append(0);

@@ -2,8 +2,6 @@ package models;
 
 import javax.persistence.*;
 
-import util.Role;
-
 @Entity
 public class Utilisateur {
 	@Id
@@ -11,7 +9,7 @@ public class Utilisateur {
 	private Long id;
 	private String name = "";
 	private String firstname = "";
-	private Role role = Role.PT;
+	private boolean admin = false;
 
 	public Long getId() {
 		return id;
@@ -24,14 +22,6 @@ public class Utilisateur {
 	public void setFirstname(String firstname) {
 		firstname = firstname.trim();
 		this.firstname = firstname.substring(0,1).toUpperCase()+firstname.substring(1);
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-	
-	public Role getRole() {
-		return role;
 	}
 	
 	public String getFullName() {
@@ -46,5 +36,18 @@ public class Utilisateur {
 			result = String.format("%s %s.", firstname,name.substring(0,1));
 		}
 		return result;
+	}
+
+	public boolean isAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
+	}
+	
+	public static void valdation(Utilisateur obj) throws IllegalArgumentException {//TODO
+		if(obj.firstname.length()<2) throw new IllegalArgumentException("Le prénom est invalide");
+		if(obj.name.length()<2) throw new IllegalArgumentException("Le nom est invalide");
 	}
 }

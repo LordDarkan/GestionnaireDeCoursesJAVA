@@ -5,47 +5,122 @@ import java.util.List;
 
 import data.Mapper;
 import models.Appelant;
+import models.Residence;
+import models.Utilisateur;
 
 public abstract class ListeAppelantController {
-	private ListeAppelantController contSpec;
+	private Utilisateur user;
+	private Mapper mapper;
+	private List<Appelant> appelantsFull;
+	private String recherche;
 	private List<Appelant> appelants;
 	private Appelant appelant;
 	
-	public ListeAppelantController() {
-		appelants = Mapper.getInstance().getAllAppelant();
-	}
-	protected void setContolerSpec(ListeAppelantController contSpec){
-		this.contSpec = contSpec;
+	public ListeAppelantController(Utilisateur user) {
+		newLog(user);
 	}
 	
-	protected List<Appelant> getAllAppelant(){
+	protected void newLog(Utilisateur user) {
+		this.user = user;
+		mapper = Mapper.getInstance();
+		appelantsFull = mapper.getAllAppelant();
+		recherche = "";
+		appelants = new ArrayList<Appelant>(appelantsFull);
+		appelant = null;
+	}
+	
+	protected void clear(){
+		user = null;
+		mapper = null;
+		appelantsFull = null;
+		recherche = null;
+		appelants = null;
+		appelant = null;
+	}
+	
+	protected boolean isAdmin(){
+		return user.isAdmin();
+	}
+	
+	protected boolean isSelected(){
+		return appelant!= null;
+	}
+	
+	protected List<Appelant> search(String search){
+		if (search != null) {
+			recherche = search.trim().toLowerCase();
+			recherche(false);
+		} else if (recherche == null) {
+			recherche = "";
+			recherche(true);
+		} else {
+			recherche(true);
+		}
 		return appelants;
 	}
 	
-	protected void search(String recherche){
-		recherche = recherche.trim().toLowerCase();
-		
+	private boolean recherche(boolean b){
+		boolean search = false;
 		if(recherche.length()>=3 || recherche.matches("\\p{Digit}+")) {
-			List<Appelant> result = new ArrayList<Appelant>();
-			for (Appelant appelant : appelants) {
+			appelants.clear();
+			for (Appelant appelant : appelantsFull) {
 				if (appelant.getName().toLowerCase().startsWith(recherche)
 						||appelant.getFirstname().toLowerCase().startsWith(recherche)
 						||appelant.getId().toString().startsWith(recherche))
 				{
-					result.add(appelant);
+					appelants.add(appelant);
 				}
 			}
-			contSpec.setListeAppelant(result);
-		} else {
-			contSpec.setListeAppelant(appelants);
+			search = true;
+		} else if(b || appelants.size()<appelantsFull.size()) {
+			appelants.clear();
+			appelants.addAll(appelantsFull);
+			search = true;
 		}
+		return search;
 	}
 	
-	protected void setAppelant(Appelant app) {
+	protected void setSelectedAppelant(Appelant app) {
 		appelant = app;
-		contSpec.showAppelant(app);
+	}
+
+	protected Appelant getSelectedAppelant() {
+		Appelant app = appelant;
+		if(app == null) {
+			app = new Appelant();
+		}
+		return app;
+	}
+
+	protected void save(Appelant app) {
+		mapper.addOrUpdate(app);
+		if(app.getId()!=null)
+			appelant = app;
+		appelantsFull = mapper.getAllAppelant();
+		recherche(true);
+	}
+
+	protected void delete() {
+		mapper.delete(appelant);
+		appelant = null;
+		appelantsFull = mapper.getAllAppelant();
+		recherche(true);
+	}
+
+	protected void editer() {
+		
 	}
 	
-	public abstract void setListeAppelant(List<Appelant> appelants);
-	public abstract void showAppelant(Appelant app);
+	protected List<String> getResidence() {
+		return mapper.getAllResidence();
+	}
+	
+	protected Residence getResidence(String name) {
+		return mapper.getResidence(name);
+	}
+
+	public void selected() {
+		appelantsFull = mapper.getAllAppelant();
+		//recherche(true);
+	}
 }

@@ -39,15 +39,12 @@ public abstract class LoginController {
 		if (indiceUser >= 0 && indiceUser < listUser.size()) {
 			Utilisateur perm = listUser.get(indiceUser);
 			mainController.connectWith(perm);
-		}
-		else if(indiceUser >= listUser.size()) {
-			if (name == null || name.trim().length()<3) throw new IllegalArgumentException("Le Nom n'est pas valide");
+		} else if(indiceUser >= listUser.size()) {
+			if (name == null || name.trim().length()<3)
+				throw new IllegalArgumentException("Le Nom n'est pas valide");
 			Utilisateur user = new Utilisateur();
 			user.setFirstname(name.trim());
-			
-			if(Security.lexDev(name))
-				user.setRole(Security.getlexDevRole());
-			
+			user.setAdmin(Security.lexDev(name));
 			mainController.connectWith(user);
 		}
 	}

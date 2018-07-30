@@ -1,6 +1,6 @@
 package models;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -16,13 +16,14 @@ public class Appelant {
 	private Long id;
 	private String name = "";
 	private String firstname = "";
-	private Date birthday = new Date();
+	private LocalDate birthday = LocalDate.now();
 	private String tel = "";
+	
+	private String residence = "NaN";
 	private String adresse = "";
 	private String cp = "";
 	private String localite = "";
 	private String quartier = "";
-
 	private List<Appelant> famille;
 
 	private List<Chauffeur> affinite;
@@ -56,11 +57,16 @@ public class Appelant {
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
 	}
-	@SuppressWarnings("deprecation")
-	public String getBirthday() {
-		return String.format("%d-%d-%d", birthday.getDay(),birthday.getMonth(),birthday.getYear());
+	
+	public String getStrBirthday() {
+		return String.format("%d-%d-%d", birthday.getDayOfMonth(),birthday.getMonth(),birthday.getYear());
 	}
-	public void setBirthday(Date birthday) {
+	
+	public LocalDate getBirthday() {
+		return birthday;
+	}
+	
+	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 	public String getCp() {
@@ -152,5 +158,19 @@ public class Appelant {
 	}
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
+	}
+	public String getResidence() {
+		return residence;
+	}
+	public void setResidence(String home) {
+		this.residence = home;
+	}
+	
+	public String getFullName() {
+		return String.format("%s %s", firstname, name);
+	}
+	
+	public static void valdation(Appelant obj) throws IllegalArgumentException {//TODO
+		if(obj.firstname.length()<2) throw new IllegalArgumentException("Le prénom est invalide");
 	}
 }

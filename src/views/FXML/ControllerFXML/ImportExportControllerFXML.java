@@ -1,22 +1,30 @@
 package views.FXML.ControllerFXML;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controllers.ImportExportController;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import models.Utilisateur;
 
-public class ImportExportControllerFXML extends ImportExportController implements Initializable {
+public class ImportExportControllerFXML extends ImportExportController implements Initializable,ITabController {
 
 	@FXML
     private Button importer;
@@ -24,6 +32,34 @@ public class ImportExportControllerFXML extends ImportExportController implement
     @FXML
     private Button exporter;
 	
+	public ImportExportControllerFXML(Utilisateur user, TabPane tabContainer) {
+		super(user);
+    	Tab tab = null;
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ImportExport.fxml"));
+			loader.setController(this);
+			GridPane content;
+			content = (GridPane)loader.load();
+			tab = new Tab();
+			tab.setClosable(false);
+            tab.setText("Import/Export");
+            tab.setContent(content);
+            tab.setOnSelectionChanged(new EventHandler<Event>() {
+                @Override
+                public void handle(Event event) {
+                	if (((Tab)event.getSource()).isSelected()) {
+                		//selected();
+					}
+                }
+            });
+            
+            tabContainer.getTabs().add(tab);
+		} catch (IOException e) {//TODO
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		importer.setOnAction((ActionEvent e) -> importer());
@@ -46,5 +82,21 @@ public class ImportExportControllerFXML extends ImportExportController implement
 			}
 		}
 	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void logout(){
+		try {
+			finalize();
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+	}
 
+	@Override
+	public void login(Utilisateur user) {
+		// TODO Auto-generated method stub
+		
+	}
 }

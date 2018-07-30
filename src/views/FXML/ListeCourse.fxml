@@ -1,24 +1,355 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane minHeight="540.0" minWidth="960.0" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10" xmlns:fx="http://javafx.com/fxml/1">
-   <columnConstraints>
-	  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-	  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-	    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-	    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-	</columnConstraints>
-	<rowConstraints>
-	  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-	  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-	  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-	</rowConstraints>
-	 <children>
-	    <ListView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowSpan="3" />
-	    <DatePicker GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-	 </children>
-</GridPane>
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      			<GridPane>
+      			   <columnConstraints>
+      				  <ColumnConstraints hgrow="SOMETIMES" maxWidth="500.0" minWidth="300.0" percentWidth="30.0" />
+      				  <ColumnConstraints hgrow="SOMETIMES" percentWidth="60.0" />
+               <ColumnConstraints />
+               <ColumnConstraints />
+      				</columnConstraints>
+      				<rowConstraints>
+      				  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" vgrow="SOMETIMES" />
+      				  <RowConstraints vgrow="SOMETIMES" />
+               <RowConstraints />
+               <RowConstraints />
+      				</rowConstraints>
+      				 <children>
+      				    <ListView fx:id="listViewCourses" GridPane.rowIndex="1" GridPane.rowSpan="3">
+      			         <GridPane.margin>
+      			            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+      			         </GridPane.margin>
+               </ListView>
+               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                  <children>
+                     <VBox alignment="CENTER" spacing="10.0">
+                        <children>
+                  				    <DatePicker fx:id="selectDay" disable="true" prefWidth="200.0" />
+                           <ComboBox fx:id="selectChauffeur" prefWidth="200.0" />
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </VBox>
+                     <VBox alignment="CENTER_LEFT" spacing="10.0">
+                        <children>
+                           <RadioButton fx:id="selectParJour" mnemonicParsing="false" text="Par jour" />
+                           <RadioButton fx:id="selectFutur" mnemonicParsing="false" selected="true" text="Prochaine" />
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </VBox>
+                  </children>
+               </HBox>
+               <VBox fx:id="affichage" minHeight="900.0" GridPane.columnIndex="1" GridPane.rowSpan="2">
+                  <padding>
+                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                  </padding>
+                  <children>
+                     <GridPane hgap="10.0">
+                       <columnConstraints>
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <children>
+                           <Button fx:id="btnEdit" mnemonicParsing="false" text="Modifier" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
+                           <Button fx:id="btnDel" mnemonicParsing="false" text="Supprimer" GridPane.columnIndex="3" />
+                           <Button fx:id="btnAnn" mnemonicParsing="false" text="Annuler" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
+                           <Button fx:id="btnSave" mnemonicParsing="false" text="Sauvegarder" GridPane.columnIndex="4" />
+                        </children>
+                     </GridPane>
+                     <HBox alignment="TOP_RIGHT">
+                        <children>
+                           <Label text="Crée le " />
+                           <Label fx:id="creatDate" text="xx/xx/xx" />
+                           <Label text=" à ">
+                              <HBox.margin>
+                                 <Insets />
+                              </HBox.margin>
+                           </Label>
+                           <Label fx:id="creatHeure" text="xxHxx" />
+                           <Label text=" par " />
+                           <Label fx:id="creatName" text="xxxxxxx" />
+                        </children>
+                     </HBox>
+                     <Label text="Appelant" />
+                     <VBox spacing="10.0" style="-fx-border-color: black;">
+                        <children>
+                           <HBox alignment="CENTER_LEFT" spacing="10.0">
+                              <children>
+                                 <Label fx:id="codeApplant" text="Code" />
+                                 <Label fx:id="nomCompletAppelant" text="Mme Evelyne Mottard" />
+                              </children>
+                              <padding>
+                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              </padding>
+                           </HBox>
+                           <HBox spacing="10.0">
+                              <children>
+                                 <VBox>
+                                    <children>
+                                       <Label text="Handicap(s) particulier(s)" />
+                                       <ScrollPane prefHeight="60.0" prefWidth="250.0">
+                                          <content>
+                                             <Label fx:id="handicapAppelant" text="xxx" />
+                                          </content>
+                                       </ScrollPane>
+                                    </children>
+                                 </VBox>
+                                 <VBox>
+                                    <children>
+                                       <Label text="Aide spécialisée" />
+                                       <ScrollPane prefHeight="60.0" prefWidth="250.0">
+                                          <content>
+                                             <Label fx:id="aideAppelant" text="xxx" />
+                                          </content>
+                                       </ScrollPane>
+                                    </children>
+                                 </VBox>
+                              </children>
+                              <padding>
+                                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                              </padding>
+                           </HBox>
+                        </children>
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                        </padding>
+                     </VBox>
+                     <GridPane hgap="10.0" vgap="5.0">
+                       <columnConstraints>
+                           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="20.0" />
+                         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="20.0" />
+                         <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <children>
+                           <Label text="Chauffeur :">
+                              <padding>
+                                 <Insets left="20.0" />
+                              </padding></Label>
+                           <ComboBox fx:id="editChauffeur" prefWidth="150.0" GridPane.columnIndex="1" />
+                           <Label text="Date :" GridPane.rowIndex="1" />
+                           <DatePicker fx:id="editDateCourse" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label text="Type de service :" GridPane.columnIndex="2" />
+                           <ComboBox fx:id="editType" prefWidth="150.0" visible="false" GridPane.columnIndex="3" />
+                           <Label text="Attestation mutuelle :" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <CheckBox fx:id="editAttestation" mnemonicParsing="false" text="oui/non" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <Label fx:id="affChaufeur" text="xxxx xxxx" visible="false" GridPane.columnIndex="1" />
+                           <Label fx:id="affDate" text="xx/xx/xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label fx:id="affType" text="xxxxxx" GridPane.columnIndex="3" />
+                           <Label fx:id="affAttestation" text="oui/non" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        </children>
+                        <VBox.margin>
+                           <Insets />
+                        </VBox.margin>
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </GridPane>
+                     <Label text="Départ" />
+                     <GridPane hgap="5.0" style="-fx-border-color: black;">
+                       <columnConstraints>
+                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="17.0" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <children>
+                           <Label text="Heure de départ" />
+                           <HBox fx:id="edit1" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
+                              <children>
+                                 <Spinner fx:id="editHeureDepart" prefWidth="60.0" />
+                                 <Label text="H" />
+                                 <Spinner fx:id="editMinuteDepart" prefWidth="60.0" />
+                              </children>
+                           </HBox>
+                           <Label text="Adresse" GridPane.columnIndex="1" />
+                           <TextField fx:id="editAdresseDepart" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label text="Localité" GridPane.columnIndex="2" />
+                           <TextField fx:id="editLocaliteDepart" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <TextField fx:id="editCpDepart" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <ComboBox fx:id="editResidence" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                           <Label text="Résidence" GridPane.columnIndex="4" />
+                           <Label text="Code postal" GridPane.columnIndex="3" />
+                           <Label fx:id="affHeureDepart" text="xxHxx" visible="false" GridPane.rowIndex="1" />
+                           <Label fx:id="affAdresseDepart" text="xxxx xx xxx, xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label fx:id="affLocaliteDepart" text="xxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <Label fx:id="affCpDepart" text="xxxx" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <Label fx:id="affResidence" text="xxxxxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </GridPane>
+                     <Label text="Destination" />
+                     <GridPane hgap="5.0" style="-fx-border-color: black;">
+                        <columnConstraints>
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="16.7" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Label text="Heure de R.D.V." />
+                           <Label text="Adresse" GridPane.columnIndex="1" />
+                           <TextField fx:id="editAdresseRDV" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label text="Localité" GridPane.columnIndex="2" />
+                           <TextField fx:id="editLocaliteRDV" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <TextField fx:id="editCpRDV" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <ComboBox fx:id="editHopital" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                           <Label text="Hopital" GridPane.columnIndex="4" />
+                           <Label text="Code postal" GridPane.columnIndex="3" />
+                           <Label fx:id="affHeureRDV" text="xxHxx" visible="false" GridPane.rowIndex="1" />
+                           <Label fx:id="affAdresseRDV" text="xxxx xx xxx, xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label fx:id="affLocaliteRDV" text="xxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <Label fx:id="affCpRDV" text="xxxx" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <Label fx:id="affHopital" text="xxxxxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                           <HBox fx:id="edit2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
+                              <children>
+                                 <Spinner fx:id="editHeureRDV" prefWidth="60.0" />
+                                 <Label text="H" />
+                                 <Spinner fx:id="editMinuteRDV" prefWidth="60.0" />
+                              </children>
+                           </HBox>
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </GridPane>
+                     <Label text="Retour" />
+                     <GridPane hgap="5.0" style="-fx-border-color: black;">
+                        <columnConstraints>
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.0" />
+                           <ColumnConstraints hgrow="SOMETIMES" percentWidth="17.0" />
+                        </columnConstraints>
+                        <rowConstraints>
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                        </rowConstraints>
+                        <children>
+                           <Label text="Heure de retour" GridPane.rowIndex="1" />
+                           <Label text="Adresse" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <TextField fx:id="editAdresseRetour" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           <Label text="Localité" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                           <TextField fx:id="editLocaliteRetour" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                           <TextField fx:id="editCpRetour" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                           <Label text="Code postal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <Label text="Attente :" GridPane.halignment="RIGHT" />
+                           <CheckBox fx:id="editAttente" mnemonicParsing="false" text="oui/non" visible="false" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                           <Label text="Second chauffeur :" GridPane.columnIndex="2" GridPane.halignment="RIGHT" />
+                           <ComboBox fx:id="editChauffeurSec" prefWidth="150.0" GridPane.columnIndex="3" />
+                           <Label fx:id="affHeureRetour" text="xxHxx" visible="false" GridPane.rowIndex="2" />
+                           <Label fx:id="affAdresseRetour" text="xxxx xx xxx, xx" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                           <Label fx:id="affLocaliteRetour" text="xxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                           <Label fx:id="affCpRetour" text="xxxx" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                           <Label fx:id="affChaufeurSec" text="xxxxxx xxxx" visible="false" GridPane.columnIndex="3" GridPane.halignment="LEFT" />
+                           <Label fx:id="affAttente" text="oui/non" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                           <HBox fx:id="edit3" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="2">
+                              <children>
+                                 <Spinner fx:id="editHeureRetour" prefWidth="60.0" />
+                                 <Label text="H" />
+                                 <Spinner fx:id="editMinuteRetour" prefWidth="60.0" />
+                              </children>
+                           </HBox>
+                        </children>
+                        <padding>
+                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                     </GridPane>
+                     <Label text="Notes" />
+                     <GridPane>
+                       <columnConstraints>
+                         <ColumnConstraints hgrow="SOMETIMES" />
+                       </columnConstraints>
+                       <rowConstraints>
+                         <RowConstraints vgrow="SOMETIMES" />
+                       </rowConstraints>
+                        <children>
+                           <TextArea fx:id="editNote" maxHeight="180.0" maxWidth="500.0" visible="false" />
+                           <ScrollPane maxHeight="180.0" maxWidth="500.0">
+                              <content>
+                                 <Label fx:id="affNote" text="xxx" />
+                              </content>
+                           </ScrollPane>
+                        </children>
+                     </GridPane>
+                     <HBox alignment="TOP_RIGHT">
+                        <children>
+                           <Label text="Transport attribué par " />
+                           <Label fx:id="attributionName" text="xxx" />
+                           <Label text=" le " />
+                           <Label fx:id="attributionDate" text="xx/xx/xx" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT" />
+                     <HBox alignment="TOP_RIGHT">
+                        <children>
+                           <Label text="Le cas échéant, annulé par " />
+                           <Label fx:id="annulationName" text="xxx" />
+                           <Label text=" le " />
+                           <Label fx:id="annulationDate" text="xx/xx/xx" />
+                        </children>
+                     </HBox>
+                     <HBox alignment="TOP_RIGHT">
+                        <children>
+                           <Label text="Car " />
+                           <Label fx:id="annulationRaison" text="xxxxxxxxxxxxxxxxxxx" />
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
+      				 </children>
+      			</GridPane>
+      		</ScrollPane>
+   </children>
+</AnchorPane>

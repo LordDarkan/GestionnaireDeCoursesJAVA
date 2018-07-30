@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -63,5 +65,13 @@ public class Chauffeur {
 	}
 	public void setLocalite(String localite) {
 		this.localite = localite;
+	}
+	
+	public String getFullName() {
+		return String.format("%s %s", firstname,name);
+	}
+	
+	public static void valdation(Chauffeur obj) throws IllegalArgumentException {//TODO
+		if(obj.getFirstname().length()<2) throw new IllegalArgumentException("Le prénom est invalide");
 	}
 }
