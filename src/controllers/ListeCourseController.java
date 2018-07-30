@@ -10,8 +10,8 @@ import models.Chauffeur;
 import models.Course;
 import models.Residence;
 import models.Utilisateur;
-import models.list.ChauffeurList;
-import models.list.CourseList;
+import models.item.ChauffeurList;
+import models.item.CourseList;
 
 public class ListeCourseController {
 	private Utilisateur user;

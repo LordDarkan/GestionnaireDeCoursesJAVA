@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       			<GridPane>
@@ -55,7 +55,7 @@
                      <VBox alignment="CENTER_LEFT" spacing="10.0">
                         <children>
                            <RadioButton fx:id="selectParJour" mnemonicParsing="false" text="Par jour" />
-                           <RadioButton fx:id="selectFutur" mnemonicParsing="false" selected="true" text="Prochaine" />
+                           <RadioButton fx:id="selectFutur" mnemonicParsing="false" selected="true" text="Futur" />
                         </children>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -199,7 +199,7 @@
                               <children>
                                  <Spinner fx:id="editHeureDepart" prefWidth="60.0" />
                                  <Label text="H" />
-                                 <Spinner fx:id="editMinuteDepart" prefWidth="60.0" />
+                                 <Spinner fx:id="editMinuteDepart" minWidth="60.0" prefWidth="60.0" />
                               </children>
                            </HBox>
                            <Label text="Adresse" GridPane.columnIndex="1" />
@@ -251,9 +251,9 @@
                            <Label fx:id="affHopital" text="xxxxxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                            <HBox fx:id="edit2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
                               <children>
-                                 <Spinner fx:id="editHeureRDV" prefWidth="60.0" />
+                                 <Spinner fx:id="editHeureRDV" minWidth="60.0" prefWidth="60.0" />
                                  <Label text="H" />
-                                 <Spinner fx:id="editMinuteRDV" prefWidth="60.0" />
+                                 <Spinner fx:id="editMinuteRDV" minWidth="60.0" prefWidth="60.0" />
                               </children>
                            </HBox>
                         </children>
@@ -296,9 +296,9 @@
                            <Label fx:id="affAttente" text="oui/non" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
                            <HBox fx:id="edit3" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="2">
                               <children>
-                                 <Spinner fx:id="editHeureRetour" prefWidth="60.0" />
+                                 <Spinner fx:id="editHeureRetour" minWidth="60.0" prefWidth="60.0" />
                                  <Label text="H" />
-                                 <Spinner fx:id="editMinuteRetour" prefWidth="60.0" />
+                                 <Spinner fx:id="editMinuteRetour" minWidth="60.0" prefWidth="60.0" />
                               </children>
                            </HBox>
                         </children>

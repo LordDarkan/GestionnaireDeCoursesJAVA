@@ -31,7 +31,7 @@ import javafx.scene.control.Alert.AlertType;
 import models.Appelant;
 import models.Residence;
 import models.Utilisateur;
-import models.list.CourseList;
+import models.item.CourseList;
 import views.FXML.items.AppelantListCell;
 
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {

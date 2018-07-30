@@ -1,7 +1,7 @@
 package views.FXML.items;
 
 import javafx.util.StringConverter;
-import models.list.ChauffeurList;
+import models.item.ChauffeurList;
 
 public class ChauffeurConverter extends StringConverter<ChauffeurList>
 {

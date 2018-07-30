@@ -1,4 +1,4 @@
-package models.list;
+package models.item;
 
 import models.Appelant;
 

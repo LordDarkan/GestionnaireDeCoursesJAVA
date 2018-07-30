@@ -9,8 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import models.Chauffeur;
-import models.list.ChauffeurList;
-import models.list.CourseList;
+import models.item.ChauffeurList;
+import models.item.CourseList;
 
 public class ChauffeurListListCell extends ListCell<ChauffeurList> {
 	@FXML

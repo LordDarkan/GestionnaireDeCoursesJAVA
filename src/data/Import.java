@@ -62,7 +62,7 @@ public class Import {
                 	appelant.setMutualite(row[15].trim());
                 	appelant.setMobilite(row[16].trim());
                 	//17 restriction
-                	//18 payement
+                	appelant.setPayement(row[18].trim());//18 payement
                 	try {
                 		if (row.length > 19)
                     		appelant.setCotisation(Integer.parseInt(row[19].trim()));

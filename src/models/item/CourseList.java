@@ -1,13 +1,14 @@
-package models.list;
+package models.item;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import models.Course;
+import util.TypeCourse;
 
 public class CourseList {
 	private Long id;
 	private AppelantList appelant;
-	private ChauffeurList chauffeur;
+	private TypeCourse type;
 	private LocalDate date;
 	private LocalTime heureRDV;
 	private String hopital;
@@ -18,9 +19,7 @@ public class CourseList {
 	public CourseList(Course course) {
 		id = course.getId();
 		appelant = new AppelantList(course.getAppelant());
-		if(course.getChauffeur() != null) {
-			chauffeur = new ChauffeurList(course.getChauffeur());
-		}
+		type = course .getTypeCourse();
 		date = course.getDate();
 		heureRDV = course.getHeureRDV();
 		hopital = course.getHopital();
@@ -34,9 +33,6 @@ public class CourseList {
 	}
 	public String getAppelant() {
 		return appelant.getFullName();
-	}
-	public String getChauffeurFN() {
-		return chauffeur.getFullName();
 	}
 	public LocalDate getDate() {
 		return date;
@@ -55,5 +51,9 @@ public class CourseList {
 	}
 	public String getLocaliteDest() {
 		return localiteDest;
+	}
+
+	public TypeCourse getType() {
+		return type;
 	}
 }
