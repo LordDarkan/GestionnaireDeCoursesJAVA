@@ -119,8 +119,7 @@ public abstract class ListeAppelantController {
 		return mapper.getResidence(name);
 	}
 
-	public void selected() {
+	public void update() {
 		appelantsFull = mapper.getAllAppelant();
-		//recherche(true);
 	}
 }
