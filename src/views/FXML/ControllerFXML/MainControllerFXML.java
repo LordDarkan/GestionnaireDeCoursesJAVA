@@ -19,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import models.Appelant;
 import models.Utilisateur;
 
 public class MainControllerFXML extends MainController implements Initializable {

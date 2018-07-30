@@ -4,23 +4,29 @@ import models.Chauffeur;
 
 public class ChauffeurList {
 	private Long id;
-	private String fullName;
+	private String name;
+	private String firstname;
 	
 	public ChauffeurList(Chauffeur c) {
 		id = c.getId();
-		fullName = c.getFullName();
+		name = c.getName();
+		firstname = c.getFirstname();
 	}
 
 	public Long getId() {
 		return id;
 	}
-
-	public String getFullName() {
-		return fullName;
-	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public String getFirstname() {
+		return firstname;
+	}
+
 	@Override
 	public String toString() {
-		return fullName;
+		return String.format("%s %s", firstname, name);
 	}
 }

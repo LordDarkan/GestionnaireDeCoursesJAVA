@@ -18,8 +18,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="540.0" minWidth="960.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       			<GridPane>
@@ -106,7 +107,10 @@
                            <HBox alignment="CENTER_LEFT" spacing="10.0">
                               <children>
                                  <Label fx:id="codeApplant" text="Code" />
-                                 <Label fx:id="nomCompletAppelant" text="Mme Evelyne Mottard" />
+                                 <Label fx:id="nomCompletAppelant" text="Mme Evelyne Mottard">
+                                    <font>
+                                       <Font size="24.0" />
+                                    </font></Label>
                               </children>
                               <padding>
                                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

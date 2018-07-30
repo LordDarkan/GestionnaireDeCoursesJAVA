@@ -7,14 +7,15 @@ import data.Mapper;
 import models.Appelant;
 import models.Residence;
 import models.Utilisateur;
+import models.item.AppelantList;
 
 public abstract class ListeAppelantController {
 	private Utilisateur user;
 	private Mapper mapper;
-	private List<Appelant> appelantsFull;
+	private List<AppelantList> appelantsFull;
 	private String recherche;
-	private List<Appelant> appelants;
-	private Appelant appelant;
+	private List<AppelantList> appelants;
+	private Appelant selectedAppelant;
 	
 	public ListeAppelantController(Utilisateur user) {
 		newLog(user);
@@ -23,10 +24,10 @@ public abstract class ListeAppelantController {
 	protected void newLog(Utilisateur user) {
 		this.user = user;
 		mapper = Mapper.getInstance();
-		appelantsFull = mapper.getAllAppelant();
+		appelantsFull = mapper.getAppelantList();
 		recherche = "";
-		appelants = new ArrayList<Appelant>(appelantsFull);
-		appelant = null;
+		appelants = new ArrayList<AppelantList>(appelantsFull);
+		selectedAppelant = null;
 	}
 	
 	protected void clear(){
@@ -35,7 +36,7 @@ public abstract class ListeAppelantController {
 		appelantsFull = null;
 		recherche = null;
 		appelants = null;
-		appelant = null;
+		selectedAppelant = null;
 	}
 	
 	protected boolean isAdmin(){
@@ -43,10 +44,10 @@ public abstract class ListeAppelantController {
 	}
 	
 	protected boolean isSelected(){
-		return appelant!= null;
+		return selectedAppelant!= null;
 	}
 	
-	protected List<Appelant> search(String search){
+	protected List<AppelantList> search(String search){
 		if (search != null) {
 			recherche = search.trim().toLowerCase();
 			recherche(false);
@@ -63,7 +64,7 @@ public abstract class ListeAppelantController {
 		boolean search = false;
 		if(recherche.length()>=3 || recherche.matches("\\p{Digit}+")) {
 			appelants.clear();
-			for (Appelant appelant : appelantsFull) {
+			for (AppelantList appelant : appelantsFull) {
 				if (appelant.getName().toLowerCase().startsWith(recherche)
 						||appelant.getFirstname().toLowerCase().startsWith(recherche)
 						||appelant.getId().toString().startsWith(recherche))
@@ -80,12 +81,12 @@ public abstract class ListeAppelantController {
 		return search;
 	}
 	
-	protected void setSelectedAppelant(Appelant app) {
-		appelant = app;
+	protected void setSelectedAppelant(Long id) {
+		selectedAppelant = mapper.getAppelant(id);
 	}
 
 	protected Appelant getSelectedAppelant() {
-		Appelant app = appelant;
+		Appelant app = selectedAppelant;
 		if(app == null) {
 			app = new Appelant();
 		}
@@ -95,15 +96,15 @@ public abstract class ListeAppelantController {
 	protected void save(Appelant app) {
 		mapper.addOrUpdate(app);
 		if(app.getId()!=null)
-			appelant = app;
-		appelantsFull = mapper.getAllAppelant();
+			selectedAppelant = app;
+		appelantsFull = mapper.getAppelantList();
 		recherche(true);
 	}
 
 	protected void delete() {
-		mapper.delete(appelant);
-		appelant = null;
-		appelantsFull = mapper.getAllAppelant();
+		mapper.delete(selectedAppelant);
+		selectedAppelant = null;
+		appelantsFull = mapper.getAppelantList();
 		recherche(true);
 	}
 
@@ -120,6 +121,6 @@ public abstract class ListeAppelantController {
 	}
 
 	public void update() {
-		appelantsFull = mapper.getAllAppelant();
+		appelantsFull = mapper.getAppelantList();
 	}
 }

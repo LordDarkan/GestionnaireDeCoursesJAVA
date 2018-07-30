@@ -7,155 +7,178 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="600.0" minWidth="1200.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox minHeight="600.0" minWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+      <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
+      	<columnConstraints>
+      	    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+      	    <ColumnConstraints hgrow="SOMETIMES" />
+      	      <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints />
+      	  </columnConstraints>
+      	  <rowConstraints>
+      	    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+      	    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints vgrow="SOMETIMES" />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+      	    
+      	  </rowConstraints>
+      	   <children>
+      	      <Button fx:id="btnAdd" mnemonicParsing="false" text="Ajouter" />
+            <TextField fx:id="recherche" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </TextField>
+      	      <ListView fx:id="listViewChauffeur" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </ListView>
+            <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="2" GridPane.rowSpan="2">
                <children>
-                  <HBox>
+                  <Button fx:id="btnDelete" mnemonicParsing="false" text="Supprimer">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnEdit" mnemonicParsing="false" text="Editer">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="3" GridPane.rowSpan="2">
+               <children>
+                  <Button fx:id="btnAnnuler" mnemonicParsing="false" text="Annuler">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnSave" mnemonicParsing="false" text="Sauvegarder">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <ScrollPane fitToWidth="true" maxWidth="900.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="7">
+               <content>
+                  <VBox alignment="CENTER" spacing="10.0">
                      <children>
-                        <GridPane>
+                        <GridPane hgap="5.0" vgap="5.0">
                           <columnConstraints>
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="300.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
                           <rowConstraints>
-                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
-                              <RowConstraints />
-                              <RowConstraints />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                        	      <ListView fx:id="listViewChauffeur" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.rowIndex="2" GridPane.rowSpan="2">
+                              <Label text="Adresse" GridPane.rowIndex="2">
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets />
                                  </GridPane.margin>
-                              </ListView>
-                              <TextField fx:id="recherche" GridPane.rowIndex="1">
+                              </Label>
+                              <TextField fx:id="adresse" GridPane.columnSpan="2" GridPane.rowIndex="3">
                                  <GridPane.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="1" GridPane.rowSpan="3">
-                                 <children>
-                                    <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-                                    	<columnConstraints>
-                                    	    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-                                    	      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-                                    	      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
-                                    	  </columnConstraints>
-                                    	  <rowConstraints>
-                                    	    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" vgrow="SOMETIMES" />
-                                          <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    	  </rowConstraints>
-                                    	   <children>
-                                          <Label text="Localité" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label text="Nom" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label text="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label text="Adresse" GridPane.rowIndex="2" GridPane.valignment="TOP">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label text="Code Postal" GridPane.rowIndex="3" GridPane.valignment="TOP">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label text="Téléphone" GridPane.rowIndex="4" GridPane.valignment="TOP">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <Label text="Infos Utiles" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </Label>
-                                          <TextField fx:id="nom" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="prenom" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="adresse" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="cp" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="localite" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextField fx:id="tel" GridPane.rowIndex="4" GridPane.valignment="BOTTOM">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextField>
-                                          <TextArea fx:id="infos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2" GridPane.rowSpan="3">
-                                             <GridPane.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </GridPane.margin>
-                                          </TextArea>
-                                    	   </children>
-                                    </GridPane>
-                                    <ListView fx:id="listViewCourse">
-                                       <VBox.margin>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </VBox.margin>
-                                    </ListView>
-                                 </children>
-                              </VBox>
-                        	      <Button fx:id="btnAdd" mnemonicParsing="false" text="Ajouter" />
-                              <Button fx:id="btnDelete" mnemonicParsing="false" text="Supprimer" GridPane.columnIndex="1" />
-                              <Button fx:id="btnEdit" mnemonicParsing="false" text="Editer" GridPane.columnIndex="4" />
-                              <Button fx:id="btnSave" mnemonicParsing="false" text="Sauvegarder" GridPane.columnIndex="3" />
-                              <Button fx:id="btnAnnuler" mnemonicParsing="false" text="Annuler" GridPane.columnIndex="2" />
+                              <TextField fx:id="cp" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label text="Code Postal" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="localite" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label text="Localité" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Infos Utiles" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextArea fx:id="infos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextArea>
+                              <TextField fx:id="nom" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin></TextField>
+                              <TextField fx:id="prenom" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
+                              <TextField fx:id="tel" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label text="Nom" />
+                              <Label text="Prénom" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <Label text="Téléphone" GridPane.columnIndex="2">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
                            </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
                         </GridPane>
+                        <ListView fx:id="listeViewPlanning">
+                           <VBox.margin>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </ListView>
                      </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </content>
-      </ScrollPane>
+                  </VBox>
+               </content>
+            </ScrollPane>
+      	   </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </GridPane>
    </children>
-</AnchorPane>
+</VBox>

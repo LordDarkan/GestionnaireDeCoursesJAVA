@@ -24,21 +24,26 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import models.Chauffeur;
 import models.Utilisateur;
-import views.FXML.items.ChauffeurListCell;
+import models.item.ChauffeurList;
 
 public class ListeChauffeurControllerFXML extends ListeChauffeurController implements Initializable,ITabController {
 	@FXML
-    private ListView<Chauffeur> listViewChauffeur;
+    private Button btnAdd;
     @FXML
     private TextField recherche;
     @FXML
-    private TextField nom;
+    private ListView<ChauffeurList> listViewChauffeur;
     @FXML
-    private TextField prenom;
+    private Button btnDelete;
+    @FXML
+    private Button btnEdit;
+    @FXML
+    private Button btnAnnuler;
+    @FXML
+    private Button btnSave;
     @FXML
     private TextField adresse;
     @FXML
@@ -46,25 +51,15 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     @FXML
     private TextField localite;
     @FXML
-    private TextField tel;
-    @FXML
     private TextArea infos;
     @FXML
-    private HBox boxAff;
+    private TextField nom;
     @FXML
-    private Button btnAdd;
+    private TextField prenom;
     @FXML
-    private Button btnDelete;
+    private TextField tel;
     @FXML
-    private Button btnEdit;
-    @FXML
-    private ListView<?> listViewCourse;
-    @FXML
-    private HBox boxEdit;
-    @FXML
-    private Button btnAnnuler;
-    @FXML
-    private Button btnSave;
+    private ListView<?> listeViewPlanning;//TODO
 
     public ListeChauffeurControllerFXML(Utilisateur user, TabPane tabContainer) {
     	super(user);
@@ -73,8 +68,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ListeChauffeur.fxml"));
 			loader.setController(this);
-			GridPane content;
-			content = (GridPane)loader.load();
+			VBox content;
+			content = (VBox)loader.load();
 			tab = new Tab();
 			tab.setClosable(false);
             tab.setText("Chauffeur");
@@ -96,13 +91,12 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		listViewChauffeur.setCellFactory(lc -> new ChauffeurListCell());
-		listViewChauffeur.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Chauffeur>() {
+		listViewChauffeur.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ChauffeurList>() {
 		    @Override
-		    public void changed(ObservableValue<? extends Chauffeur> observable, Chauffeur oldValue, Chauffeur newValue) {
+		    public void changed(ObservableValue<? extends ChauffeurList> observable, ChauffeurList oldValue, ChauffeurList newValue) {
 		    	if(newValue!=null) {
-		    		setSelectedChauffeur(newValue);
-		    		showChauffeur(newValue);
+		    		setSelectedChauffeur(newValue.getId());
+		    		showChauffeur(getSelectedChauffeur());
 		    	}
 		    }
 		});
@@ -112,23 +106,21 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		});
 		
 		
-		setEditable(false);
 		
-		boxAff.setVisible(isAdmin());
-		boxEdit.setVisible(false);
-		if (isAdmin()) {
-			btnAdd.setOnAction((ActionEvent e) -> addF());
-			btnEdit.setOnAction((ActionEvent e) -> editerF());
-			btnAnnuler.setOnAction((ActionEvent e) -> annulerF());
-			btnDelete.setOnAction((ActionEvent e) -> deleteF());
-			btnSave.setOnAction((ActionEvent e) -> saveF());
-		}
+		
+		btnAdd.setOnAction((ActionEvent e) -> addF());
+		btnEdit.setOnAction((ActionEvent e) -> editerF());
+		btnAnnuler.setOnAction((ActionEvent e) -> annulerF());
+		btnDelete.setOnAction((ActionEvent e) -> deleteF());
+		btnSave.setOnAction((ActionEvent e) -> saveF());
+		
+		editMode(false);
 		setListeChauffeur(search(""));
 	}
 	
 	private void addF() {
 		showChauffeur(new Chauffeur());
-		setEditable(true);
+		editMode(true);
 	}
 
 	private void saveF() {
@@ -136,9 +128,10 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 			Chauffeur app = getInfoChauffeur();
 			super.valdation(app);
 			if(comfirmation("Sauvegarder","")) {
-				setEditable(false);
 				super.save(app);
-				showChauffeur(getSelectedAppelant());
+				editMode(false);
+				showChauffeur(getSelectedChauffeur());
+				setListeChauffeur(search(null));
 			}
 		} catch (Exception e) {
 			alert(e.getMessage());
@@ -161,20 +154,21 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	private void deleteF() {
 		if (isSelected() && comfirmation("Supprimer","")) {
 			super.delete();
-			showChauffeur(getSelectedAppelant());
+			showChauffeur(getSelectedChauffeur());
+			setListeChauffeur(search(null));
 		}
 	}
 
 	private void annulerF() {
 		if (comfirmation("Annuler","")) {
-			setEditable(false);
-			showChauffeur(getSelectedAppelant());
+			editMode(false);
+			showChauffeur(getSelectedChauffeur());
 		}
 	}
 
 	private void editerF() {
 		if(isSelected()) {
-			setEditable(true);
+			editMode(true);
 		}
 	}
 
@@ -196,12 +190,14 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		return result.get() == ButtonType.OK;
 	}
 
-	private void setEditable(boolean b) {
+	private void editMode(boolean b) {
 		b &= isAdmin();
-		if (isAdmin()) {
-			boxAff.setVisible(!b);
-			boxEdit.setVisible(b);
-		}
+		
+		btnAdd.setVisible(!b && isAdmin());
+		btnEdit.setVisible(!b && isAdmin());
+		btnDelete.setVisible(!b && isAdmin());
+		btnAnnuler.setVisible(b);
+		btnSave.setVisible(b);
 		
 		listViewChauffeur.setDisable(b);
 		
@@ -216,7 +212,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	}
 	
 	private void showChauffeur(Chauffeur app) {
-		setEditable(false);
+		editMode(false);
 		
 		nom.setText(app.getName());
 		prenom.setText(app.getFirstname());
@@ -227,19 +223,22 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		infos.setText(app.getInfos());
 	}
 	
-	private void setListeChauffeur(List<Chauffeur> appelants) {
+	private void setListeChauffeur(List<ChauffeurList> chauf) {
 		listViewChauffeur.getItems().clear();
-		listViewChauffeur.getItems().setAll(appelants);
+		listViewChauffeur.getItems().setAll(chauf);
 	}
 	
 	@Override
 	public void logout(){
-		
+		showChauffeur(new Chauffeur());
+		recherche.setText("");
+		clear();
 	}
 
 	@Override
 	public void login(Utilisateur user) {
-		// TODO Auto-generated method stub
-		
+		newLog(user);
+		editMode(false);
+		setListeChauffeur(search(""));
 	}
 }

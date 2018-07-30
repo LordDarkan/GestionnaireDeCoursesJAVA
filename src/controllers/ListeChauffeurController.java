@@ -6,14 +6,15 @@ import java.util.List;
 import data.Mapper;
 import models.Chauffeur;
 import models.Utilisateur;
+import models.item.ChauffeurList;
 
 public abstract class ListeChauffeurController {
 	private Utilisateur user;
 	private Mapper mapper;
-	private List<Chauffeur> chauffeursFull;
+	private List<ChauffeurList> chauffeursFull;
 	private String recherche;
-	private List<Chauffeur> chauffeurs;
-	private Chauffeur chauffeur;
+	private List<ChauffeurList> chauffeurs;
+	private Chauffeur selectedChauffeur;
 	
 	public ListeChauffeurController(Utilisateur user) {
 		newLog(user);
@@ -22,10 +23,10 @@ public abstract class ListeChauffeurController {
 	protected void newLog(Utilisateur user) {
 		this.user = user;
 		mapper = Mapper.getInstance();
-		chauffeursFull = mapper.getAllChauffeur();
+		chauffeursFull = mapper.getChauffeurList();
 		recherche = "";
-		chauffeurs = new ArrayList<Chauffeur>(chauffeursFull);
-		chauffeur = null;
+		chauffeurs = new ArrayList<ChauffeurList>(chauffeursFull);
+		selectedChauffeur = null;
 	}
 	
 	protected void clear(){
@@ -34,7 +35,7 @@ public abstract class ListeChauffeurController {
 		chauffeursFull = null;
 		recherche = null;
 		chauffeurs = null;
-		chauffeur = null;
+		selectedChauffeur = null;
 	}
 	
 	protected boolean isAdmin(){
@@ -42,12 +43,19 @@ public abstract class ListeChauffeurController {
 	}
 	
 	protected boolean isSelected(){
-		return chauffeur!= null;
+		return selectedChauffeur!= null;
 	}
 	
-	protected List<Chauffeur> search(String search){
-		recherche = search.trim().toLowerCase();
-		recherche(false);
+	protected List<ChauffeurList> search(String search){
+		if (search != null) {
+			recherche = search.trim().toLowerCase();
+			recherche(false);
+		} else if (recherche == null) {
+			recherche = "";
+			recherche(true);
+		} else {
+			recherche(true);
+		}
 		return chauffeurs;
 	}
 	
@@ -55,7 +63,7 @@ public abstract class ListeChauffeurController {
 		boolean search = false;
 		if(recherche.length()>=3) {
 			chauffeurs.clear();
-			for (Chauffeur chauffeur : chauffeursFull) {
+			for (ChauffeurList chauffeur : chauffeursFull) {
 				if (chauffeur.getName().toLowerCase().startsWith(recherche)
 						||chauffeur.getFirstname().toLowerCase().startsWith(recherche))
 				{
@@ -71,12 +79,12 @@ public abstract class ListeChauffeurController {
 		return search;
 	}
 	
-	protected void setSelectedChauffeur(Chauffeur newValue) {
-		chauffeur = newValue;
+	protected void setSelectedChauffeur(Long id) {
+		selectedChauffeur = mapper.getChauffeur(id);
 	}
 
-	protected Chauffeur getSelectedAppelant() {
-		Chauffeur app = chauffeur;
+	protected Chauffeur getSelectedChauffeur() {
+		Chauffeur app = selectedChauffeur;
 		if(app == null) {
 			app = new Chauffeur();
 		}
@@ -86,15 +94,15 @@ public abstract class ListeChauffeurController {
 	protected void save(Chauffeur app) {
 		mapper.addOrUpdate(app);
 		if(app.getId()!=null)
-			chauffeur = app;
-		chauffeursFull = mapper.getAllChauffeur();
+			selectedChauffeur = app;
+		chauffeursFull = mapper.getChauffeurList();
 		recherche(true);
 	}
 
 	protected void delete() {
-		mapper.delete(chauffeur);
-		chauffeur = null;
-		chauffeursFull = mapper.getAllChauffeur();
+		mapper.delete(selectedChauffeur);
+		selectedChauffeur = null;
+		chauffeursFull = mapper.getChauffeurList();
 		recherche(true);
 	}
 

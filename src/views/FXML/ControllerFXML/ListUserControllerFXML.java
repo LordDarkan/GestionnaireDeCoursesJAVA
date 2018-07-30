@@ -2,19 +2,23 @@ package views.FXML.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import controllers.ListUserContreller;
 import data.Mapper;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import models.Utilisateur;
 import views.FXML.items.UserListCell;
@@ -24,7 +28,16 @@ public class ListUserControllerFXML extends ListUserContreller implements Initia
     private ListView<Utilisateur> listUserView;
 
     @FXML
-    private Button listUserBtnAdd;
+    private Button add;
+
+    @FXML
+    private TextField name;
+
+    @FXML
+    private TextField firstname;
+
+    @FXML
+    private CheckBox admin;
     
     private Tab tab;
     
@@ -48,34 +61,51 @@ public class ListUserControllerFXML extends ListUserContreller implements Initia
 					}
                 }
             });
-            
+            tab.setDisable(!isAdmin());
             tabContainer.getTabs().add(tab);
 		} catch (IOException e) {//TODO
 			e.printStackTrace();
 		}
+		add.setOnAction((ActionEvent e) -> add());
 	}
+
+	
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		listUserView.setCellFactory(lc -> new UserListCell());
-		listUserView.getItems().setAll(Mapper.getInstance().getAllUser());
+		setListUser(getListUser());
 	}
 	
-	@SuppressWarnings("deprecation")
+	private void add() {
+		Utilisateur user = new Utilisateur();
+		user.setName(name.getText().trim());
+		user.setFirstname(firstname.getText().trim());
+		user.setAdmin(admin.isSelected());
+		name.setText("");
+		firstname.setText("");
+		admin.setSelected(false);
+		super.add(user);
+		setListUser(getListUser());
+	}
+	
+	private void setListUser(List<Utilisateur> users) {
+		listUserView.getItems().clear();
+		listUserView.getItems().setAll(users);
+	}
+	
+	
 	@Override
 	public void logout(){
-		try {
-			//Event.fireEvent(tab, new Event(Tab.CLOSED_EVENT));
-			finalize();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		
+		clear();
 	}
 
 	@Override
 	public void login(Utilisateur user) {
-		// TODO Auto-generated method stub
-		
+		newLog(user);
+		tab.setDisable(!isAdmin());
+		if (isAdmin()) {
+			listUserView.getItems().setAll(Mapper.getInstance().getAllUser());
+		}
 	}
 }

@@ -18,31 +18,54 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import models.Appelant;
 import models.Residence;
 import models.Utilisateur;
+import models.item.AppelantList;
 import models.item.CourseList;
-import views.FXML.items.AppelantListCell;
 
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
 	@FXML
-    private ListView<Appelant> listViewAppelant;
-	@FXML
+    private Button btnAdd;
+    @FXML
     private TextField recherche;
+    @FXML
+    private ListView<AppelantList> listViewAppelant;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private Button btnEdit;
+    @FXML
+    private Button btnNewCourse;
+    @FXML
+    private Button btnAnnuler;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Label code;
+    @FXML
+    private RadioButton cbMr;
+    @FXML
+    private RadioButton cbMme;
     @FXML
     private TextField nom;
     @FXML
     private TextField prenom;
+    @FXML
+    private DatePicker datePNais;
+    @FXML
+    private TextField aide;
     @FXML
     private TextField adresse;
     @FXML
@@ -52,6 +75,12 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private TextField quartier;
     @FXML
+    private TextArea infos;
+    @FXML
+    private ComboBox<String> residence;
+    @FXML
+    private TextArea autre;
+    @FXML
     private TextField tel;
     @FXML
     private TextField mobilite;
@@ -60,33 +89,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private TextField cotisation;
     @FXML
-    private TextField aide;
-    @FXML
-    private TextArea infos;
-    @FXML
-    private TextArea autre;
-    @FXML
-    private Label code;
-    @FXML
-    private DatePicker datePNais;
-    @FXML
-    private HBox boxAff;
-    @FXML
-    private Button btnAdd;
-    @FXML
-    private Button btnDelete;
-    @FXML
-    private Button btnEdit;
-    @FXML
-    private HBox boxEdit;
-    @FXML
-    private Button btnAnnuler;
-    @FXML
-    private Button btnSave;
-    @FXML
     private ListView<CourseList> listeViewCourse;
-    @FXML
-    private Button btnNewCourse;
     
     private MainControllerFXML main;
 
@@ -98,8 +101,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ListeAppelant.fxml"));
 			loader.setController(this);
-			GridPane content;
-			content = (GridPane)loader.load();
+			VBox content;
+			content = (VBox)loader.load();
 			tab = new Tab();
 			tab.setClosable(false);
             tab.setText("Appelant");
@@ -118,20 +121,21 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		}
 	}
 
-	protected void majList() {
+	private void majList() {
 		super.update();
 		setListeAppelant(search(null));
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		listViewAppelant.setCellFactory(lc -> new AppelantListCell());
-		listViewAppelant.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Appelant>() {
+		cbMr.setVisible(false);
+		cbMme.setVisible(false);
+		listViewAppelant.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AppelantList>() {
 		    @Override
-		    public void changed(ObservableValue<? extends Appelant> observable, Appelant oldValue, Appelant newValue) {
+		    public void changed(ObservableValue<? extends AppelantList> observable, AppelantList oldValue, AppelantList newValue) {
 		    	if(newValue!=null) {
-		    		setSelectedAppelant(newValue);
-		    		showAppelant(newValue);
+		    		setSelectedAppelant(newValue.getId());
+		    		showAppelant(getSelectedAppelant());
 		    	}
 		    }
 		});
@@ -145,12 +149,27 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 				cotisation.setText(newValue.replaceAll("[^\\d]", ""));
 	        }
 		});
+		residence.getItems().addAll(getResidence());
+		residence.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
+				if (newValue != null) {
+					testResidence(newValue);
+				}
+			}
+		});
 		
 		datePNais.setStyle("-fx-opacity: 1");
 		datePNais.getEditor().setStyle("-fx-opacity: 1");
-		setEditable(false);
+		
+		btnAdd.setOnAction((ActionEvent e) -> addF());
 		btnNewCourse.setOnAction((ActionEvent e) -> newCourse());
-		initAffichage();
+		btnEdit.setOnAction((ActionEvent e) -> editerF());
+		btnAnnuler.setOnAction((ActionEvent e) -> annulerF());
+		btnDelete.setOnAction((ActionEvent e) -> deleteF());
+		btnSave.setOnAction((ActionEvent e) -> saveF());
+		
+		editMode(false);
+		setListeAppelant(search(""));
 	}
 	
 	private void newCourse() {
@@ -160,8 +179,10 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	}
 
 	private void addF() {
-		showAppelant(new Appelant());
-		setEditable(true);
+		if (isAdmin()) {
+			showAppelant(new Appelant());
+			editMode(true);
+		}
 	}
 
 	private void saveF() {
@@ -169,8 +190,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 			Appelant app = getInfoAppelant();
 			Appelant.valdation(app);
 			if(comfirmation("Sauvegarder","")) {
-				setEditable(false);
 				super.save(app);
+				editMode(false);
 				showAppelant(getSelectedAppelant());
 				majList();
 			}
@@ -189,6 +210,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		app.setName(nom.getText().trim());
 		app.setFirstname(prenom.getText().trim());
 		app.setBirthday(datePNais.getValue());
+		app.setResidence(residence.getSelectionModel().getSelectedItem());
 		app.setAdresse(adresse.getText().trim());
 		app.setCp(cp.getText().trim());
 		app.setLocalite(localite.getText().trim());
@@ -217,14 +239,14 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 
 	private void annulerF() {
 		if (comfirmation("Annuler","")) {
-			setEditable(false);
+			editMode(false);
 			showAppelant(getSelectedAppelant());
 		}
 	}
 
 	private void editerF() {
 		if(isSelected()) {
-			setEditable(true);
+			editMode(true);
 		}
 	}
 
@@ -246,12 +268,14 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		return result.get() == ButtonType.OK;
 	}
 
-	private void setEditable(boolean b) {
+	private void editMode(boolean b) {
 		b &= isAdmin();
-		if (isAdmin()) {
-			boxAff.setVisible(!b);
-			boxEdit.setVisible(b);
-		}
+		
+		btnAdd.setVisible(!b && isAdmin());
+		btnDelete.setVisible(!b && isAdmin());
+		btnEdit.setVisible(!b && isAdmin());
+		btnAnnuler.setVisible(b);
+		btnSave.setVisible(b);
 		
 		btnNewCourse.setVisible(!b);
 		
@@ -262,6 +286,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		nom.setEditable(b);
 		prenom.setEditable(b);
 		
+		residence.setEditable(b);
 		adresse.setEditable(b);
 		cp.setEditable(b);
 		localite.setEditable(b);
@@ -276,7 +301,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	}
 	
 	private void showAppelant(Appelant app) {
-		setEditable(false);
+		editMode(false);
 		
 		if(app.getId()!=null) {
 			code.setText(""+app.getId());
@@ -286,6 +311,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		nom.setText(app.getName());
 		prenom.setText(app.getFirstname());
 		datePNais.setValue(app.getBirthday());
+		residence.getSelectionModel().select(app.getResidence());
 		adresse.setText(app.getAdresse());
 		cp.setText(app.getCp());
 		localite.setText(app.getLocalite());
@@ -297,35 +323,25 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		aide.setText(app.getAideParticulière());
 		infos.setText(app.getInfos());
 		autre.setText(app.getRemarques());
+		testResidence(app.getResidence());//TODO a en levé
 	}
 	
-	private void setListeAppelant(List<Appelant> appelants) {
+	private void setListeAppelant(List<AppelantList> list) {
 		listViewAppelant.getItems().clear();
-		listViewAppelant.getItems().setAll(appelants);
+		listViewAppelant.getItems().setAll(list);
 	}
 	
 	@Override
 	public void logout(){
 		showAppelant(new Appelant());
+		recherche.setText("");
 		clear();
 	}
 
 	@Override
 	public void login(Utilisateur user) {
 		newLog(user);
-		initAffichage();
-	}
-
-	private void initAffichage() {
-		boxAff.setVisible(isAdmin());
-		boxEdit.setVisible(false);
-		if (isAdmin()) {
-			btnAdd.setOnAction((ActionEvent e) -> addF());
-			btnEdit.setOnAction((ActionEvent e) -> editerF());
-			btnAnnuler.setOnAction((ActionEvent e) -> annulerF());
-			btnDelete.setOnAction((ActionEvent e) -> deleteF());
-			btnSave.setOnAction((ActionEvent e) -> saveF());
-		}
+		editMode(false);
 		setListeAppelant(search(""));
 	}
 	

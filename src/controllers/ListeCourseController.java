@@ -8,6 +8,7 @@ import data.Mapper;
 import models.Appelant;
 import models.Chauffeur;
 import models.Course;
+import models.Hopital;
 import models.Residence;
 import models.Utilisateur;
 import models.item.ChauffeurList;
@@ -17,7 +18,9 @@ public class ListeCourseController {
 	private Utilisateur user;
 	private Mapper mapper;
 	private Course selected;
-	private LocalDate date;
+	private boolean all = false;
+	private boolean day = false;
+	private LocalDate date = LocalDate.now();
 	private Long idChauffeur;
 	
 	public ListeCourseController(Utilisateur user) {
@@ -73,16 +76,16 @@ public class ListeCourseController {
 		}
 	}
 
-	public void annuler() {
+	protected void annuler() {
 		selected = null;
 	}
 
-	public void editer() {
+	protected void editer() {
 		
 	}
 	
 	protected List<CourseList> getCourseList() {
-		return mapper.getCourse(date,idChauffeur);
+		return mapper.getCourse(all,idChauffeur,day,date);
 	}
 	
 	protected List<ChauffeurList> getChauffeurList() {
@@ -108,5 +111,20 @@ public class ListeCourseController {
 	
 	protected Residence getResidence(String name) {
 		return mapper.getResidence(name);
+	}
+	
+	protected Hopital getHopital(String name) {
+		return mapper.getHopital(name);
+	}
+
+	public void select(boolean all, ChauffeurList chauf, boolean day, LocalDate date) {
+		this.all = all;
+		if(chauf == null) {
+			idChauffeur = null;
+		} else {
+			idChauffeur = chauf.getId();
+		}
+		this.day = day;
+		this.date = date;
 	}
 }

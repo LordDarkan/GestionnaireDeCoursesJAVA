@@ -2,6 +2,7 @@ package views.FXML.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -21,12 +23,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
@@ -34,24 +34,22 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
-import models.Adresse;
 import models.Appelant;
 import models.Course;
+import models.Hopital;
 import models.Residence;
 import models.Utilisateur;
 import models.item.ChauffeurList;
 import models.item.CourseList;
 import util.Time;
 import util.TypeCourse;
-import views.FXML.items.ChauffeurListCell;
-import views.FXML.items.ChauffeurListListCell;
 import views.FXML.items.CourseListCell;
 
 public class ListeCourseControllerFXML extends ListeCourseController implements Initializable,ITabController {
@@ -72,7 +70,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private DatePicker selectDay;
     @FXML
-    private ComboBox<ChauffeurList> selectChauffeur;
+    private ComboBox<Object> selectChauffeur;
     @FXML
     private RadioButton selectParJour;
     @FXML
@@ -228,10 +226,38 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	protected void selected() {
 		editMode(btnSave.isVisible());
 		setListeCourse(getCourseList());
+		setChauffeurList();
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		ToggleGroup group = new ToggleGroup();
+		selectFutur.setToggleGroup(group);
+		selectFutur.setSelected(true);
+		selectParJour.setToggleGroup(group);
+		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+	           @Override
+	           public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+	               // Has selection.
+	               if (group.getSelectedToggle() != null) {
+	            	   select();
+	               }
+	           }
+	       });
+		selectChauffeur.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
+			public void changed(ObservableValue<? extends Object> ov, Object value, Object newValue) {
+				if (newValue != null) {
+					select();
+				}
+			}
+		});
+		selectDay.setValue(LocalDate.now());
+		selectDay.valueProperty().addListener((ov, oldValue, newValue) -> {
+			if (newValue != null) {
+         	   select();
+            }
+        });
+		
 		listViewCourses.setCellFactory(lc -> new CourseListCell());
 		listViewCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CourseList>() {
 		    @Override
@@ -253,16 +279,20 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			}
 
 		});
-		List<ChauffeurList> l = getChauffeurList();
-		selectChauffeur.getItems().addAll(l);
-		editChauffeur.getItems().addAll(l);
-		editChauffeurSec.getItems().addAll(l);
+		setChauffeurList();
 		editType.getItems().addAll(TypeCourse.values());
 		setResidence();
 		editResidence.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
 				if (newValue != null) {
 					testResidence(newValue);
+				}
+			}
+		});
+		editHopital.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
+			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
+				if (newValue != null) {
+					testHopital(newValue);
 				}
 			}
 		});
@@ -282,7 +312,46 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		
 		editMode(false);
 	}
+
+	private void setChauffeurList() {
+		Object obj = selectChauffeur.getSelectionModel().getSelectedItem();
+		selectChauffeur.getItems().clear();
+		editChauffeur.getItems().clear();
+		editChauffeurSec.getItems().clear();
+		List<ChauffeurList> l = getChauffeurList();
+		editChauffeur.getItems().addAll(l);
+		editChauffeurSec.getItems().addAll(l);
+		
+		ObservableList<Object> obs = FXCollections.observableArrayList();
+		obs.add("Tout");
+		obs.add("Sans Chauffeur");
+		obs.addAll(l);
+		selectChauffeur.setItems(obs);
+		if (obj != null) {
+			selectChauffeur.getSelectionModel().select(obj);
+		} else {
+			selectChauffeur.getSelectionModel().select(0);
+		}
+	}
 	
+	private void select() {
+		boolean all = false;
+		Object obj = selectChauffeur.getSelectionModel().getSelectedItem();
+		ChauffeurList chauf = null;
+		if (obj instanceof ChauffeurList) {
+			chauf = (ChauffeurList)obj;
+		} else if (obj instanceof String) {
+			all = ((String)obj).equals("Tout");
+		}
+		
+		boolean day = selectParJour.isSelected();
+		LocalDate date = selectDay.getValue();
+		
+		selectDay.setDisable(!day);
+		super.select(all,chauf,day,date);
+		setListeCourse(getCourseList());
+	}
+
 	private void testResidence(String value) {
 		boolean nan = value.equals("NaN");
 		editAdresseDepart.setDisable(!nan);
@@ -298,14 +367,14 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	
 	private void testHopital(String value) {
 		boolean nan = value.equals("NaN");
-		editAdresseDepart.setDisable(!nan);
-	    editLocaliteDepart.setDisable(!nan);
-	    editCpDepart.setDisable(!nan);
+		editAdresseRDV.setDisable(!nan);
+	    editLocaliteRDV.setDisable(!nan);
+	    editCpRDV.setDisable(!nan);
 		if(!nan) {
-			Residence re = getResidence(value);
-			editAdresseDepart.setText(re.getAdresse());
-		    editLocaliteDepart.setText(re.getLocalite());
-		    editCpDepart.setText(re.getCp());
+			Hopital ho = getHopital(value);
+			editAdresseRDV.setText(ho.getAdresse());
+			editLocaliteRDV.setText(ho.getLocalite());
+			editCpRDV.setText(ho.getCp());
 		}
 	}
 	
@@ -396,6 +465,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		newLog(user);
 		editMode(false);
 		setListeCourse(getCourseList());
+		setChauffeurList();
 	}
 
 	public void newCourse(Long id) {
@@ -460,7 +530,28 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	    
 		if (isSelected()) {
 			Course course = getSelectedCourse();
-			affApplant(course.getAppelant());
+			creatDate.setText(course.getDateCreation().format(formatDate));
+		    creatHeure.setText(course.getHeureCreation().format(formatHeure));
+		    creatName.setText(course.getNameCreation());
+		    
+		    if(course.getDateAttribution()!=null) {
+		    	attributionDate.setText(course.getDateAttribution().format(formatDate));
+		    	attributionName.setText(course.getNameAttribution());
+		    } else {
+		    	attributionDate.setText("");
+		    	attributionName.setText("");
+		    }
+		    
+		    if(course.getDateAnnulation()!=null) {
+		    	annulationDate.setText(course.getDateAnnulation().format(formatDate));
+		    	annulationName.setText(course.getNameAttribution());
+		    	annulationRaison.setText(course.getRaisonAnnulation());
+		    } else {
+		    	annulationDate.setText("");
+		    	annulationName.setText("");
+		    	annulationRaison.setText("");
+		    }
+		    affApplant(course.getAppelant());
 			if (edit) {
 				affEditCourse(course);
 			} else {

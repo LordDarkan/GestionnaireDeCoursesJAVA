@@ -31,10 +31,11 @@ public class ImportExportControllerFXML extends ImportExportController implement
 
     @FXML
     private Button exporter;
+    
+    private Tab tab;
 	
 	public ImportExportControllerFXML(Utilisateur user, TabPane tabContainer) {
 		super(user);
-    	Tab tab = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ImportExport.fxml"));
@@ -45,6 +46,7 @@ public class ImportExportControllerFXML extends ImportExportController implement
 			tab.setClosable(false);
             tab.setText("Import/Export");
             tab.setContent(content);
+            tab.setDisable(!isAdmin());
             tab.setOnSelectionChanged(new EventHandler<Event>() {
                 @Override
                 public void handle(Event event) {
@@ -83,20 +85,15 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public void logout(){
-		try {
-			finalize();
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		
+		clear();
 	}
 
 	@Override
 	public void login(Utilisateur user) {
-		// TODO Auto-generated method stub
-		
+		newLog(user);
+		tab.setDisable(!isAdmin());
 	}
 }

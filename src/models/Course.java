@@ -24,6 +24,7 @@ public class Course implements IEvenement {
 	private LocalDate date = LocalDate.now();
 	private Chauffeur chauffeur = null;
 	private String nameAttribution = "";
+	private LocalDate dateAttribution = null;
 	
 	private LocalTime heureDomicile = LocalTime.now();
 	private String residence;
@@ -52,6 +53,7 @@ public class Course implements IEvenement {
 	private boolean annulation = false;
 	private String raisonAnnulation = "";
 	private String nameAnnulation = "";
+	private LocalDate dateAnnulation = null;
 	
 	public Course() {
 	}
@@ -93,6 +95,7 @@ public class Course implements IEvenement {
 	public void setChauffeur(Chauffeur chauffeur,String nameAttribution) {
 		this.chauffeur = chauffeur;
 		this.nameAttribution = nameAttribution;
+		dateAttribution = LocalDate.now();
 	}
 	
 	public void setChauffeur() {
@@ -252,6 +255,10 @@ public class Course implements IEvenement {
 		this.annulation = annulation;
 		if(annulation) {
 			this.nameAnnulation = nameAnnulation;
+			dateAnnulation = LocalDate.now();
+		} else {
+			this.nameAnnulation = "";
+			dateAnnulation = null;
 		}
 	}
 
@@ -291,6 +298,14 @@ public class Course implements IEvenement {
 		this.attente = attente;
 	}
 	
+	public LocalDate getDateAttribution() {
+		return dateAttribution;
+	}
+
+	public LocalDate getDateAnnulation() {
+		return dateAnnulation;
+	}
+
 	public static void valdation(Course obj) throws IllegalArgumentException {//TODO
 		if (obj.appelant == null) throw new IllegalArgumentException("La course n'est pas lié à un appelant");
 	}

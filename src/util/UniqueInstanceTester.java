@@ -16,6 +16,7 @@ import javafx.stage.Stage;
  * https://www.developpez.net/forums/anocode.php?id=7a039645038e355111ae1a358f3dad73
  * @author rom1v
  */
+@SuppressWarnings("all")
 public final class UniqueInstanceTester {
  
     /** Pour utilisé pour l'unique instance de MyFreeTV. */

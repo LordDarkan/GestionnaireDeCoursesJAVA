@@ -1,5 +1,6 @@
 package data;
 
+import java.io.Closeable;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -9,19 +10,23 @@ import models.Course;
 import models.Hopital;
 import models.Residence;
 import models.Utilisateur;
+import models.item.AppelantList;
 import models.item.ChauffeurList;
 import models.item.CourseList;
 
-public abstract class Mapper {
+public abstract class Mapper implements Closeable{
 	private static Mapper instance;
 	
 	public static void setInstance(Mapper mapper) {
+		if(instance != null)
+			instance.close();
 		instance = mapper;
 	}
 	public static Mapper getInstance() {
 		return instance;
 	}
 
+	public abstract void close();
 	public abstract void init();
 	
 	public abstract List<Utilisateur> getAllUser();
@@ -60,6 +65,8 @@ public abstract class Mapper {
 	public abstract void delete(Hopital entity);
 	public abstract void importHopitals(List<Hopital> hopitals);
 	
-	public abstract List<CourseList> getCourse(LocalDate date, Long idChauffeur);
+	public abstract List<CourseList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date);
 	public abstract List<ChauffeurList> getChauffeurList();
+	public abstract List<AppelantList> getAppelantList();
+	
 }
