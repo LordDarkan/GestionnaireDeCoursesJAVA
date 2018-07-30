@@ -108,7 +108,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
                 @Override
                 public void handle(Event event) {
                 	if (((Tab)event.getSource()).isSelected()) {
-                		tabSelected();
+                		majList();
 					}
                 }
             });
@@ -118,8 +118,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		}
 	}
 
-	protected void tabSelected() {
-		super.selected();
+	protected void majList() {
+		super.update();
 		setListeAppelant(search(null));
 	}
 
@@ -172,6 +172,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 				setEditable(false);
 				super.save(app);
 				showAppelant(getSelectedAppelant());
+				majList();
 			}
 		} catch (Exception e) {
 			alert(e.getMessage());
@@ -210,6 +211,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		if (isSelected() && comfirmation("Supprimer","")) {
 			super.delete();
 			showAppelant(getSelectedAppelant());
+			majList();
 		}
 	}
 

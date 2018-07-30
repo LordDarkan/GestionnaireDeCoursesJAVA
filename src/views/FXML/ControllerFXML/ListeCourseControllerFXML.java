@@ -365,7 +365,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private void deleteF() {
 		if (isSelected() && comfirmation("Supprimer","")) {
 			super.delete();
-			affCourse(getSelectedCourse());
+			editMode(false);
 			setListeCourse(getCourseList());
 		}
 	}
@@ -381,6 +381,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		if(isSelected()) {
 			super.editer();
 			editMode(true);
+			setListeCourse(getCourseList());
 		}
 	}
 	
@@ -398,8 +399,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 
 	public void newCourse(Long id) {
-		editMode(true);
 		affEditCourse(getNewCourse(id));
+		editMode(true);
 	}
 	
 	private void editMode(boolean edit) {
@@ -459,7 +460,6 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	    
 		if (isSelected()) {
 			Course course = getSelectedCourse();
-			affichage.setVisible(course != null);
 			affApplant(course.getAppelant());
 			if (edit) {
 				affEditCourse(course);
