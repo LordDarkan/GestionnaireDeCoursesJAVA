@@ -1,4 +1,4 @@
-package views.FXML.items;
+package fxml.items;
 
 import java.io.IOException;
 

@@ -2,11 +2,14 @@ package models;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import util.DateTime;
+import util.FLS;
+import util.Titre;
 
 @Entity
 public class Appelant {
@@ -14,27 +17,28 @@ public class Appelant {
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private Titre titre = Titre.Aucun;
 	private String name = "";
 	private String firstname = "";
 	private LocalDate birthday = LocalDate.now();
 	private String tel = "";
 	
-	private String residence = "NaN";
+	private String residence = "";
 	private String adresse = "";
 	private String cp = "";
 	private String localite = "";
 	private String quartier = "";
-	private List<Appelant> famille;
 
-	private List<Chauffeur> affinite;
-	private List<Chauffeur> restriction;
-
+	private String famille = "";
+	private String affinite = "";
+	private String restriction = "";
+	
 	private String mutualite = "";
 	private String payement = "";
 	private int cotisation = 0;
 	
-	private String mobilite = "";
-	private String aideParticulière = "";
+	private String mobilite = "RAS";
+	private String aideParticulière = "RAS";
 	private String infos = "";
 	private String remarques = "";
 	
@@ -79,7 +83,7 @@ public class Appelant {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite = localite.toUpperCase();
 	}
 	public String getQuartier() {
 		return quartier;
@@ -105,17 +109,35 @@ public class Appelant {
 	public void setMutualite(String mutualite) {
 		this.mutualite = mutualite;
 	}
-	public List<Chauffeur> getAffinite() {
+	public String getAffiniteStr() {
 		return affinite;
 	}
-	public void setAffinite(List<Chauffeur> affinite) {
+	public void setAffiniteStr(String affinite) {
 		this.affinite = affinite;
 	}
-	public List<Chauffeur> getRestriction() {
+	public List<Long> getAffinite() {
+		return FLS.toList(affinite);
+	}
+	public void addAffinite(Long id) {
+		this.affinite = FLS.addToString(affinite, id);
+	}
+	public void removeAffinite(Long id) {
+		this.affinite = FLS.removeToString(affinite, id);
+	}
+	public String getRestrictionStr() {
 		return restriction;
 	}
-	public void setRestriction(List<Chauffeur> restriction) {
+	public void setRestrictionStr(String restriction) {
 		this.restriction = restriction;
+	}
+	public List<Long> getRestriction() {
+		return FLS.toList(restriction);
+	}
+	public void addRestriction(Long id) {
+		this.restriction = FLS.addToString(restriction, id);
+	}
+	public void removeRestriction(Long id) {
+		this.restriction = FLS.removeToString(restriction, id);
 	}
 	public String getPayement() {
 		return payement;
@@ -127,13 +149,23 @@ public class Appelant {
 		return cotisation;
 	}
 	public void setCotisation(int cotisation) {
-		this.cotisation = cotisation;
+		if (cotisation>this.cotisation)
+			this.cotisation = cotisation;
 	}
-	public List<Appelant> getFamille() {
+	public String getFamilleStr() {
 		return famille;
 	}
-	public void setFamille(List<Appelant> famille) {
+	public void setFamilleStr(String famille) {
 		this.famille = famille;
+	}
+	public List<Long> getFamille() {
+		return FLS.toList(famille);
+	}
+	public void removeFamille(Long id) {
+		this.famille = FLS.removeToString(famille, id);
+	}
+	public void addFamille(Long id) {
+		this.famille = FLS.addToString(famille, id);
 	}
 	public String getAideParticulière() {
 		return aideParticulière;
@@ -157,7 +189,7 @@ public class Appelant {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse = adresse.toUpperCase();
 	}
 	public String getResidence() {
 		return residence;
@@ -167,7 +199,64 @@ public class Appelant {
 	}
 	
 	public String getFullName() {
-		return String.format("%s %s", firstname, name);
+		return String.format("%s %s", name, firstname);
+	}
+	public Titre getTitre() {
+		return titre;
+	}
+	public void setTitre(Titre titre) {
+		this.titre = titre;
+	}
+	
+	public String getRowCsv() {
+		StringBuilder str = new StringBuilder();
+		str.append(id);
+		str.append(";");
+		str.append(titre);
+		str.append(";");
+		str.append(name);
+		str.append(";");
+		str.append(firstname);
+		str.append(";");
+		str.append(DateTime.toString(birthday));
+		str.append(";");
+		str.append(tel);
+		str.append(";");
+		str.append(residence);
+		str.append(";");
+		str.append(adresse);
+		str.append(";");
+		str.append(cp);
+		str.append(";");
+		str.append(localite);
+		str.append(";");
+		str.append(quartier);
+		str.append(";");
+		str.append(famille);
+		str.append(";");
+		str.append(affinite);
+		str.append(";");
+		str.append(restriction);
+		str.append(";");
+		str.append(mutualite);
+		str.append(";");
+		str.append(payement);
+		str.append(";");
+		str.append(cotisation);
+		str.append(";");
+		str.append(mobilite);
+		str.append(";");
+		str.append(aideParticulière);
+		str.append(";");
+		str.append(infos);
+		str.append(";");
+		str.append(remarques);
+		str.append(";END");
+		return str.toString();
+	}
+	
+	public static String getEnTeteCsv() {
+		return "Code;Titre;Nom;Prénom;Date de naissance;Téléphone, gsm;Résidence;Adresse;CP;Localité;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualité;Paiement;Cotisation;mobilite;Aide particulière;Infos utiles;Autres remarques;END";
 	}
 	
 	public static void valdation(Appelant obj) throws IllegalArgumentException {//TODO

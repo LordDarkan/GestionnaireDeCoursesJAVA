@@ -9,10 +9,11 @@ import models.Chauffeur;
 import models.Course;
 import models.Hopital;
 import models.Residence;
+import models.Settings;
 import models.Utilisateur;
-import models.item.AppelantList;
-import models.item.ChauffeurList;
-import models.item.CourseList;
+import models.itemList.AppelantItemList;
+import models.itemList.ChauffeurItemList;
+import models.itemList.CourseItemList;
 
 public abstract class Mapper implements Closeable{
 	private static Mapper instance;
@@ -63,10 +64,26 @@ public abstract class Mapper implements Closeable{
 	public abstract Hopital getHopital(String name);
 	public abstract void addOrUpdate(Hopital entity);
 	public abstract void delete(Hopital entity);
-	public abstract void importHopitals(List<Hopital> hopitals);
+	public abstract void importHopitaux(List<Hopital> hopitals);
 	
-	public abstract List<CourseList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date);
-	public abstract List<ChauffeurList> getChauffeurList();
-	public abstract List<AppelantList> getAppelantList();
+	public abstract List<CourseItemList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date);
+	public abstract List<ChauffeurItemList> getChauffeurList();
+	public abstract List<AppelantItemList> getAppelantList();
+
+	public abstract List<ChauffeurItemList> getChauffeurList(List<Long> list);
+	public abstract List<AppelantItemList> getAppelantList(List<Long> list);
+	public abstract List<CourseItemList> getCourseApplant(Long id);
+	public abstract void deleteFamille(Long id, Long id2);
 	
+	public abstract void deleteAll();
+	
+	public abstract AppelantItemList addFamille(Long id, Long id2);
+	public abstract void addProche(Long id, Long id2);
+	public abstract void delProche(Long id, Long id2);
+	public abstract void addRestrict(Long id, Long id2);
+	public abstract void delRestrict(Long id, Long id2);
+	public abstract List<Residence> getListResidence();
+	public abstract List<Hopital> getListHopital();
+	public abstract Settings getSettings();
+	public abstract void importApplantsOld(List<Appelant> appelants);
 }

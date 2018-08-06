@@ -1,4 +1,4 @@
-package views.FXML.ControllerFXML;
+package fxml.ControllerFXML;
 
 import models.Utilisateur;
 

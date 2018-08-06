@@ -1,4 +1,4 @@
-package views.FXML.ControllerFXML;
+package fxml.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,7 +27,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import models.Chauffeur;
 import models.Utilisateur;
-import models.item.ChauffeurList;
+import models.itemList.ChauffeurItemList;
+import util.Security;
 
 public class ListeChauffeurControllerFXML extends ListeChauffeurController implements Initializable,ITabController {
 	@FXML
@@ -35,7 +36,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     @FXML
     private TextField recherche;
     @FXML
-    private ListView<ChauffeurList> listViewChauffeur;
+    private ListView<ChauffeurItemList> listViewChauffeur;
     @FXML
     private Button btnDelete;
     @FXML
@@ -66,7 +67,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     	Tab tab = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ListeChauffeur.fxml"));
+			loader.setLocation(getClass().getClassLoader().getResource("fxml/views/ListeChauffeur.fxml"));
 			loader.setController(this);
 			VBox content;
 			content = (VBox)loader.load();
@@ -91,9 +92,9 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		listViewChauffeur.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ChauffeurList>() {
+		listViewChauffeur.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<ChauffeurItemList>() {
 		    @Override
-		    public void changed(ObservableValue<? extends ChauffeurList> observable, ChauffeurList oldValue, ChauffeurList newValue) {
+		    public void changed(ObservableValue<? extends ChauffeurItemList> observable, ChauffeurItemList oldValue, ChauffeurItemList newValue) {
 		    	if(newValue!=null) {
 		    		setSelectedChauffeur(newValue.getId());
 		    		showChauffeur(getSelectedChauffeur());
@@ -105,7 +106,13 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 			setListeChauffeur(search(newValue));
 		});
 		
-		
+		cp.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				cp.setText(newValue.replaceAll("[^\\d]", ""));
+	        } else if(newValue.length()>4) {
+	        	cp.setText(oldValue);
+	        }
+		});
 		
 		
 		btnAdd.setOnAction((ActionEvent e) -> addF());
@@ -195,7 +202,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		
 		btnAdd.setVisible(!b && isAdmin());
 		btnEdit.setVisible(!b && isAdmin());
-		btnDelete.setVisible(!b && isAdmin());
+		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
 		btnAnnuler.setVisible(b);
 		btnSave.setVisible(b);
 		
@@ -223,7 +230,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		infos.setText(app.getInfos());
 	}
 	
-	private void setListeChauffeur(List<ChauffeurList> chauf) {
+	private void setListeChauffeur(List<ChauffeurItemList> chauf) {
 		listViewChauffeur.getItems().clear();
 		listViewChauffeur.getItems().setAll(chauf);
 	}

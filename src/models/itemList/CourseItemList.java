@@ -1,27 +1,32 @@
-package models.item;
+package models.itemList;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import models.Course;
+import util.DateTime;
 import util.TypeCourse;
 
-public class CourseList {
+public class CourseItemList {
 	private Long id;
-	private AppelantList appelant;
+	private AppelantItemList appelant;
+	private ChauffeurItemList chauffeur;
 	private TypeCourse type;
 	private LocalDate date;
-	private LocalTime heureRDV;
+	private LocalTime heure;
 	private String hopital;
 	private String adresseDest;
 	private String cpDest;
 	private String localiteDest;
 	
-	public CourseList(Course course) {
+	public CourseItemList(Course course) {
 		id = course.getId();
-		appelant = new AppelantList(course.getAppelant());
+		appelant = new AppelantItemList(course.getAppelant());
+		if (course.getChauffeur()!=null) {
+			chauffeur = new ChauffeurItemList(course.getChauffeur());
+		}
 		type = course .getTypeCourse();
 		date = course.getDate();
-		heureRDV = course.getHeureRDV();
+		heure = course.getHeureDomicile();
 		hopital = course.getHopital();
 		adresseDest = course.getAdresseDest();
 		cpDest = course.getCpDest();
@@ -37,8 +42,8 @@ public class CourseList {
 	public LocalDate getDate() {
 		return date;
 	}
-	public LocalTime getHeureRDV() {
-		return heureRDV;
+	public LocalTime getHeure() {
+		return heure;
 	}
 	public String getHopital() {
 		return hopital;
@@ -52,8 +57,36 @@ public class CourseList {
 	public String getLocaliteDest() {
 		return localiteDest;
 	}
-
 	public TypeCourse getType() {
 		return type;
+	}
+	
+	@Override
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append("Date: \t");
+		str.append(DateTime.toString(date));
+		str.append(" à ");
+		str.append(DateTime.toString(heure));
+		str.append("\t\tpour\t\t");
+		str.append(appelant.getFullName());
+		str.append("\t\t(");
+		str.append(type.toString());
+		str.append(")\n");
+
+		str.append("Destination: \t");
+		str.append(adresseDest);
+		str.append("\tà\t");
+		str.append(localiteDest);
+		str.append(" (");
+		str.append(cpDest);
+		str.append(")\n");
+		if (chauffeur!= null) {
+			str.append("Chauffeur: \t");
+			str.append(chauffeur.getName());
+			str.append(" ");
+			str.append(chauffeur.getFirstname());
+		}
+		return str.toString();
 	}
 }

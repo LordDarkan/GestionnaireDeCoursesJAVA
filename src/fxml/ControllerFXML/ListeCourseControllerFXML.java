@@ -1,9 +1,8 @@
-package views.FXML.ControllerFXML;
+package fxml.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -11,16 +10,18 @@ import java.util.ResourceBundle;
 import controllers.ListeCourseController;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -34,27 +35,26 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.StringConverter;
 import models.Appelant;
 import models.Course;
 import models.Hopital;
 import models.Residence;
 import models.Utilisateur;
-import models.item.ChauffeurList;
-import models.item.CourseList;
-import util.Time;
+import models.itemList.ChauffeurItemList;
+import models.itemList.CourseItemList;
+import util.DateTime;
 import util.TypeCourse;
-import views.FXML.items.CourseListCell;
 
 public class ListeCourseControllerFXML extends ListeCourseController implements Initializable,ITabController {
-	private static final DateTimeFormatter formatHeure = DateTimeFormatter.ofPattern("HH:mm");
-	private static final DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	@FXML
+    private Button btnImprimer;
 	@FXML
 	private VBox affichage;
 	@FXML
@@ -66,7 +66,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private Button btnSave;
 	@FXML
-    private ListView<CourseList> listViewCourses;
+    private ListView<CourseItemList> listViewCourses;
     @FXML
     private DatePicker selectDay;
     @FXML
@@ -90,7 +90,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private Label  aideAppelant;
     @FXML
-    private ComboBox<ChauffeurList> editChauffeur;
+    private ComboBox<Object> editChauffeur;
     @FXML
     private DatePicker editDateCourse;
     @FXML
@@ -168,7 +168,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private CheckBox editAttente;
     @FXML
-    private ComboBox<ChauffeurList> editChauffeurSec;
+    private ComboBox<Object> editChauffeurSec;
     @FXML
     private Label affHeureRetour;
     @FXML
@@ -195,13 +195,17 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     private Label annulationDate;
     @FXML
     private Label annulationRaison;
+    @FXML
+    private Button btnAnnulerCourse;//TODO
+    
+    private PrintCourseControllerFXML print;
 	
 	public ListeCourseControllerFXML(Utilisateur user, TabPane tabContainer) {
 		super(user);
 		Tab tab = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ListeCourse.fxml"));
+			loader.setLocation(getClass().getClassLoader().getResource("fxml/views/ListeCourse.fxml"));
 			loader.setController(this);
 			AnchorPane content;
 			content = (AnchorPane)loader.load();
@@ -218,15 +222,15 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
                 }
             });
             tabContainer.getTabs().add(tab);
-		} catch (IOException e) {//TODO
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void selected() {
+	public void selected() {
 		editMode(btnSave.isVisible());
-		setListeCourse(getCourseList());
-		setChauffeurList();
+		//setListeCourse(getCourseList());
+		//setChauffeurList();
 	}
 
 	@Override
@@ -235,21 +239,16 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		selectFutur.setToggleGroup(group);
 		selectFutur.setSelected(true);
 		selectParJour.setToggleGroup(group);
-		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-	           @Override
-	           public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
-	               // Has selection.
-	               if (group.getSelectedToggle() != null) {
-	            	   select();
-	               }
-	           }
+		group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+               if (group.getSelectedToggle() != null) {
+            	   select();
+               }
 	       });
-		selectChauffeur.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Object>() {
-			public void changed(ObservableValue<? extends Object> ov, Object value, Object newValue) {
-				if (newValue != null) {
-					select();
-				}
+		selectChauffeur.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				select();
 			}
+			
 		});
 		selectDay.setValue(LocalDate.now());
 		selectDay.valueProperty().addListener((ov, oldValue, newValue) -> {
@@ -258,20 +257,18 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
             }
         });
 		
-		listViewCourses.setCellFactory(lc -> new CourseListCell());
-		listViewCourses.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CourseList>() {
-		    @Override
-		    public void changed(ObservableValue<? extends CourseList> observable, CourseList oldValue, CourseList newValue) {
-		    	if(newValue!=null) {
-		    		setSelectedCourse(newValue.getId());
-		    		editMode(false);
-		    	}
-		    }
+		//listViewCourses.setCellFactory(lc -> new CourseListCell());
+		listViewCourses.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+	    	if(newValue!=null) {
+	    		setSelectedCourse(newValue.getId());
+	    		editMode(false);
+	    	}
+		    
 		});
 		listViewCourses.setOnMouseClicked(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent arg0) {
-				CourseList newValue = listViewCourses.getSelectionModel().getSelectedItem();
+				CourseItemList newValue = listViewCourses.getSelectionModel().getSelectedItem();
 				if(newValue !=null && getSelectedCourse() == null) {
 		    		setSelectedCourse(newValue.getId());
 					editMode(false);
@@ -279,38 +276,120 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			}
 
 		});
+		
+		editCpDepart.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpDepart,newValue,oldValue));
+		editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV,newValue,oldValue));
+		editCpRetour.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRetour,newValue,oldValue));
+		
 		setChauffeurList();
 		editType.getItems().addAll(TypeCourse.values());
 		setResidence();
-		editResidence.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
-				if (newValue != null) {
-					testResidence(newValue);
-				}
+		editResidence.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				testResidence(newValue);
 			}
 		});
-		editHopital.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
-				if (newValue != null) {
-					testHopital(newValue);
-				}
+		editHopital.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				testHopital(newValue);
 			}
 		});
-		editHopital.getItems().addAll(getHopital());
+		setHopital();
 		
-		editHeureDepart.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
-		editMinuteDepart.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
-		editHeureRDV.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
-		editMinuteRDV.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
-		editHeureRetour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 23, 0));
-		editMinuteRetour.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 59, 0));
+		Integer hMin=0,hMax=23,mMin=0,mMax=59;
+		setSpinner(editHeureDepart,hMin,hMax);
+		setSpinner(editMinuteDepart,mMin,mMax);
+		setSpinner(editHeureRDV,hMin,hMax);
+		setSpinner(editMinuteRDV,mMin,mMax);
+		setSpinner(editHeureRetour,hMin,hMax);
+		setSpinner(editMinuteRetour,mMin,mMax);
 		
 		btnEdit.setOnAction((ActionEvent e) -> editerF());
 		btnDel.setOnAction((ActionEvent e) -> deleteF());
 		btnAnn.setOnAction((ActionEvent e) -> annulerF());
 		btnSave.setOnAction((ActionEvent e) -> saveF());
+
+		btnImprimer.setOnAction((ActionEvent e) -> imprimer());
 		
 		editMode(false);
+	}
+	
+	private void imprimer() {
+		if (isSelected()) {
+			if (print == null) {
+				print= new PrintCourseControllerFXML();
+			}
+			PrintCourseControllerFXML print = new PrintCourseControllerFXML();
+			Node myPrint = print.getNode(getSelectedCourse());
+			
+			if (myPrint == null){
+				System.err.println("No file is open!");
+				return;
+			}
+			
+			PrinterJob printAction = PrinterJob.createPrinterJob();
+			if (printAction == null){
+				System.err.println("Unable to access system print utilities");
+				return;
+			}
+			PageLayout pageLayout = Printer.getDefaultPrinter().createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+			printAction.getJobSettings().setPageLayout(pageLayout);
+			boolean notCancelled = printAction.showPrintDialog(affichage.getScene().getWindow());
+			if (notCancelled){
+				//boolean success = printAction.printPage(pageLayout, myPrint);
+				boolean success = printAction.printPage(myPrint);
+				if (success)
+					printAction.endJob();
+				else
+					 System.err.println("Print may have failed");
+			}
+		}
+	}
+
+	private void editCp(TextField editCp, String newValue, String oldValue) {
+		if (!newValue.matches("\\d*")) {
+			editCp.setText(newValue.replaceAll("[^\\d]", ""));
+        } else if(newValue.length()>4) {
+        	editCp.setText(oldValue);
+        }
+	}
+	
+	private void setSpinner(Spinner<Integer> spinner, Integer min, Integer max) {
+		spinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(min, max, min));
+		spinner.setEditable(true);
+		TextField edit = spinner.getEditor();
+		edit.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				edit.setText(newValue.replaceAll("[^\\d]", ""));
+	        } else if(newValue.length()>2) {
+	        	edit.setText(oldValue);
+	        }
+		});
+		spinner.focusedProperty().addListener((observable, oldValue, newValue) -> {
+	        if (!newValue){
+				String text = edit.getText();
+				SpinnerValueFactory<Integer> valueFactory = spinner.getValueFactory();
+				StringConverter<Integer> converter = valueFactory.getConverter();
+				if (!text.isEmpty()) {
+					try {
+						Integer enterValue = converter.fromString(text);
+						if (enterValue<min) {
+							valueFactory.setValue(min);
+						} else if (enterValue>max) {
+							valueFactory.setValue(max);
+						} else {
+							valueFactory.setValue(enterValue);
+						}
+					} catch (Exception e) {
+						valueFactory.setValue(min);
+					}
+				} else {
+					valueFactory.setValue(min);
+					edit.setText(min.toString());
+				}
+	        }
+		    
+		});
 	}
 
 	private void setChauffeurList() {
@@ -318,15 +397,17 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		selectChauffeur.getItems().clear();
 		editChauffeur.getItems().clear();
 		editChauffeurSec.getItems().clear();
-		List<ChauffeurList> l = getChauffeurList();
-		editChauffeur.getItems().addAll(l);
-		editChauffeurSec.getItems().addAll(l);
 		
-		ObservableList<Object> obs = FXCollections.observableArrayList();
-		obs.add("Tout");
-		obs.add("Sans Chauffeur");
-		obs.addAll(l);
-		selectChauffeur.setItems(obs);
+		List<ChauffeurItemList> chauffeurItemList = getChauffeurList();
+		
+		editChauffeur.getItems().add("");
+		editChauffeur.getItems().addAll(chauffeurItemList);
+		editChauffeurSec.getItems().add("");
+		editChauffeurSec.getItems().addAll(chauffeurItemList);
+		selectChauffeur.getItems().add("Tout");
+		selectChauffeur.getItems().add("Sans Chauffeur");
+		selectChauffeur.getItems().addAll(chauffeurItemList);
+		
 		if (obj != null) {
 			selectChauffeur.getSelectionModel().select(obj);
 		} else {
@@ -337,9 +418,9 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private void select() {
 		boolean all = false;
 		Object obj = selectChauffeur.getSelectionModel().getSelectedItem();
-		ChauffeurList chauf = null;
-		if (obj instanceof ChauffeurList) {
-			chauf = (ChauffeurList)obj;
+		ChauffeurItemList chauf = null;
+		if (obj instanceof ChauffeurItemList) {
+			chauf = (ChauffeurItemList)obj;
 		} else if (obj instanceof String) {
 			all = ((String)obj).equals("Tout");
 		}
@@ -353,7 +434,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 
 	private void testResidence(String value) {
-		boolean nan = value.equals("NaN");
+		boolean nan = value.equals("");
 		editAdresseDepart.setDisable(!nan);
 	    editLocaliteDepart.setDisable(!nan);
 	    editCpDepart.setDisable(!nan);
@@ -366,7 +447,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 	
 	private void testHopital(String value) {
-		boolean nan = value.equals("NaN");
+		boolean nan = value.equals("");
 		editAdresseRDV.setDisable(!nan);
 	    editLocaliteRDV.setDisable(!nan);
 	    editCpRDV.setDisable(!nan);
@@ -396,33 +477,33 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private Course getInfoCourse() {
 		Course course = getSelectedCourse();
 		if (course!=null) {
-			ChauffeurList cl = editChauffeur.getSelectionModel().getSelectedItem();
-			if(cl!= null) {
-				course.setChauffeur(getChauffeur(cl.getId()), getUserName());
+			Object obj = editChauffeur.getSelectionModel().getSelectedItem();
+			if(obj instanceof ChauffeurItemList) {
+				course.setChauffeur(getChauffeur(((ChauffeurItemList)obj).getId()), getUserName());
 			} else {
 				course.setChauffeur();
 			}
 			course.setDate(editDateCourse.getValue());
 			course.setTypeCourse(editType.getSelectionModel().getSelectedItem());
 			course.setMutuelle(editAttestation.isSelected());
-			course.setHeureDomicile(Time.getLocalTime(editHeureDepart.getValueFactory().getValue(), editMinuteDepart.getValueFactory().getValue()));
+			course.setHeureDomicile(DateTime.getLocalTime(editHeureDepart.getValueFactory().getValue(), editMinuteDepart.getValueFactory().getValue()));
 			course.setAdresseDep(editAdresseDepart.getText().trim());
 			course.setLocaliteDep(editLocaliteDepart.getText().trim());
 			course.setCpDep(editCpDepart.getText().trim());
 			course.setResidence(editResidence.getSelectionModel().getSelectedItem());
-			course.setHeureRDV(Time.getLocalTime(editHeureRDV.getValueFactory().getValue(), editMinuteRDV.getValueFactory().getValue()));
+			course.setHeureRDV(DateTime.getLocalTime(editHeureRDV.getValueFactory().getValue(), editMinuteRDV.getValueFactory().getValue()));
 			course.setAdresseDest(editAdresseRDV.getText().trim());
 			course.setLocaliteDest(editLocaliteRDV.getText().trim());
 			course.setCpDest(editCpRDV.getText().trim());
 			course.setHopital(editHopital.getSelectionModel().getSelectedItem());
-			course.setHeureRetour(Time.getLocalTime(editHeureRetour.getValueFactory().getValue(), editMinuteRetour.getValueFactory().getValue()));
+			course.setHeureRetour(DateTime.getLocalTime(editHeureRetour.getValueFactory().getValue(), editMinuteRetour.getValueFactory().getValue()));
 			course.setAdresseRet(editAdresseRetour.getText().trim());
 			course.setLocaliteRet(editLocaliteRetour.getText().trim());
 			course.setCpRet(editCpRetour.getText().trim());
 			course.setAttente(editAttente.isSelected());
-		    cl = editChauffeurSec.getSelectionModel().getSelectedItem();
-			if(cl!= null) {
-				course.setChauffeurSec(getChauffeur(cl.getId()));
+			obj = editChauffeurSec.getSelectionModel().getSelectedItem();
+			if(obj instanceof ChauffeurItemList) {
+				course.setChauffeurSec(getChauffeur(((ChauffeurItemList)obj).getId()));
 			} else {
 				course.setChauffeurSec(null);
 			}
@@ -466,6 +547,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editMode(false);
 		setListeCourse(getCourseList());
 		setChauffeurList();
+		setHopital();
+		setResidence();
 	}
 
 	public void newCourse(Long id) {
@@ -478,6 +561,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		edit &=isSelected();
 		if (edit)
 			setResidence();
+		
+		btnImprimer.setVisible(!edit);
 		
 		btnEdit.setVisible(!edit);
 		btnDel.setVisible(!edit);
@@ -530,12 +615,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	    
 		if (isSelected()) {
 			Course course = getSelectedCourse();
-			creatDate.setText(course.getDateCreation().format(formatDate));
-		    creatHeure.setText(course.getHeureCreation().format(formatHeure));
+			creatDate.setText(DateTime.toString(course.getDateCreation()));
+		    creatHeure.setText(DateTime.toString(course.getHeureCreation()));
 		    creatName.setText(course.getNameCreation());
 		    
 		    if(course.getDateAttribution()!=null) {
-		    	attributionDate.setText(course.getDateAttribution().format(formatDate));
+		    	attributionDate.setText(DateTime.toString(course.getDateAttribution()));
 		    	attributionName.setText(course.getNameAttribution());
 		    } else {
 		    	attributionDate.setText("");
@@ -543,7 +628,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		    }
 		    
 		    if(course.getDateAnnulation()!=null) {
-		    	annulationDate.setText(course.getDateAnnulation().format(formatDate));
+		    	annulationDate.setText(DateTime.toString(course.getDateAnnulation()));
 		    	annulationName.setText(course.getNameAttribution());
 		    	annulationRaison.setText(course.getRaisonAnnulation());
 		    } else {
@@ -563,33 +648,41 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private void affCourse(Course course) {
 		if (course.getChauffeur()!=null) {
 			affChaufeur.setText(course.getChauffeur().getFullName());
+		} else {
+			affChaufeur.setText("SANS CHAUFFEUR");
 		}
-	    affDate.setText(course.getDate().format(formatDate));
+	    affDate.setText(DateTime.toString(course.getDate()));
 	    affType.setText(course.getTypeCourse().toString());
 	    affAttestation.setText(course.isMutuelle()?"oui":"non");
-	    affHeureDepart.setText(course.getHeureDomicile().format(formatHeure));
+	    affHeureDepart.setText(DateTime.toString(course.getHeureDomicile()));
 	    affAdresseDepart.setText(course.getAdresseDep());
 	    affLocaliteDepart.setText(course.getLocaliteDep());
 	    affCpDepart.setText(course.getCpDep());
 	    affResidence.setText(course.getResidence());
-	    affHeureRDV.setText(course.getHeureRDV().format(formatHeure));
+	    affHeureRDV.setText(DateTime.toString(course.getHeureRDV()));
 	    affAdresseRDV.setText(course.getAdresseDest());
 	    affLocaliteRDV.setText(course.getLocaliteDest());
 	    affCpRDV.setText(course.getCpDest());
 	    affHopital.setText(course.getHopital());
-	    affHeureRetour.setText(course.getHeureRetour().format(formatHeure));
+	    affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 	    affAdresseRetour.setText(course.getAdresseRet());
 	    affLocaliteRetour.setText(course.getLocaliteRet());
 	    affCpRetour.setText(course.getCpRet());
 	    if (course.getChauffeurSec()!=null) {
 	    	affChaufeurSec.setText(course.getChauffeurSec().getFullName());
+		}  else {
+			affChaufeur.setText("");
 		}
 	    affAttente.setText(course.isAttente()?"oui":"non");
 	    affNote.setText(course.getNotes());
 	}
 	
 	private void affEditCourse(Course course) {
-		editChauffeur.getSelectionModel().select(course.getChauffeur()==null?null:new ChauffeurList(course.getChauffeur()));
+		if(course.getChauffeurSec()!=null) {
+			editChauffeur.getSelectionModel().select(new ChauffeurItemList(course.getChauffeur()));
+	    } else {
+	    	editChauffeur.getSelectionModel().select(0);
+	    }
 	    editDateCourse.setValue(course.getDate());
 	    editType.getSelectionModel().select(course.getTypeCourse());
 	    editAttestation.setSelected(course.isMutuelle());
@@ -611,7 +704,11 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	    editLocaliteRetour.setText(course.getLocaliteRet());
 	    editCpRetour.setText(course.getCpRet());
 	    editAttente.setSelected(course.isAttente());
-	    editChauffeurSec.getSelectionModel().select(course.getChauffeurSec()==null?null:new ChauffeurList(course.getChauffeurSec()));
+	    if(course.getChauffeurSec()!=null) {
+	    	editChauffeurSec.getSelectionModel().select(new ChauffeurItemList(course.getChauffeurSec()));
+	    } else {
+		    editChauffeurSec.getSelectionModel().select(0);
+	    }
 	    editNote.setText(course.getNotes());
 	}
 	
@@ -649,7 +746,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editResidence.getItems().addAll(getResidence());
 	}
 	
-	private void setListeCourse(List<CourseList> list) {
+	private void setHopital() {
+		editHopital.getItems().clear();
+		editHopital.getItems().addAll(getHopital());
+	}
+	
+	private void setListeCourse(List<CourseItemList> list) {
 		listViewCourses.getItems().clear();
 		listViewCourses.getItems().setAll(list);
 	}

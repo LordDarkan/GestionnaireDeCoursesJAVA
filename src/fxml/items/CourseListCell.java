@@ -1,7 +1,6 @@
-package views.FXML.items;
+package fxml.items;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,11 +8,10 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
-import models.item.CourseList;
+import models.itemList.CourseItemList;
+import util.DateTime;
 
-public class CourseListCell extends ListCell<CourseList> {
-	private static final DateTimeFormatter formatHeure = DateTimeFormatter.ofPattern("HH:mm");
-	private static final DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+public class CourseListCell extends ListCell<CourseItemList> {
 	@FXML
     private AnchorPane content;
     @FXML
@@ -48,7 +46,7 @@ public class CourseListCell extends ListCell<CourseList> {
     }
     
     @Override 
-    protected void updateItem(CourseList item, boolean empty) {
+    protected void updateItem(CourseItemList item, boolean empty) {
         super.updateItem(item, empty);
         setGraphic(null); 
         setText(null); 
@@ -59,8 +57,8 @@ public class CourseListCell extends ListCell<CourseList> {
         	adresse.setText(item.getAdresseDest());
         	cp.setText(item.getCpDest());
         	localite.setText(item.getLocaliteDest());
-        	heure.setText(item.getHeureRDV().format(formatHeure));
-        	date.setText(item.getDate().format(formatDate));
+        	heure.setText(DateTime.toString(item.getHeure()));
+        	date.setText(DateTime.toString(item.getDate()));
         	hopital.setText(item.getHopital());
             setText(null); 
             setGraphic(content); 

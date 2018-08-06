@@ -1,13 +1,13 @@
-package models.item;
+package models.itemList;
 
 import models.Chauffeur;
 
-public class ChauffeurList {
+public class ChauffeurItemList {
 	private Long id;
 	private String name;
 	private String firstname;
 	
-	public ChauffeurList(Chauffeur c) {
+	public ChauffeurItemList(Chauffeur c) {
 		id = c.getId();
 		name = c.getName();
 		firstname = c.getFirstname();

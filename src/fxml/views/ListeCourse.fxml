@@ -71,20 +71,33 @@
                   <children>
                      <GridPane hgap="10.0">
                        <columnConstraints>
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                        </columnConstraints>
                        <rowConstraints>
                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                           <Button fx:id="btnEdit" mnemonicParsing="false" text="Modifier" GridPane.columnIndex="4" GridPane.halignment="RIGHT" />
-                           <Button fx:id="btnDel" mnemonicParsing="false" text="Supprimer" GridPane.columnIndex="3" />
-                           <Button fx:id="btnAnn" mnemonicParsing="false" text="Annuler" GridPane.columnIndex="3" GridPane.halignment="RIGHT" />
-                           <Button fx:id="btnSave" mnemonicParsing="false" text="Sauvegarder" GridPane.columnIndex="4" />
+                           <Button fx:id="btnImprimer" mnemonicParsing="false" text="Imprimer" />
+                           <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1">
+                              <children>
+                                 <Button fx:id="btnDel" mnemonicParsing="false" text="Supprimer" />
+                                 <Button fx:id="btnEdit" mnemonicParsing="false" text="Modifier" />
+                              </children>
+                              <padding>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </padding>
+                           </HBox>
+                           <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
+                              <children>
+                                 <Button fx:id="btnAnn" mnemonicParsing="false" text="Annuler" />
+                                 <Button fx:id="btnSave" mnemonicParsing="false" text="Sauvegarder" />
+                              </children>
+                              <padding>
+                                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              </padding>
+                           </HBox>
                         </children>
                      </GridPane>
                      <HBox alignment="TOP_RIGHT">
@@ -104,10 +117,23 @@
                      <Label text="Appelant" />
                      <VBox spacing="10.0" style="-fx-border-color: black;">
                         <children>
-                           <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <HBox alignment="BOTTOM_LEFT" spacing="20.0">
                               <children>
-                                 <Label fx:id="codeApplant" text="Code" />
-                                 <Label fx:id="nomCompletAppelant" text="Mme Evelyne Mottard">
+                                 <HBox alignment="BOTTOM_CENTER">
+                                    <children>
+                                       <Label text="(" />
+                                       <Label fx:id="codeApplant" text="Code">
+                                          <HBox.margin>
+                                             <Insets />
+                                          </HBox.margin>
+                                       </Label>
+                                       <Label text=")" />
+                                    </children>
+                                    <padding>
+                                       <Insets bottom="6.0" />
+                                    </padding>
+                                 </HBox>
+                                 <Label fx:id="nomCompletAppelant" text="xxxxxxx xxxx">
                                     <font>
                                        <Font size="24.0" />
                                     </font></Label>
@@ -121,21 +147,21 @@
                                  <VBox>
                                     <children>
                                        <Label text="Handicap(s) particulier(s)" />
-                                       <ScrollPane prefHeight="60.0" prefWidth="250.0">
-                                          <content>
-                                             <Label fx:id="handicapAppelant" text="xxx" />
-                                          </content>
-                                       </ScrollPane>
+                                       <Label fx:id="handicapAppelant" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="250.0" style="-fx-border-color: gainsboro;" text="xxx" wrapText="true">
+                                          <padding>
+                                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                          </padding>
+                                       </Label>
                                     </children>
                                  </VBox>
                                  <VBox>
                                     <children>
                                        <Label text="Aide spécialisée" />
-                                       <ScrollPane prefHeight="60.0" prefWidth="250.0">
-                                          <content>
-                                             <Label fx:id="aideAppelant" text="xxx" />
-                                          </content>
-                                       </ScrollPane>
+                                       <Label fx:id="aideAppelant" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="250.0" style="-fx-border-color: gainsboro;" text="xxx" wrapText="true">
+                                          <padding>
+                                             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                          </padding>
+                                       </Label>
                                     </children>
                                  </VBox>
                               </children>
@@ -201,8 +227,8 @@
                            <Label text="Heure de départ" />
                            <HBox fx:id="edit1" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
                               <children>
-                                 <Spinner fx:id="editHeureDepart" prefWidth="60.0" />
-                                 <Label text="H" />
+                                 <Spinner fx:id="editHeureDepart" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
+                                 <Label minWidth="9.0" text="H" />
                                  <Spinner fx:id="editMinuteDepart" minWidth="60.0" prefWidth="60.0" />
                               </children>
                            </HBox>
@@ -256,7 +282,7 @@
                            <HBox fx:id="edit2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
                               <children>
                                  <Spinner fx:id="editHeureRDV" minWidth="60.0" prefWidth="60.0" />
-                                 <Label text="H" />
+                                 <Label minWidth="9.0" text="H" />
                                  <Spinner fx:id="editMinuteRDV" minWidth="60.0" prefWidth="60.0" />
                               </children>
                            </HBox>
@@ -301,7 +327,7 @@
                            <HBox fx:id="edit3" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="2">
                               <children>
                                  <Spinner fx:id="editHeureRetour" minWidth="60.0" prefWidth="60.0" />
-                                 <Label text="H" />
+                                 <Label minWidth="9.0" text="H" />
                                  <Spinner fx:id="editMinuteRetour" minWidth="60.0" prefWidth="60.0" />
                               </children>
                            </HBox>
@@ -336,8 +362,13 @@
                         </children>
                      </HBox>
                      <HBox alignment="TOP_RIGHT" />
-                     <HBox alignment="TOP_RIGHT">
+                     <HBox alignment="BOTTOM_RIGHT">
                         <children>
+                           <Button fx:id="btnAnnulerCourse" mnemonicParsing="false" text="Annuler Course">
+                              <HBox.margin>
+                                 <Insets right="20.0" />
+                              </HBox.margin>
+                           </Button>
                            <Label text="Le cas échéant, annulé par " />
                            <Label fx:id="annulationName" text="xxx" />
                            <Label text=" le " />

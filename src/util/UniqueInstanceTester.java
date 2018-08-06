@@ -9,6 +9,7 @@ import java.util.logging.Logger;
  
 import javax.swing.SwingUtilities;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
  
 /**
@@ -52,14 +53,14 @@ public final class UniqueInstanceTester {
                             /* On attend qu'une socket se connecte sur le serveur. */
                             final Socket socket = server.accept();
  
-                            /* Si une socket est connectée, on écoute le message envoyé dans un nouveau Thrad. *TODO/
+                            /* Si une socket est connectée, on écoute le message envoyé dans un nouveau Thrad. *FIXME/
                             new Thread() {
  
                                 @Override public void run() {
                                     receive(socket,stage);
                                 }
-                            }.start();*/
-                            socket.close();
+                            }.start();/*FIXME*/
+                            socket.close();//FIXME
                         } catch(IOException e) {
                             e.printStackTrace();
                         }
@@ -77,7 +78,7 @@ public final class UniqueInstanceTester {
             unique = false;
  
             /* Dans ce cas, on envoie un message à l'autre application pour lui demander d'avoir le focus. */
-            //TODO send();
+            //FIXME send();
         }
         return unique;
     }
@@ -127,7 +128,15 @@ public final class UniqueInstanceTester {
  
             /* Si cette ligne est "myfreetv"... */
             if("myfreetv".equals(s)) {
- 
+
+            	
+            	Platform.runLater(new Runnable() {//FIXME JAVAFX
+            	    @Override
+            	    public void run() {
+            	    	stage.requestFocus();
+            	    }
+            	});
+            	
                 /* On demande le focus dans l'EDT. */
                 SwingUtilities.invokeLater(new Runnable() {
  
@@ -138,13 +147,17 @@ public final class UniqueInstanceTester {
                          * démarrage de l'application.
                          */
                         if(stage != null) {
-                            stage.toFront();//FIXME
+                            //stage.toFront();//FIXME
+                        	//fxml.Message.alert("test");
+                        	
+                        	System.out.println("test");
                         }
                     }
                 });
             }
         } catch(IOException e) {
             Logger.getLogger("MyFreeTV").warning("Lecture du flux d'entrée de la socket échoué.");
+            e.printStackTrace();
         } finally {
             if(sc != null)
                 sc.close();

@@ -11,8 +11,8 @@ import models.Course;
 import models.Hopital;
 import models.Residence;
 import models.Utilisateur;
-import models.item.ChauffeurList;
-import models.item.CourseList;
+import models.itemList.ChauffeurItemList;
+import models.itemList.CourseItemList;
 
 public class ListeCourseController {
 	private Utilisateur user;
@@ -84,11 +84,11 @@ public class ListeCourseController {
 		
 	}
 	
-	protected List<CourseList> getCourseList() {
+	protected List<CourseItemList> getCourseList() {
 		return mapper.getCourse(all,idChauffeur,day,date);
 	}
 	
-	protected List<ChauffeurList> getChauffeurList() {
+	protected List<ChauffeurItemList> getChauffeurList() {
 		return mapper.getChauffeurList();
 	}
 	
@@ -98,15 +98,18 @@ public class ListeCourseController {
 	
 	protected List<String> getResidence() {
 		List<String> l = new ArrayList<>();
-		l.add("NaN");
-		if (selected != null && !selected.getAppelant().getResidence().equals("NaN")) {
+		l.add("");
+		if (selected != null && !selected.getAppelant().getResidence().equals("")) {
 			l.add(selected.getAppelant().getResidence());
 		}
 		return l;
 	}
 	
 	protected List<String> getHopital() {
-		return mapper.getAllHopital();
+		List<String> list = new ArrayList<>();
+		list.add("");
+		list.addAll(mapper.getAllHopital());
+		return list;
 	}
 	
 	protected Residence getResidence(String name) {
@@ -117,7 +120,7 @@ public class ListeCourseController {
 		return mapper.getHopital(name);
 	}
 
-	public void select(boolean all, ChauffeurList chauf, boolean day, LocalDate date) {
+	protected void select(boolean all, ChauffeurItemList chauf, boolean day, LocalDate date) {
 		this.all = all;
 		if(chauf == null) {
 			idChauffeur = null;

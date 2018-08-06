@@ -6,14 +6,14 @@ import java.util.List;
 import data.Mapper;
 import models.Chauffeur;
 import models.Utilisateur;
-import models.item.ChauffeurList;
+import models.itemList.ChauffeurItemList;
 
 public abstract class ListeChauffeurController {
 	private Utilisateur user;
 	private Mapper mapper;
-	private List<ChauffeurList> chauffeursFull;
+	private List<ChauffeurItemList> chauffeursFull;
 	private String recherche;
-	private List<ChauffeurList> chauffeurs;
+	private List<ChauffeurItemList> chauffeurs;
 	private Chauffeur selectedChauffeur;
 	
 	public ListeChauffeurController(Utilisateur user) {
@@ -25,7 +25,7 @@ public abstract class ListeChauffeurController {
 		mapper = Mapper.getInstance();
 		chauffeursFull = mapper.getChauffeurList();
 		recherche = "";
-		chauffeurs = new ArrayList<ChauffeurList>(chauffeursFull);
+		chauffeurs = new ArrayList<ChauffeurItemList>(chauffeursFull);
 		selectedChauffeur = null;
 	}
 	
@@ -46,7 +46,7 @@ public abstract class ListeChauffeurController {
 		return selectedChauffeur!= null;
 	}
 	
-	protected List<ChauffeurList> search(String search){
+	protected List<ChauffeurItemList> search(String search){
 		if (search != null) {
 			recherche = search.trim().toLowerCase();
 			recherche(false);
@@ -63,7 +63,7 @@ public abstract class ListeChauffeurController {
 		boolean search = false;
 		if(recherche.length()>=3) {
 			chauffeurs.clear();
-			for (ChauffeurList chauffeur : chauffeursFull) {
+			for (ChauffeurItemList chauffeur : chauffeursFull) {
 				if (chauffeur.getName().toLowerCase().startsWith(recherche)
 						||chauffeur.getFirstname().toLowerCase().startsWith(recherche))
 				{

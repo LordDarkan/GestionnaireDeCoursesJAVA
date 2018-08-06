@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import util.DateTime;
 import util.TypeCourse;
 
 @Entity
@@ -33,10 +34,10 @@ public class Course implements IEvenement {
 	private String localiteDep;
 	
 	private TypeCourse typeCourse = TypeCourse.AUTRE;
-	private boolean mutuelle;
+	private boolean mutuelle = false;
 	
 	private LocalTime heureRDV = LocalTime.MIDNIGHT;
-	private String hopital = "NaN";
+	private String hopital = "";
 	private String adresseDest = "";
 	private String cpDest = "";
 	private String localiteDest = "";
@@ -101,6 +102,7 @@ public class Course implements IEvenement {
 	public void setChauffeur() {
 		this.chauffeur = null;
 		this.nameAttribution = "";
+		dateAttribution = null;
 	}
 
 	public LocalDate getDate() {
@@ -124,7 +126,7 @@ public class Course implements IEvenement {
 	}
 
 	public void setAdresseDep(String adresseDep) {
-		this.adresseDep = adresseDep;
+		this.adresseDep = adresseDep.toUpperCase();
 	}
 
 	public String getCpDep() {
@@ -140,7 +142,7 @@ public class Course implements IEvenement {
 	}
 
 	public void setLocaliteDep(String localiteDep) {
-		this.localiteDep = localiteDep;
+		this.localiteDep = localiteDep.toUpperCase();
 	}
 
 	public TypeCourse getTypeCourse() {
@@ -180,7 +182,7 @@ public class Course implements IEvenement {
 	}
 
 	public void setAdresseDest(String adresseDest) {
-		this.adresseDest = adresseDest;
+		this.adresseDest = adresseDest.toUpperCase();
 	}
 
 	public String getCpDest() {
@@ -196,7 +198,7 @@ public class Course implements IEvenement {
 	}
 
 	public void setLocaliteDest(String localiteDest) {
-		this.localiteDest = localiteDest;
+		this.localiteDest = localiteDest.toUpperCase();
 	}
 
 	public Chauffeur getChauffeurSec() {
@@ -220,7 +222,7 @@ public class Course implements IEvenement {
 	}
 
 	public void setAdresseRet(String adresseRet) {
-		this.adresseRet = adresseRet;
+		this.adresseRet = adresseRet.toUpperCase();
 	}
 
 	public String getCpRet() {
@@ -236,7 +238,7 @@ public class Course implements IEvenement {
 	}
 
 	public void setLocaliteRet(String localiteRet) {
-		this.localiteRet = localiteRet;
+		this.localiteRet = localiteRet.toUpperCase();
 	}
 
 	public String getNotes() {
@@ -304,6 +306,121 @@ public class Course implements IEvenement {
 
 	public LocalDate getDateAnnulation() {
 		return dateAnnulation;
+	}
+	
+	public String getRowCsv() {
+		StringBuilder str = new StringBuilder();
+		str.append(nameCreation);
+		str.append(";");
+		str.append(DateTime.toString(dateCreation));
+		str.append(";");
+		str.append(DateTime.toString(heureCreation));
+		str.append(";");
+		str.append(appelant.getId());
+		str.append(";");
+		str.append(DateTime.toString(date));
+		str.append(";");
+		if (chauffeur!=null)
+			str.append(chauffeur.getId());
+		str.append(";");
+		str.append(nameAttribution);
+		str.append(";");
+		if (dateAttribution!=null)
+			str.append(DateTime.toString(dateAttribution));
+		str.append(";");
+		str.append(DateTime.toString(heureDomicile));
+		str.append(";");
+		str.append(residence);
+		str.append(";");
+		str.append(adresseDep);
+		str.append(";");
+		str.append(cpDep);
+		str.append(";");
+		str.append(localiteDep);
+		str.append(";");
+		str.append(typeCourse.toString());
+		str.append(";");
+		str.append(mutuelle?"OUI":"NON");
+		str.append(";");
+		str.append(DateTime.toString(heureRDV));
+		str.append(";");
+		str.append(hopital);
+		str.append(";");
+		str.append(adresseDest);
+		str.append(";");
+		str.append(cpDest);
+		str.append(";");
+		str.append(localiteDest);
+		str.append(";");
+		str.append(attente?"OUI":"NON");
+		str.append(";");
+		if (chauffeurSec!=null)
+			str.append(chauffeurSec.getId());
+		str.append(";");
+		str.append(DateTime.toString(heureRetour));
+		str.append(";");
+		str.append(adresseRet);
+		str.append(";");
+		str.append(cpRet);
+		str.append(";");
+		str.append(localiteRet);
+		str.append(";");
+		str.append(notes);
+		str.append(";");
+		str.append(annulation?"OUI":"NON");
+		str.append(";");
+		str.append(raisonAnnulation);
+		str.append(";");
+		str.append(nameAnnulation);
+		str.append(";");
+		if (dateAnnulation != null)
+			str.append(DateTime.toString(dateAnnulation));
+		str.append(";END");
+		return str.toString();
+	}
+
+	public void setNameCreation(String nameCreation) {
+		this.nameCreation = nameCreation;
+	}
+
+	public void setDateCreation(LocalDate dateCreation) {
+		this.dateCreation = dateCreation;
+	}
+
+	public void setHeureCreation(LocalTime heureCreation) {
+		this.heureCreation = heureCreation;
+	}
+
+	public void setAppelant(Appelant appelant) {
+		this.appelant = appelant;
+	}
+
+	public void setChauffeur(Chauffeur chauffeur) {
+		this.chauffeur = chauffeur;
+	}
+
+	public void setNameAttribution(String nameAttribution) {
+		this.nameAttribution = nameAttribution;
+	}
+
+	public void setDateAttribution(LocalDate dateAttribution) {
+		this.dateAttribution = dateAttribution;
+	}
+
+	public void setAnnulation(boolean annulation) {
+		this.annulation = annulation;
+	}
+
+	public void setNameAnnulation(String nameAnnulation) {
+		this.nameAnnulation = nameAnnulation;
+	}
+
+	public void setDateAnnulation(LocalDate dateAnnulation) {
+		this.dateAnnulation = dateAnnulation;
+	}
+
+	public static String getEnTeteCsv() {
+		return "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;MUTUELLE;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;ATTENTE;CHAUFFEURSEC;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;ANNULATION;RAISONANNULATION;NAMEANNULATION;DATEANNULATION;END";
 	}
 
 	public static void valdation(Course obj) throws IllegalArgumentException {//TODO

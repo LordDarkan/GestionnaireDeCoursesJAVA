@@ -1,4 +1,4 @@
-package views.FXML.ControllerFXML;
+package fxml.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controllers.ListeAppelantController;
+import fxml.Message;
 import javafx.fxml.Initializable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -27,13 +29,16 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Alert.AlertType;
 import models.Appelant;
 import models.Residence;
 import models.Utilisateur;
-import models.item.AppelantList;
-import models.item.CourseList;
+import models.itemList.AppelantItemList;
+import models.itemList.ChauffeurItemList;
+import models.itemList.CourseItemList;
+import util.Security;
 
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
 	@FXML
@@ -41,7 +46,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private TextField recherche;
     @FXML
-    private ListView<AppelantList> listViewAppelant;
+    private ListView<AppelantItemList> listViewAppelant;
     @FXML
     private Button btnDelete;
     @FXML
@@ -89,7 +94,25 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private TextField cotisation;
     @FXML
-    private ListView<CourseList> listeViewCourse;
+    private Button btnAddFamille;
+    @FXML
+    private Button btnDelFamille;
+    @FXML
+    private Button btnAddProche;
+    @FXML
+    private Button btnDelProche;
+    @FXML
+    private Button btnAddRestrict;
+    @FXML
+    private Button btnDelRestrict;
+    @FXML
+    private ListView<ChauffeurItemList> listViewProche;
+    @FXML
+    private ListView<ChauffeurItemList> listViewRestrict;
+    @FXML
+    private ListView<AppelantItemList> listViewFamille;
+    @FXML
+    private ListView<CourseItemList> listeViewCourse;
     
     private MainControllerFXML main;
 
@@ -99,7 +122,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     	Tab tab = null;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getClassLoader().getResource("views/FXML/ListeAppelant.fxml"));
+			loader.setLocation(getClass().getClassLoader().getResource("fxml/views/ListeAppelant.fxml"));
 			loader.setController(this);
 			VBox content;
 			content = (VBox)loader.load();
@@ -111,7 +134,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
                 @Override
                 public void handle(Event event) {
                 	if (((Tab)event.getSource()).isSelected()) {
-                		majList();
+                		setResidence(getResidence());//TODO
 					}
                 }
             });
@@ -123,16 +146,16 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 
 	private void majList() {
 		super.update();
-		setListeAppelant(search(null));
+		setListeAppelant(search(null));//TODO
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cbMr.setVisible(false);
 		cbMme.setVisible(false);
-		listViewAppelant.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AppelantList>() {
+		listViewAppelant.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AppelantItemList>() {
 		    @Override
-		    public void changed(ObservableValue<? extends AppelantList> observable, AppelantList oldValue, AppelantList newValue) {
+		    public void changed(ObservableValue<? extends AppelantItemList> observable, AppelantItemList oldValue, AppelantItemList newValue) {
 		    	if(newValue!=null) {
 		    		setSelectedAppelant(newValue.getId());
 		    		showAppelant(getSelectedAppelant());
@@ -144,12 +167,20 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 			setListeAppelant(search(newValue));
 		});
 		
+		cp.textProperty().addListener((observable, oldValue, newValue) -> {
+			if (!newValue.matches("\\d*")) {
+				cp.setText(newValue.replaceAll("[^\\d]", ""));
+	        } else if(newValue.length()>4) {
+	        	cp.setText(oldValue);
+	        }
+		});
+		
 		cotisation.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				cotisation.setText(newValue.replaceAll("[^\\d]", ""));
 	        }
 		});
-		residence.getItems().addAll(getResidence());
+		setResidence(getResidence());
 		residence.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
 			public void changed(ObservableValue<? extends String> ov, String value, String newValue) {
 				if (newValue != null) {
@@ -168,10 +199,97 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		btnDelete.setOnAction((ActionEvent e) -> deleteF());
 		btnSave.setOnAction((ActionEvent e) -> saveF());
 		
+		btnAddFamille.setOnAction((ActionEvent e) -> addFamille());
+		btnDelFamille.setOnAction((ActionEvent e) -> delFamille());
+		btnAddProche.setOnAction((ActionEvent e) -> addProche());
+	    btnDelProche.setOnAction((ActionEvent e) -> delProche());
+	    btnAddRestrict.setOnAction((ActionEvent e) -> addRestriction());
+	    btnDelRestrict.setOnAction((ActionEvent e) -> delRestriction());
+		
 		editMode(false);
 		setListeAppelant(search(""));
 	}
 	
+	private void addFamille() {
+		if (isSelected()) {
+			TextInputDialog dialog = new TextInputDialog();
+			dialog.setTitle("Ajout");
+			dialog.setHeaderText("Ajout d'un applant à la famille");
+			dialog.setContentText("Code appelant:");
+
+			// Traditional way to get the response value.
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent() && result.get().matches("\\d*")){
+			    Long id = Long.parseLong(result.get());
+			    AppelantItemList app = addFamille(id);
+				if (app!= null) {
+					listViewFamille.getItems().add(app);
+				} else {
+					Message.alert("Code appelant invalide!");
+				}
+			}
+			
+		}
+	}
+	
+	private void delFamille() {
+		int indice = listViewFamille.getSelectionModel().getSelectedIndex();
+		if (isSelected() && indice>=0 && Message.comfirmation("Supprimer", "Voulez-vous supprimer ce membre de la famille?")) {
+			delFamille(listViewFamille.getItems().get(indice));
+			listViewFamille.getItems().remove(indice);
+		}
+	}
+	
+	private void addProche() {
+		if (isSelected()) {
+			ChoiceDialog<ChauffeurItemList> dialog = new ChoiceDialog<>(null, getChauffeurList());
+			dialog.setTitle("Ajout");
+			dialog.setHeaderText("Look, a Choice Dialog");
+			dialog.setContentText("Selectioner un chauffeur:");
+
+			// Traditional way to get the response value.
+			Optional<ChauffeurItemList> result = dialog.showAndWait();
+			if (result.isPresent() && result.get()!=null){
+				ChauffeurItemList ch = result.get();
+				addProche(ch.getId());
+				listViewProche.getItems().add(ch);
+			}
+		}
+	}
+	
+	private void delProche() {
+		int indice = listViewProche.getSelectionModel().getSelectedIndex();
+		if (isSelected() && indice>=0 && Message.comfirmation("Supprimer", "Voulez-vous supprimer ce chauffeur proche?")) {
+			delProche(listViewProche.getItems().get(indice));
+			listViewProche.getItems().remove(indice);
+		}
+	}
+	
+	private void addRestriction() {
+		if (isSelected()) {
+			ChoiceDialog<ChauffeurItemList> dialog = new ChoiceDialog<>(null, getChauffeurList());
+			dialog.setTitle("Ajout");
+			dialog.setHeaderText("Look, a Choice Dialog");
+			dialog.setContentText("Selectioner un chauffeur:");
+
+			// Traditional way to get the response value.
+			Optional<ChauffeurItemList> result = dialog.showAndWait();
+			if (result.isPresent() && result.get()!=null){
+				ChauffeurItemList ch = result.get();
+				addRestrict(ch.getId());
+				listViewRestrict.getItems().add(ch);
+			}
+		}
+	}
+	
+	private void delRestriction() {
+		int indice = listViewRestrict.getSelectionModel().getSelectedIndex();
+		if (isSelected() && indice>=0 && Message.comfirmation("Supprimer", "Voulez-vous supprimer cette restriction?")) {
+			delRestrict(listViewRestrict.getItems().get(indice));
+			listViewRestrict.getItems().remove(indice);
+		}
+	}
+
 	private void newCourse() {
 		if(isSelected()){
 			main.newCourse(getSelectedAppelant().getId());
@@ -221,7 +339,6 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		try {
 			app.setCotisation(Integer.parseInt(cotisation.getText().trim()));
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 		app.setAideParticulière(aide.getText().trim());
 		app.setInfos(infos.getText().trim());
@@ -268,16 +385,23 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		return result.get() == ButtonType.OK;
 	}
 
-	private void editMode(boolean b) {
-		b &= isAdmin();
+	private void editMode(boolean a) {
+		boolean b = a && isAdmin();
 		
 		btnAdd.setVisible(!b && isAdmin());
-		btnDelete.setVisible(!b && isAdmin());
-		btnEdit.setVisible(!b && isAdmin());
-		btnAnnuler.setVisible(b);
-		btnSave.setVisible(b);
+		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
+		btnEdit.setVisible(!a);
+		btnAnnuler.setVisible(a);
+		btnSave.setVisible(a);
 		
-		btnNewCourse.setVisible(!b);
+		btnAddFamille.setVisible(!b && isAdmin());
+		btnDelFamille.setVisible(!b && isAdmin());
+		btnAddProche.setVisible(!b && isAdmin());
+	    btnDelProche.setVisible(!b && isAdmin());
+	    btnAddRestrict.setVisible(!b && isAdmin());
+	    btnDelRestrict.setVisible(!b && isAdmin());
+		
+		btnNewCourse.setVisible(!a);
 		
 		listViewAppelant.setDisable(b);
 		
@@ -286,7 +410,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		nom.setEditable(b);
 		prenom.setEditable(b);
 		
-		residence.setEditable(b);
+		residence.setDisable(!b);
+		
 		adresse.setEditable(b);
 		cp.setEditable(b);
 		localite.setEditable(b);
@@ -297,7 +422,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		cotisation.setEditable(b);
 		aide.setEditable(b);
 		infos.setEditable(b);
-		autre.setEditable(b);
+		autre.setEditable(a);
 	}
 	
 	private void showAppelant(Appelant app) {
@@ -324,11 +449,40 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		infos.setText(app.getInfos());
 		autre.setText(app.getRemarques());
 		testResidence(app.getResidence());//TODO a en levé
+		setListFamille(getFamille(app.getFamille()));
+		setListProche(getChauffeurList(app.getAffinite()));
+		setListRestrict(getChauffeurList(app.getRestriction()));
+		setListCourse(getCourses(app.getId()));
 	}
 	
-	private void setListeAppelant(List<AppelantList> list) {
+	private void setListFamille(List<AppelantItemList> list) {
+		listViewFamille.getItems().clear();
+		listViewFamille.getItems().setAll(list);
+	}
+	
+	private void setListProche(List<ChauffeurItemList> list) {
+		listViewProche.getItems().clear();
+		listViewProche.getItems().setAll(list);
+	}
+	
+	private void setListRestrict(List<ChauffeurItemList> list) {
+		listViewRestrict.getItems().clear();
+		listViewRestrict.getItems().setAll(list);
+	}
+	
+	private void setListeAppelant(List<AppelantItemList> list) {
 		listViewAppelant.getItems().clear();
 		listViewAppelant.getItems().setAll(list);
+	}
+	
+	private void setResidence(List<String> list) {
+		residence.getItems().clear();
+		residence.getItems().setAll(list);
+	}
+	
+	private void setListCourse(List<CourseItemList> list) {
+		listeViewCourse.getItems().clear();
+		listeViewCourse.getItems().setAll(list);
 	}
 	
 	@Override
@@ -343,10 +497,11 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		newLog(user);
 		editMode(false);
 		setListeAppelant(search(""));
+		setResidence(getResidence());
 	}
 	
 	private void testResidence(String value) {
-		boolean nan = value.equals("NaN");
+		boolean nan = value.isEmpty();
 		adresse.setDisable(!nan);
 	    localite.setDisable(!nan);
 	    cp.setDisable(!nan);

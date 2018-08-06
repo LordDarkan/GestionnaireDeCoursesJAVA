@@ -2,19 +2,20 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import data.Mapper;
 import models.Appelant;
 import models.Residence;
 import models.Utilisateur;
-import models.item.AppelantList;
+import models.itemList.AppelantItemList;
+import models.itemList.ChauffeurItemList;
+import models.itemList.CourseItemList;
 
 public abstract class ListeAppelantController {
 	private Utilisateur user;
 	private Mapper mapper;
-	private List<AppelantList> appelantsFull;
+	private List<AppelantItemList> appelantsFull;
 	private String recherche;
-	private List<AppelantList> appelants;
+	private List<AppelantItemList> appelants;
 	private Appelant selectedAppelant;
 	
 	public ListeAppelantController(Utilisateur user) {
@@ -26,7 +27,7 @@ public abstract class ListeAppelantController {
 		mapper = Mapper.getInstance();
 		appelantsFull = mapper.getAppelantList();
 		recherche = "";
-		appelants = new ArrayList<AppelantList>(appelantsFull);
+		appelants = new ArrayList<AppelantItemList>(appelantsFull);
 		selectedAppelant = null;
 	}
 	
@@ -47,7 +48,7 @@ public abstract class ListeAppelantController {
 		return selectedAppelant!= null;
 	}
 	
-	protected List<AppelantList> search(String search){
+	protected List<AppelantItemList> search(String search){
 		if (search != null) {
 			recherche = search.trim().toLowerCase();
 			recherche(false);
@@ -64,7 +65,7 @@ public abstract class ListeAppelantController {
 		boolean search = false;
 		if(recherche.length()>=3 || recherche.matches("\\p{Digit}+")) {
 			appelants.clear();
-			for (AppelantList appelant : appelantsFull) {
+			for (AppelantItemList appelant : appelantsFull) {
 				if (appelant.getName().toLowerCase().startsWith(recherche)
 						||appelant.getFirstname().toLowerCase().startsWith(recherche)
 						||appelant.getId().toString().startsWith(recherche))
@@ -113,14 +114,63 @@ public abstract class ListeAppelantController {
 	}
 	
 	protected List<String> getResidence() {
-		return mapper.getAllResidence();
+		List<String> list = new ArrayList<>();
+		list.add("");
+		list.addAll(mapper.getAllResidence());
+		return list;
 	}
 	
 	protected Residence getResidence(String name) {
-		return mapper.getResidence(name);
+		Residence r;
+		if(name.isEmpty()) {
+			r = new Residence();
+		} else {
+			r = mapper.getResidence(name);
+		}
+		return r;
 	}
 
-	public void update() {
+	protected void update() {
 		appelantsFull = mapper.getAppelantList();
+	}
+
+	protected void delFamille(AppelantItemList selectedItem) {
+		mapper.deleteFamille(selectedAppelant.getId(),selectedItem.getId());
+	}
+
+	protected AppelantItemList addFamille(Long id) {
+		return mapper.addFamille(selectedAppelant.getId(),id);
+	}
+
+	protected void addProche(Long id) {
+		mapper.addProche(selectedAppelant.getId(),id);
+	}
+
+	protected void delProche(ChauffeurItemList chauf) {
+		mapper.delProche(selectedAppelant.getId(),chauf.getId());
+	}
+
+	protected void addRestrict(Long id) {
+		mapper.addRestrict(selectedAppelant.getId(),id);
+	}
+
+	protected void delRestrict(ChauffeurItemList chauf) {
+		mapper.delRestrict(selectedAppelant.getId(),chauf.getId());
+	}
+	
+	protected List<ChauffeurItemList> getChauffeurList() {
+		return mapper.getChauffeurList();
+	}
+
+	protected List<AppelantItemList> getFamille(List<Long> list) {
+		return mapper.getAppelantList(list);
+	}
+
+	protected List<ChauffeurItemList> getChauffeurList(List<Long> list) {
+		return mapper.getChauffeurList(list);
+	}
+
+	protected List<CourseItemList> getCourses(Long id) {
+		return mapper.getCourseApplant(id);
 	}
 }

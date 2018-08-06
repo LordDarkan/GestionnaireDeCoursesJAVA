@@ -20,10 +20,11 @@
    <children>
       <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
       	<columnConstraints>
-      	    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+      	    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="300.0" />
       	    <ColumnConstraints hgrow="SOMETIMES" />
       	      <ColumnConstraints hgrow="SOMETIMES" />
             <ColumnConstraints hgrow="SOMETIMES" />
+            <ColumnConstraints />
       	  </columnConstraints>
       	  <rowConstraints>
       	    <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -57,13 +58,16 @@
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnEdit" mnemonicParsing="false" text="Editer">
+                  <Button fx:id="btnEdit" mnemonicParsing="false" text="Modifier">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
                   </Button>
                   <Button fx:id="btnNewCourse" mnemonicParsing="false" text="Nouvelle Course" />
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </HBox>
             <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="3" GridPane.rowSpan="2">
                <children>
@@ -78,6 +82,9 @@
                      </HBox.margin>
                   </Button>
                </children>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
             </HBox>
             <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
@@ -149,7 +156,7 @@
                                     <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <Label text="Aide particuliére" GridPane.columnIndex="4">
+                              <Label text="Aide particulière" GridPane.columnIndex="4">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
@@ -266,7 +273,7 @@
                                     <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <Label text="mobilité" GridPane.columnIndex="1">
+                              <Label text="Mobilité" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
@@ -295,6 +302,38 @@
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
+                        </GridPane>
+                        <GridPane hgap="5.0" vgap="5.0">
+                          <columnConstraints>
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                            <RowConstraints minHeight="100.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="30.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                           <children>
+                              <Label text="Famile" />
+                              <Label text="Chauffeurs Proches" GridPane.columnIndex="2" />
+                              <Label text="Restrictions Chauffeurs" GridPane.columnIndex="4" />
+                              <ListView fx:id="listViewFamille" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                              <ListView fx:id="listViewProche" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                              <ListView fx:id="listViewRestrict" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                              <Button fx:id="btnAddFamille" mnemonicParsing="false" text="Ajouter" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                              <Button fx:id="btnDelFamille" mnemonicParsing="false" text="Suprimer" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                              <Button fx:id="btnAddProche" mnemonicParsing="false" text="Ajouter" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                              <Button fx:id="btnDelProche" mnemonicParsing="false" text="Suprimer" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                              <Button fx:id="btnAddRestrict" mnemonicParsing="false" text="Ajouter" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                              <Button fx:id="btnDelRestrict" mnemonicParsing="false" text="Suprimer" GridPane.columnIndex="5" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
+                           </children>
                         </GridPane>
                         <ListView fx:id="listeViewCourse">
                            <VBox.margin>

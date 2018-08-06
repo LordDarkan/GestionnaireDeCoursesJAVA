@@ -1,13 +1,13 @@
-package models.item;
+package models.itemList;
 
 import models.Appelant;
 
-public class AppelantList {
+public class AppelantItemList {
 	private Long id;
 	private String name;
 	private String firstname;
 	
-	public AppelantList(Appelant a) {
+	public AppelantItemList(Appelant a) {
 		id = a.getId();
 		name = a.getName();
 		firstname = a.getFirstname();
@@ -26,11 +26,11 @@ public class AppelantList {
 	}
 
 	public String getFullName() {
-		return String.format("%s %s", firstname, name);
+		return String.format("%s %s", name, firstname);
 	}
 	
 	@Override
 	public String toString() {
-		return String.format("%d %s %s", id, firstname, name);
+		return String.format("(%d)\t\t%s %s", id, name, firstname);
 	}
 }

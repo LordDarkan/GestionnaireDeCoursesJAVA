@@ -26,4 +26,6 @@ public abstract class MainController {
 	protected Utilisateur getUser(){
 		return user;
 	}
+
+	public abstract void logout();
 }

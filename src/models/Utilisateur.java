@@ -2,11 +2,14 @@ package models;
 
 import javax.persistence.*;
 
+import util.Titre;
+
 @Entity
 public class Utilisateur {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private Titre titre = Titre.Aucun;
 	private String name = "";
 	private String firstname = "";
 	private boolean admin = false;
@@ -25,7 +28,7 @@ public class Utilisateur {
 	}
 	
 	public String getFullName() {
-		return String.format("%s %s", firstname,name);
+		return String.format("%s %s", name, firstname);
 	}
 
 	public String getShortName() {
@@ -49,5 +52,13 @@ public class Utilisateur {
 	public static void valdation(Utilisateur obj) throws IllegalArgumentException {//TODO
 		if(obj.firstname.length()<2) throw new IllegalArgumentException("Le prénom est invalide");
 		if(obj.name.length()<2) throw new IllegalArgumentException("Le nom est invalide");
+	}
+
+	public Titre getTitre() {
+		return titre;
+	}
+
+	public void setTitre(Titre titre) {
+		this.titre = titre;
 	}
 }

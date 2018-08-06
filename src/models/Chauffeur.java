@@ -5,20 +5,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import util.Titre;
+
 @Entity
 public class Chauffeur {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	private Titre titre = Titre.Aucun;
 	private String name = "";
 	private String firstname = "";
 	private String tel = "";
 	private String adresse = "";
+
 	private String cp = "";
 	private String localite = "";
 	private String infos = "";
 	
 	
+	public void setId(Long id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -44,7 +51,7 @@ public class Chauffeur {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse = adresse.toUpperCase();
 	}
 	public String getInfos() {
 		return infos;
@@ -62,11 +69,44 @@ public class Chauffeur {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite = localite.toUpperCase();
 	}
 	
 	public String getFullName() {
-		return String.format("%s %s", firstname,name);
+		return String.format("%s %s", name, firstname);
+	}
+	public Titre getTitre() {
+		return titre;
+	}
+	public void setTitre(Titre titre) {
+		this.titre = titre;
+	}
+	
+	public String getRowCsv() {
+		StringBuilder str = new StringBuilder();
+		str.append(id);
+		str.append(";");
+		str.append(titre);
+		str.append(";");
+		str.append(name);
+		str.append(";");
+		str.append(firstname);
+		str.append(";");
+		str.append(tel);
+		str.append(";");
+		str.append(adresse);
+		str.append(";");
+		str.append(cp);
+		str.append(";");
+		str.append(localite);
+		str.append(";");
+		str.append(infos);
+		str.append(";END");
+		return str.toString();
+	}
+	
+	public static String getEnTeteCsv() {
+		return "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;END";
 	}
 	
 	public static void valdation(Chauffeur obj) throws IllegalArgumentException {//TODO
