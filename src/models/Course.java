@@ -27,7 +27,7 @@ public class Course implements IEvenement {
 	private String nameAttribution = "";
 	private LocalDate dateAttribution = null;
 	
-	private LocalTime heureDomicile = LocalTime.now();
+	private LocalTime heureDomicile = LocalTime.MIDNIGHT;
 	private String residence;
 	private String adresseDep;
 	private String cpDep;

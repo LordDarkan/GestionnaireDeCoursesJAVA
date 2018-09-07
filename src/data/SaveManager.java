@@ -199,7 +199,7 @@ public class SaveManager {
 						//e.printStackTrace();
 					}
                 	appelant.setTel(row[10].trim());
-                	appelant.setResidence(row[11].trim().isEmpty()?"NaN":row[11].trim());
+                	appelant.setResidence(row[11].trim().isEmpty()?"":row[11].trim());
                 	try {
                     	appelant.addFamille(Long.parseLong(row[13].trim()));
 					} catch (Exception e) {

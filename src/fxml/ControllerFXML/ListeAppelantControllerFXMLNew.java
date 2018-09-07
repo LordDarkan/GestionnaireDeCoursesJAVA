@@ -25,6 +25,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
@@ -40,83 +41,40 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import util.Security;
 
-public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
+public class ListeAppelantControllerFXMLNew extends ListeAppelantController implements Initializable,ITabController {
 	@FXML
     private Button btnAdd;
+
     @FXML
     private TextField recherche;
+
     @FXML
     private ListView<AppelantItemList> listViewAppelant;
+
     @FXML
     private Button btnDelete;
+
     @FXML
     private Button btnEdit;
+
     @FXML
     private Button btnNewCourse;
+
     @FXML
     private Button btnAnnuler;
+
     @FXML
     private Button btnSave;
+
     @FXML
     private Label code;
+
     @FXML
-    private RadioButton cbMr;
-    @FXML
-    private RadioButton cbMme;
-    @FXML
-    private TextField nom;
-    @FXML
-    private TextField prenom;
-    @FXML
-    private DatePicker datePNais;
-    @FXML
-    private TextField aide;
-    @FXML
-    private TextField adresse;
-    @FXML
-    private TextField cp;
-    @FXML
-    private TextField localite;
-    @FXML
-    private TextField quartier;
-    @FXML
-    private TextArea infos;
-    @FXML
-    private ComboBox<String> residence;
-    @FXML
-    private TextArea autre;
-    @FXML
-    private TextField tel;
-    @FXML
-    private TextField mobilite;
-    @FXML
-    private TextField mutualite;
-    @FXML
-    private TextField cotisation;
-    @FXML
-    private Button btnAddFamille;
-    @FXML
-    private Button btnDelFamille;
-    @FXML
-    private Button btnAddProche;
-    @FXML
-    private Button btnDelProche;
-    @FXML
-    private Button btnAddRestrict;
-    @FXML
-    private Button btnDelRestrict;
-    @FXML
-    private ListView<ChauffeurItemList> listViewProche;
-    @FXML
-    private ListView<ChauffeurItemList> listViewRestrict;
-    @FXML
-    private ListView<AppelantItemList> listViewFamille;
-    @FXML
-    private ListView<CourseItemList> listeViewCourse;
+    private ScrollPane content;
     
     private MainControllerFXML main;
 
-    public ListeAppelantControllerFXML(MainControllerFXML main, Utilisateur user, TabPane tabContainer) {
+    public ListeAppelantControllerFXMLNew(MainControllerFXML main, Utilisateur user, TabPane tabContainer) {
     	super(user);
     	this.main = main;
     	Tab tab = null;
