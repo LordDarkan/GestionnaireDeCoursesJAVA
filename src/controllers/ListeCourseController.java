@@ -130,4 +130,10 @@ public class ListeCourseController {
 		this.day = day;
 		this.date = date;
 	}
+
+	protected void annulation(String str) {
+		selected.setAnnulation(true, user.getFullName());
+		selected.setRaisonAnnulation(str);
+		mapper.addOrUpdate(selected);
+	}
 }

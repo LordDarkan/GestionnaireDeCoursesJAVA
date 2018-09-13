@@ -2,8 +2,11 @@ package data;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.*;
 
@@ -11,12 +14,15 @@ import models.Appelant;
 import models.Chauffeur;
 import models.Course;
 import models.Hopital;
+import models.Indisponibilite;
+import models.IndisponibiliteCourse;
 import models.Residence;
 import models.Settings;
 import models.Utilisateur;
 import models.itemList.AppelantItemList;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
+import models.itemList.PlanningChauffeur;
 
 
 public class MapperJPA extends Mapper {
@@ -257,7 +263,7 @@ public class MapperJPA extends Mapper {
 		List<Chauffeur> result = new LinkedList<Chauffeur>();
 		try{
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q = em.createQuery("select t from Chauffeur t ORDER BY t.id",Chauffeur.class);
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.id",Chauffeur.class);
 			result = new LinkedList<Chauffeur>(q.getResultList());
 			em.close();
 		}catch (Exception e) {
@@ -310,7 +316,7 @@ public class MapperJPA extends Mapper {
 			em.close();
 		}
 	}
-	//TODO TypedQuery<String>
+	
 	@Override
 	public List<String> getAllResidence() {
 		List<String> result = new ArrayList<>();
@@ -359,7 +365,6 @@ public class MapperJPA extends Mapper {
 		em.close();
 	}
 
-	//TODO TypedQuery<String>
 	@Override
 	public List<String> getAllHopital() {
 		List<String> result = new ArrayList<>();
@@ -854,5 +859,68 @@ public class MapperJPA extends Mapper {
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public Collection<PlanningChauffeur> getPlanning(LocalDate date) {
+		Map<Long,PlanningChauffeur> result = new HashMap<Long,PlanningChauffeur>();
+		try{
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name", Chauffeur.class);
+			for (Chauffeur tuple : q1.getResultList()) {
+				result.put(tuple.getId(),new PlanningChauffeur(tuple.getFullName()));
+			}
+			
+			TypedQuery<Course> q= em.createQuery("SELECT t FROM Course t WHERE t.annulation = FALSE AND t.date=:locdate AND (t.chauffeur IS NOT NULL OR t.chauffeurSec IS NOT NULL) ORDER BY t.date, t.heureDomicile",Course.class);
+			q.setParameter("locdate", date);
+			
+			Chauffeur c,cs;
+			Indisponibilite i;
+			
+			for (Course course : q.getResultList()) {
+				c = course.getChauffeur();
+				cs = course.getChauffeurSec();
+				
+				if(course.isAttente()) {
+					if(c!=null) {
+						i=new IndisponibiliteCourse(course.getAppelant().getFullName());
+						i.setDescription(course.getTypeCourse()+": "+course.getAdresseDest());
+						i.setDateStart(date);
+						i.setDateEnd(date);
+						i.setHeureStart(course.getHeureDomicile());
+						i.setHeureEnd(course.getHeureRetour());
+						result.get(c.getId()).add(i);
+					}
+				} else {
+					if(c!=null) {
+						i=new IndisponibiliteCourse(course.getAppelant().getFullName());
+						i.setDescription(course.getTypeCourse()+": "+course.getAdresseDest());
+						i.setDateStart(date);
+						i.setDateEnd(date);
+						i.setHeureStart(course.getHeureDomicile());
+						i.setHeureEnd(course.getHeureRDV().plusMinutes(30));
+						result.get(c.getId()).add(i);
+					}
+					
+					if(cs!=null) {
+						i=new IndisponibiliteCourse(course.getAppelant().getFullName());
+						i.setDescription(course.getTypeCourse()+": "+course.getAdresseDest());
+						i.setDateStart(date);
+						i.setDateEnd(date);
+						i.setHeureStart(course.getHeureRetour().minusHours(1));
+						i.setHeureEnd(course.getHeureRetour());
+						result.get(cs.getId()).add(i);
+					}
+				}
+			}
+			
+			
+			
+			
+			em.close();
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result.values();
 	}
 }

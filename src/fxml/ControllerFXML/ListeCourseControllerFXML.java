@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controllers.ListeCourseController;
+import fxml.Message;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.print.PageLayout;
@@ -196,7 +197,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private Label annulationRaison;
     @FXML
-    private Button btnAnnulerCourse;//TODO
+    private Button btnAnnulerCourse;
     
     private PrintCourseControllerFXML print;
 	
@@ -230,7 +231,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	public void selected() {
 		editMode(btnSave.isVisible());
 		//setListeCourse(getCourseList());
-		//setChauffeurList();
+		setChauffeurList();
 	}
 
 	@Override
@@ -309,6 +310,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		btnAnn.setOnAction((ActionEvent e) -> annulerF());
 		btnSave.setOnAction((ActionEvent e) -> saveF());
 
+		btnAnnulerCourse.setOnAction((ActionEvent e) -> annulationF());
+		
 		btnImprimer.setOnAction((ActionEvent e) -> imprimer());
 		
 		editMode(false);
@@ -463,14 +466,14 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		try {
 			Course course = getInfoCourse();
 			Course.valdation(course);
-			if(comfirmation("Sauvegarder","")) {
+			if(Message.comfirmation("Sauvegarder","")) {
 				super.save(course);
 				editMode(false);
 				setListeCourse(getCourseList());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			alert(e.getMessage());
+			Message.alert(e.getMessage());
 		}
 	}
 	
@@ -511,9 +514,20 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		}
 		return course;
 	}
+	
+	private void annulationF() {
+		if (isSelected()) {
+			String str = Message.justification("retest");
+			if (str!=null) {
+				
+				super.annulation(str);
+				
+			}
+		}
+	}
 
 	private void deleteF() {
-		if (isSelected() && comfirmation("Supprimer","")) {
+		if (isSelected() && Message.comfirmation("Supprimer","")) {
 			super.delete();
 			editMode(false);
 			setListeCourse(getCourseList());
@@ -521,10 +535,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 
 	private void annulerF() {
-		if (comfirmation("Annuler","")) {
-			super.annuler();
-			editMode(false);
-		}
+		super.annuler();
+		editMode(false);
 	}
 
 	private void editerF() {
@@ -568,6 +580,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		btnDel.setVisible(!edit);
 		btnSave.setVisible(edit);
 		btnAnn.setVisible(edit);
+		
+		btnAnnulerCourse.setVisible(!edit);
 		
 		listViewCourses.setDisable(edit);
 		editChauffeur.setVisible(edit);
@@ -678,7 +692,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 	
 	private void affEditCourse(Course course) {
-		if(course.getChauffeurSec()!=null) {
+		if(course.getChauffeur()!=null) {
+			System.out.println("Yousk2");
 			editChauffeur.getSelectionModel().select(new ChauffeurItemList(course.getChauffeur()));
 	    } else {
 	    	editChauffeur.getSelectionModel().select(0);
@@ -719,26 +734,6 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	    nomCompletAppelant.setText(app.getFullName());
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticulière());
-	}
-	
-	
-	
-	private boolean comfirmation(String titre, String msg) {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText(titre);
-		alert.setContentText(msg);
-		Optional<ButtonType> result = alert.showAndWait();
-		return result.get() == ButtonType.OK;
-	}
-	
-	private boolean alert(String msg) {
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Erreur");
-		alert.setHeaderText(msg);
-		alert.setContentText(null);
-		Optional<ButtonType> result = alert.showAndWait();
-		return result.get() == ButtonType.OK;
 	}
 	
 	private void setResidence() {

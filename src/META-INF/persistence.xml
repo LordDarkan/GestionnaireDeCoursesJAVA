@@ -5,6 +5,7 @@
 		<class>models.Chauffeur</class>
 		<class>models.Appelant</class>
 		<class>models.Course</class>
+		<class>models.Indisponibilite</class>
 		<class>models.Hopital</class>
 		<class>models.Residence</class>
 		<class>models.Settings</class>

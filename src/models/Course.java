@@ -12,7 +12,7 @@ import util.DateTime;
 import util.TypeCourse;
 
 @Entity
-public class Course implements IEvenement {
+public class Course {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

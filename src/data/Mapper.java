@@ -2,6 +2,7 @@ package data;
 
 import java.io.Closeable;
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.List;
 
 import models.Appelant;
@@ -14,6 +15,7 @@ import models.Utilisateur;
 import models.itemList.AppelantItemList;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
+import models.itemList.PlanningChauffeur;
 
 public abstract class Mapper implements Closeable{
 	private static Mapper instance;
@@ -86,4 +88,5 @@ public abstract class Mapper implements Closeable{
 	public abstract List<Hopital> getListHopital();
 	public abstract Settings getSettings();
 	public abstract void importApplantsOld(List<Appelant> appelants);
+	public abstract Collection<PlanningChauffeur> getPlanning(LocalDate date);
 }

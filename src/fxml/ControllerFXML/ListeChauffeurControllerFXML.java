@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controllers.ListeChauffeurController;
+import fxml.Message;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,16 +19,19 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import models.Chauffeur;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
+import models.itemList.PlanningChauffeur;
 import util.Security;
 
 public class ListeChauffeurControllerFXML extends ListeChauffeurController implements Initializable,ITabController {
@@ -60,7 +64,9 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     @FXML
     private TextField tel;
     @FXML
-    private ListView<?> listeViewPlanning;//TODO
+    private ListView<PlanningChauffeur> listeViewPlanning;//TODO
+    @FXML
+    private Button btnIndisponibilite;
 
     public ListeChauffeurControllerFXML(Utilisateur user, TabPane tabContainer) {
     	super(user);
@@ -120,11 +126,56 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		btnAnnuler.setOnAction((ActionEvent e) -> annulerF());
 		btnDelete.setOnAction((ActionEvent e) -> deleteF());
 		btnSave.setOnAction((ActionEvent e) -> saveF());
-		
+		btnIndisponibilite.setOnAction((ActionEvent e) -> newIndisponibiliteF());
 		editMode(false);
 		setListeChauffeur(search(""));
 	}
 	
+	private void newIndisponibiliteF() {
+		if (isSelected()) {//todo
+			Dialog<PhoneBook> dialog = new Dialog<>();
+			dialog.setTitle("Indisponibilité");
+			dialog.setHeaderText("This is a custom dialog. Enter info and \n" +
+			    "press Okay (or click title bar 'X' for cancel).");
+			dialog.setResizable(true);
+
+			Label label1 = new Label("Name: ");
+			Label label2 = new Label("Phone: ");
+			TextField text1 = new TextField();
+			TextField text2 = new TextField();
+					
+			GridPane grid = new GridPane();
+			grid.add(label1, 1, 1);
+			grid.add(text1, 2, 1);
+			grid.add(label2, 1, 2);
+			grid.add(text2, 2, 2);
+			dialog.getDialogPane().setContent(grid);
+					
+			ButtonType buttonTypeOk = new ButtonType("Okay", ButtonData.OK_DONE);
+			dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+
+			dialog.setResultConverter(new Callback<ButtonType, PhoneBook>() {
+			    @Override
+			    public PhoneBook call(ButtonType b) {
+
+			        if (b == buttonTypeOk) {
+
+			            return new PhoneBook(text1.getText(), text2.getText());
+			        }
+
+			        return null;
+			    }
+			});
+					
+			Optional<PhoneBook> result = dialog.showAndWait();
+					
+			if (result.isPresent()) {
+
+			    actionStatus.setText("Result: " + result.get());
+			}
+		}
+	}
+
 	private void addF() {
 		showChauffeur(new Chauffeur());
 		editMode(true);
@@ -134,14 +185,14 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		try {
 			Chauffeur app = getInfoChauffeur();
 			super.valdation(app);
-			if(comfirmation("Sauvegarder","")) {
+			if(Message.comfirmation("Sauvegarder","")) {
 				super.save(app);
 				editMode(false);
 				showChauffeur(getSelectedChauffeur());
 				setListeChauffeur(search(null));
 			}
 		} catch (Exception e) {
-			alert(e.getMessage());
+			Message.alert(e.getMessage());
 		}
 	}
 
@@ -159,7 +210,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	}
 
 	private void deleteF() {
-		if (isSelected() && comfirmation("Supprimer","")) {
+		if (isSelected() && Message.comfirmation("Supprimer","")) {
 			super.delete();
 			showChauffeur(getSelectedChauffeur());
 			setListeChauffeur(search(null));
@@ -167,10 +218,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	}
 
 	private void annulerF() {
-		if (comfirmation("Annuler","")) {
-			editMode(false);
-			showChauffeur(getSelectedChauffeur());
-		}
+		editMode(false);
+		showChauffeur(getSelectedChauffeur());
 	}
 
 	private void editerF() {
@@ -179,25 +228,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		}
 	}
 
-	private boolean comfirmation(String titre, String msg) {
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Confirmation");
-		alert.setHeaderText(titre);
-		alert.setContentText(msg);
-		Optional<ButtonType> result = alert.showAndWait();
-		return result.get() == ButtonType.OK;
-	}
-	
-	private boolean alert(String msg) {
-		Alert alert = new Alert(AlertType.WARNING);
-		alert.setTitle("Erreur");
-		alert.setHeaderText(msg);
-		alert.setContentText(null);
-		Optional<ButtonType> result = alert.showAndWait();
-		return result.get() == ButtonType.OK;
-	}
-
 	private void editMode(boolean b) {
+		btnIndisponibilite.setVisible(!b);
 		b &= isAdmin();
 		
 		btnAdd.setVisible(!b && isAdmin());

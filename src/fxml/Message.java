@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 
 public class Message {
@@ -25,4 +26,19 @@ public class Message {
 		Optional<ButtonType> result = alert.showAndWait();
 		return result.get() == ButtonType.OK;
 	}
+	
+	public static String justification(String msg) {
+		
+		TextInputDialog dialog = new TextInputDialog("test");
+		dialog.setTitle("Validaton");
+		dialog.setHeaderText("msg");
+		Optional<String> result = dialog.showAndWait();
+		String entered = null;
+		if (result.isPresent()) {
+		    entered = result.get();
+		}
+		return entered;
+	}
+
+	
 }
