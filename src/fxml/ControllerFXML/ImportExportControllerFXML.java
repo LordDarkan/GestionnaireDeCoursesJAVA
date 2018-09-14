@@ -65,10 +65,19 @@ public class ImportExportControllerFXML extends ImportExportController implement
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		importer.setOnAction((ActionEvent e) -> importer());
-		exporter.setOnAction((ActionEvent e) -> save());
+		exporter.setOnAction((ActionEvent e) -> saveF());
 		importerOld.setOnAction((ActionEvent e) -> importerOld());
 	}
 	
+	private void saveF() {
+		try {
+			super.save();
+			Message.msg("Sauvegarde effectuée");
+		} catch (Exception e) {
+			Message.alert("Erreur lors de la sauvagarde");
+		}
+	}
+
 	private void importerOld() {
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Save File (*.csv)", "*.csv");
 		FileChooser fileChooser = new FileChooser();

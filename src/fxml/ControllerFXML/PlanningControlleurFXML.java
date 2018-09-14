@@ -43,7 +43,7 @@ public class PlanningControlleurFXML extends PlanningControlleur implements Init
 			GridPane content = (GridPane)loader.load();
 			Tab tab = new Tab();
 			tab.setClosable(false);
-            tab.setText("Administrateur");
+            tab.setText("Planning");
             tab.setContent(content);
             /*tab.setOnSelectionChanged(new EventHandler<Event>() {
                 @Override

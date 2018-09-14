@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 
 import controllers.ListeChauffeurController;
 import fxml.Message;
+import fxml.dialog.DialogIndisponibiliteControllerFXML;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
@@ -28,7 +30,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import models.Chauffeur;
+import models.Indisponibilite;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
 import models.itemList.PlanningChauffeur;
@@ -132,46 +136,11 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	}
 	
 	private void newIndisponibiliteF() {
-		if (isSelected()) {//todo
-			Dialog<PhoneBook> dialog = new Dialog<>();
-			dialog.setTitle("Indisponibilité");
-			dialog.setHeaderText("This is a custom dialog. Enter info and \n" +
-			    "press Okay (or click title bar 'X' for cancel).");
-			dialog.setResizable(true);
-
-			Label label1 = new Label("Name: ");
-			Label label2 = new Label("Phone: ");
-			TextField text1 = new TextField();
-			TextField text2 = new TextField();
-					
-			GridPane grid = new GridPane();
-			grid.add(label1, 1, 1);
-			grid.add(text1, 2, 1);
-			grid.add(label2, 1, 2);
-			grid.add(text2, 2, 2);
-			dialog.getDialogPane().setContent(grid);
-					
-			ButtonType buttonTypeOk = new ButtonType("Okay", ButtonData.OK_DONE);
-			dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
-
-			dialog.setResultConverter(new Callback<ButtonType, PhoneBook>() {
-			    @Override
-			    public PhoneBook call(ButtonType b) {
-
-			        if (b == buttonTypeOk) {
-
-			            return new PhoneBook(text1.getText(), text2.getText());
-			        }
-
-			        return null;
-			    }
-			});
-					
-			Optional<PhoneBook> result = dialog.showAndWait();
-					
-			if (result.isPresent()) {
-
-			    actionStatus.setText("Result: " + result.get());
+		if (isSelected()) {//TODO gestion mémoire
+			DialogIndisponibiliteControllerFXML dialog = new DialogIndisponibiliteControllerFXML();
+			Indisponibilite i = dialog.showAndWait();
+			if (dialog.isResult()) {
+				super.newIndisponibilite(i);
 			}
 		}
 	}
@@ -183,10 +152,10 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 
 	private void saveF() {
 		try {
-			Chauffeur app = getInfoChauffeur();
-			super.valdation(app);
-			if(Message.comfirmation("Sauvegarder","")) {
-				super.save(app);
+			Chauffeur chauf = getInfoChauffeur();
+			Chauffeur.valdation(chauf);
+			if(Message.comfirmation("Sauvegarder",null)) {
+				super.save(chauf);
 				editMode(false);
 				showChauffeur(getSelectedChauffeur());
 				setListeChauffeur(search(null));

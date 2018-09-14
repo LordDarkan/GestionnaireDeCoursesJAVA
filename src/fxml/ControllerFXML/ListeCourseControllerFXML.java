@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import controllers.ListeCourseController;
@@ -23,9 +22,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -38,7 +35,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -465,6 +461,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private void saveF() {
 		try {
 			Course course = getInfoCourse();
+			timeCourse(course);
 			Course.valdation(course);
 			if(Message.comfirmation("Sauvegarder","")) {
 				super.save(course);
@@ -477,6 +474,15 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		}
 	}
 	
+	private void timeCourse(Course course) {
+		if (course.getHeureDomicile().isAfter(course.getHeureRDV().minusMinutes(10))) {
+			course.setHeureRDV(course.getHeureDomicile().plusMinutes(10));
+		}
+		if (course.getHeureRDV().isAfter(course.getHeureRetour().minusMinutes(10))) {
+			course.setHeureRetour(course.getHeureRDV().plusMinutes(10));
+		}
+	}
+
 	private Course getInfoCourse() {
 		Course course = getSelectedCourse();
 		if (course!=null) {

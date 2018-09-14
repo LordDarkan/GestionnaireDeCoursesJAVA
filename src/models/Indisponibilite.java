@@ -9,7 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Indisponibilite {
+public class Indisponibilite implements Comparable<Indisponibilite> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -68,6 +68,14 @@ public class Indisponibilite {
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	@Override
+	public int compareTo(Indisponibilite arg0) {
+		int resultat = dateStart.compareTo(arg0.dateStart);
+		
+		if (resultat == 0) resultat = heureStart.compareTo(arg0.heureStart);
+		
+		return resultat;
 	}
 	
 }

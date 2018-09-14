@@ -1,24 +1,25 @@
 package models.itemList;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
+import java.util.TreeSet;
 
 import models.Indisponibilite;
 
 public class PlanningChauffeur {
 	private String chauffeurName;
-	private List<Indisponibilite> indisponibilites;
+	private Set<Indisponibilite> indisponibilites;
 
 	public PlanningChauffeur(String chauffeurName) {
 		this.chauffeurName = chauffeurName;
-		indisponibilites = new LinkedList<Indisponibilite>();
+		indisponibilites = new TreeSet<Indisponibilite>();
 	}
 	
 	public String getChauffeurName() {
 		return chauffeurName;
 	}
 
-	public List<Indisponibilite> getIndisponibilite() {
+	public Collection<Indisponibilite> getIndisponibilite() {
 		return indisponibilites;
 	}
 	

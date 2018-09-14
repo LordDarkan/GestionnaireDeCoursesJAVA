@@ -9,6 +9,7 @@ import models.Appelant;
 import models.Chauffeur;
 import models.Course;
 import models.Hopital;
+import models.Indisponibilite;
 import models.Residence;
 import models.Settings;
 import models.Utilisateur;
@@ -89,4 +90,5 @@ public abstract class Mapper implements Closeable{
 	public abstract Settings getSettings();
 	public abstract void importApplantsOld(List<Appelant> appelants);
 	public abstract Collection<PlanningChauffeur> getPlanning(LocalDate date);
+	public abstract void addOrUpdateIndisponibilite(Indisponibilite indisponibilite);
 }

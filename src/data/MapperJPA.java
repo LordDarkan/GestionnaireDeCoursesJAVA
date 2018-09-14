@@ -1,5 +1,6 @@
 package data;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -495,6 +496,7 @@ public class MapperJPA extends Mapper {
 			em.createQuery("DELETE FROM Chauffeur").executeUpdate();
 			em.createQuery("DELETE FROM Residence").executeUpdate();
 			em.createQuery("DELETE FROM Hopital").executeUpdate();
+			em.createQuery("DELETE FROM Indisponibilite").executeUpdate();
 			em.getTransaction().commit(); 
 	        em.close();
 		}catch (Exception e) {
@@ -511,6 +513,7 @@ public class MapperJPA extends Mapper {
 			em.createQuery("DELETE FROM Chauffeur").executeUpdate();
 			em.createQuery("DELETE FROM Residence").executeUpdate();
 			em.createQuery("DELETE FROM Hopital").executeUpdate();
+			em.createQuery("DELETE FROM Indisponibilite").executeUpdate();
 			/** /
 			em.getTransaction().commit();
 			em.getTransaction().begin();
@@ -902,25 +905,52 @@ public class MapperJPA extends Mapper {
 						result.get(c.getId()).add(i);
 					}
 					
+					long elapsedMinutes = Duration.between(course.getHeureDomicile(), course.getHeureRDV()).toMinutes();
+					
 					if(cs!=null) {
 						i=new IndisponibiliteCourse(course.getAppelant().getFullName());
 						i.setDescription(course.getTypeCourse()+": "+course.getAdresseDest());
 						i.setDateStart(date);
 						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureRetour().minusHours(1));
+						i.setHeureStart(course.getHeureRetour().minusMinutes(elapsedMinutes));
 						i.setHeureEnd(course.getHeureRetour());
 						result.get(cs.getId()).add(i);
+					} else if (c!=null) {
+						i=new IndisponibiliteCourse(course.getAppelant().getFullName());
+						i.setDescription(course.getTypeCourse()+": "+course.getAdresseDest());
+						i.setDateStart(date);
+						i.setDateEnd(date);
+						i.setHeureStart(course.getHeureRetour().minusMinutes(elapsedMinutes));
+						i.setHeureEnd(course.getHeureRetour());
+						result.get(c.getId()).add(i);
 					}
 				}
 			}
 			
+			TypedQuery<Indisponibilite> q2= em.createQuery("SELECT t FROM Indisponibilite t WHERE :locdate BETWEEN t.dateStart AND t.dateEnd",Indisponibilite.class);
+			q2.setParameter("locdate", date);
 			
-			
+			for (Indisponibilite indisponibilite : q2.getResultList()) {
+				result.get(indisponibilite.getIdChauffeur()).add(indisponibilite);
+			}
 			
 			em.close();
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result.values();
+	}
+
+	@Override
+	public void addOrUpdateIndisponibilite(Indisponibilite entity) {
+		EntityManager em = factory.createEntityManager();
+		em.getTransaction().begin();
+		if (entity.getId() == null) {
+			em.persist(entity);
+		} else {
+			em.merge(entity);
+		}
+		em.getTransaction().commit(); 
+        em.close();
 	}
 }

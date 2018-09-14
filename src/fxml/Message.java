@@ -17,6 +17,9 @@ public class Message {
 		return show(AlertType.WARNING,"Erreur",msg,null);
 	}
 	
+	public static boolean msg(String msg) {
+		return show(AlertType.INFORMATION,"Info",msg,null);
+	}
 	
 	private static boolean show(AlertType type,String titre,String head,String content) {
 		Alert alert = new Alert(type);

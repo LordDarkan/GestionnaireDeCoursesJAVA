@@ -5,6 +5,7 @@ import java.util.List;
 
 import data.Mapper;
 import models.Chauffeur;
+import models.Indisponibilite;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
 
@@ -110,11 +111,12 @@ public abstract class ListeChauffeurController {
 		
 	}
 	
-	protected void valdation(Chauffeur chauf) {//TODO
-		if(chauf.getFirstname().length()<2) throw new IllegalArgumentException("Le prénom est invalide");
-	}
-	
 	public void selected() {
 		
+	}
+	
+	public void newIndisponibilite(Indisponibilite indisponibilite) {
+		indisponibilite.setIdChauffeur(selectedChauffeur.getId());
+		mapper.addOrUpdateIndisponibilite(indisponibilite);
 	}
 }
