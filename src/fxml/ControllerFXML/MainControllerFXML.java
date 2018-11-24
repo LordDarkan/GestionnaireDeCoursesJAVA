@@ -76,9 +76,9 @@ public class MainControllerFXML extends MainController implements Initializable 
 			tabContainer.setMinWidth(Region.USE_COMPUTED_SIZE);
 			tabContainer.setTabMinHeight(Region.USE_COMPUTED_SIZE);
 
-			tabsController.add(new PlanningControlleurFXML(getUser(),tabContainer));
 			tabsController.add(new ListeAppelantControllerFXML(this,getUser(),tabContainer));
 			tabsController.add(new ListeCourseControllerFXML(getUser(),tabContainer));
+			tabsController.add(new PlanningControlleurFXML(getUser(),tabContainer));
 			tabsController.add(new ListeChauffeurControllerFXML(getUser(),tabContainer));
 			tabsController.add(new SettingsControllerFXML(getUser(),tabContainer));
 			tabsController.add(new ImportExportControllerFXML(getUser(),tabContainer,this));
@@ -92,7 +92,7 @@ public class MainControllerFXML extends MainController implements Initializable 
 	}
 	
 	public void newCourse(Long id) {
-		int indiceCourseControllerFXML = 2;
+		int indiceCourseControllerFXML = 1;
 		tabContainer.getSelectionModel().select(indiceCourseControllerFXML);
 		((ListeCourseControllerFXML)tabsController.get(indiceCourseControllerFXML)).newCourse(id);
 	}
