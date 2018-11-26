@@ -75,7 +75,7 @@ public class CSV {
     						//e.printStackTrace();
     					}
                     	appelant.setMobilite(row[17].trim());
-                    	appelant.setAideParticulière(row[18].trim());
+                    	appelant.setAideParticuliere(row[18].trim());
                     	appelant.setInfos(row[19].trim());
                     	appelant.setRemarques(row[20].trim());
                     	appelants.add(appelant);

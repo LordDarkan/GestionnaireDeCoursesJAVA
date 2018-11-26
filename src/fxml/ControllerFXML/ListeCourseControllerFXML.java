@@ -739,7 +739,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		codeApplant.setText(app.getId().toString());
 	    nomCompletAppelant.setText(app.getFullName());
 	    handicapAppelant.setText(app.getMobilite());
-	    aideAppelant.setText(app.getAideParticulière());
+	    aideAppelant.setText(app.getAideParticuliere());
 	}
 	
 	private void setResidence() {

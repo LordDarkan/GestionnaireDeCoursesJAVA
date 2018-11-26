@@ -338,7 +338,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 			app.setCotisation(Integer.parseInt(cotisation.getText().trim()));
 		} catch (Exception e) {
 		}
-		app.setAideParticulière(aide.getText().trim());
+		app.setAideParticuliere(aide.getText().trim());
 		app.setInfos(infos.getText().trim());
 		app.setRemarques(autre.getText().trim());
 		return app;
@@ -441,7 +441,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		mobilite.setText(app.getMobilite());
 		mutualite.setText(app.getMutualite());
 		cotisation.setText(""+app.getCotisation());
-		aide.setText(app.getAideParticulière());
+		aide.setText(app.getAideParticuliere());
 		infos.setText(app.getInfos());
 		autre.setText(app.getRemarques());
 		//testResidence(app.getResidence());//TODO a en levé

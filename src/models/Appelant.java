@@ -38,7 +38,7 @@ public class Appelant {
 	private int cotisation = 0;
 	
 	private String mobilite = "RAS";
-	private String aideParticulière = "RAS";
+	private String aideParticuliere = "RAS";
 	private String infos = "";
 	private String remarques = "";
 	
@@ -167,11 +167,11 @@ public class Appelant {
 	public void addFamille(Long id) {
 		this.famille = FLS.addToString(famille, id);
 	}
-	public String getAideParticulière() {
-		return aideParticulière;
+	public String getAideParticuliere() {
+		return aideParticuliere;
 	}
-	public void setAideParticulière(String aideParticulière) {
-		this.aideParticulière = aideParticulière;
+	public void setAideParticuliere(String aideParticuliere) {
+		this.aideParticuliere = aideParticuliere;
 	}
 	public String getInfos() {
 		return infos;
@@ -246,7 +246,7 @@ public class Appelant {
 		str.append(";");
 		str.append(mobilite);
 		str.append(";");
-		str.append(aideParticulière);
+		str.append(aideParticuliere);
 		str.append(";");
 		str.append(infos);
 		str.append(";");
@@ -256,7 +256,7 @@ public class Appelant {
 	}
 	
 	public static String getEnTeteCsv() {
-		return "Code;Titre;Nom;Prénom;Date de naissance;Téléphone, gsm;Résidence;Adresse;CP;Localité;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualité;Paiement;Cotisation;mobilite;Aide particulière;Infos utiles;Autres remarques;END";
+		return "Code;Titre;Nom;Pr�nom;Date de naissance;T�l�phone, gsm;R�sidence;Adresse;CP;Localit�;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualit�;Paiement;Cotisation;mobilite;Aide particuli�re;Infos utiles;Autres remarques;END";
 	}
 	
 	public static void valdation(Appelant obj) throws IllegalArgumentException {//TODO

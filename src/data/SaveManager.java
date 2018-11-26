@@ -216,7 +216,7 @@ public class SaveManager {
 						//e.printStackTrace();
 					}
                 	if (row.length > 20)
-                		appelant.setAideParticulière(row[20].trim());
+                		appelant.setAideParticuliere(row[20].trim());
                 	if (row.length > 21)
                 		appelant.setInfos(row[21].trim());
                 	//22 afinité

@@ -36,7 +36,7 @@ public class MyApp extends Application {
 				System.exit(-1);
 			}
 		} else {
-			fxml.Message.alert("Le programme est déjà en cours d'exécution");
+			fxml.Message.alert("Le programme est d�j� en cours d'exécution");
 			System.exit(0);
 		}
 	}
