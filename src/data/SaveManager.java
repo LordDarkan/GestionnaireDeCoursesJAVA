@@ -44,7 +44,7 @@ public class SaveManager {
 				Enumeration<? extends ZipEntry> entries;
 				ZipEntry zipentry;
 				int limite = 4;
-				while (!(res && hop && chauf && app && course) && limite > 0) {
+				while (!(res && hop && chauf && app && course && indisp) && limite > 0) {
 					limite++;
 					entries = zf.entries();
 					while (entries.hasMoreElements()) {
