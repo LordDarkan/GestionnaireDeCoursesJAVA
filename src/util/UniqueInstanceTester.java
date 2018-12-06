@@ -1,17 +1,17 @@
 package util;
- 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.logging.Logger;
- 
+
 import javax.swing.SwingUtilities;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
- 
+
 /**
  * https://www.developpez.net/forums/d148068/java/general-java/seule-instance-d-meme-programme-java/
  * https://www.developpez.net/forums/anocode.php?id=7a039645038e355111ae1a358f3dad73

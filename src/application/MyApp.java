@@ -11,32 +11,32 @@ import javafx.stage.Stage;
 import util.UniqueInstanceTester;
 
 public class MyApp extends Application {
-	
+
 	@Override
 	public void start(Stage stage) {
-		if (UniqueInstanceTester.launch(null/*FIXME stage*/)) {
+		if (UniqueInstanceTester.launch(null/* FIXME stage */)) {
 			stage.setTitle("Gestionnaire de Courses");
 			stage.getIcons().add(new Image(MyApp.class.getResourceAsStream("short.png")));
-			try{
+			try {
 				Mapper.setInstance(new MapperJPA());
 				Mapper.getInstance().init();
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(MyApp.class.getClassLoader().getResource("fxml/views/Main.fxml"));
 				loader.setController(new MainControllerFXML());
-				GridPane pane = (GridPane)loader.load();
+				GridPane pane = (GridPane) loader.load();
 				Scene scene = new Scene(pane);
-				//scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+				// scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 				stage.setScene(scene);
 				stage.setOnCloseRequest(event -> close(stage));
 				stage.setMaximized(true);
-				stage.setResizable(true);//TODO
+				stage.setResizable(true);// TODO
 				stage.show();
-			}catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(-1);
 			}
 		} else {
-			fxml.Message.alert("Le programme est déjà  en cours d'exÃ©cution");
+			fxml.Message.alert("Le programme est dï¿½jï¿½ en cours d'exÃ©cution");
 			System.exit(0);
 		}
 	}
@@ -44,15 +44,14 @@ public class MyApp extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	public void close(Stage stage) {
 		stage.close();
-		
-		//SaveManager.compress("D:/Users/Denis/OneDrive/perso/teleservice/test2");
-		
-		
+
+		// SaveManager.compress("D:/Users/Denis/OneDrive/perso/teleservice/test2");
+
 		SaveManager.autoSave();
-		
+
 		System.exit(0);
 	}
 }

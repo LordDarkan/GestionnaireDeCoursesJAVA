@@ -89,6 +89,11 @@ public abstract class Mapper implements Closeable{
 	public abstract List<Hopital> getListHopital();
 	public abstract Settings getSettings();
 	public abstract void importApplantsOld(List<Appelant> appelants);
+	
 	public abstract Collection<PlanningChauffeur> getPlanning(LocalDate date);
+	
 	public abstract void addOrUpdateIndisponibilite(Indisponibilite indisponibilite);
+	public abstract void delete(Indisponibilite entity);
+	public abstract List<Indisponibilite> getAllIndisponibilite();
+	public abstract void importIndisponibilite(List<Indisponibilite> readIndisponibilite);
 }

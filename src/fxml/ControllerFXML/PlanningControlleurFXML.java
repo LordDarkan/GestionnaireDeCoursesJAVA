@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import controllers.PlanningControlleur;
 import fxml.items.PlanningChauffeurListCell;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,9 +19,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import models.Utilisateur;
-import models.itemList.ChauffeurItemList;
 import models.itemList.PlanningChauffeur;
 
 public class PlanningControlleurFXML extends PlanningControlleur implements Initializable,ITabController {
@@ -45,14 +44,14 @@ public class PlanningControlleurFXML extends PlanningControlleur implements Init
 			tab.setClosable(false);
             tab.setText("Planning");
             tab.setContent(content);
-            /*tab.setOnSelectionChanged(new EventHandler<Event>() {
+            tab.setOnSelectionChanged(new EventHandler<Event>() {
                 @Override
                 public void handle(Event event) {
                 	if (((Tab)event.getSource()).isSelected()) {
-                		//selected();
+                		select();
 					}
                 }
-            });*/
+            });
             tabContainer.getTabs().add(tab);
 		} catch (IOException e) {//TODO
 			e.printStackTrace();

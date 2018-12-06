@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import util.DateTime;
+
 @Entity
 public class Indisponibilite implements Comparable<Indisponibilite> {
 	@Id
@@ -76,6 +78,25 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 		if (resultat == 0) resultat = heureStart.compareTo(arg0.heureStart);
 		
 		return resultat;
+	}
+	public String getRowCsv() {
+		StringBuilder str = new StringBuilder();
+		str.append(idChauffeur);
+		str.append(";");
+		str.append(DateTime.toString(dateStart));
+		str.append(";");
+		str.append(DateTime.toString(heureStart));
+		str.append(";");
+		str.append(DateTime.toString(dateEnd));
+		str.append(";");
+		str.append(DateTime.toString(heureEnd));
+		str.append(";");
+		str.append(description);
+		str.append(";END");
+		return str.toString();
+	}
+	public static String getEnTeteCsv() {
+		return "ID_CHAUFFEUR;DATE_START;HEURE_START;DATE_END;HEURE_END;DESCRIPTION;END";
 	}
 	
 }
