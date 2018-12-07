@@ -495,6 +495,7 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			em.getTransaction().begin();
+			 em.createQuery("DELETE FROM Utilisateur").executeUpdate();
 			em.createQuery("DELETE FROM Course").executeUpdate();
 			em.createQuery("DELETE FROM Appelant").executeUpdate();
 			em.createQuery("DELETE FROM Chauffeur").executeUpdate();
@@ -727,6 +728,7 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
+	@Deprecated
 	public void importUsers(List<Utilisateur> users) {
 		try {
 			EntityManager em = factory.createEntityManager();
@@ -747,6 +749,7 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
+	@Deprecated
 	public void importApplantsOld(List<Appelant> appelants) {
 		try {
 			EntityManager em = factory.createEntityManager();
@@ -995,6 +998,25 @@ public class MapperJPA extends Mapper {
 
 			for (Indisponibilite indisp : indisponibilites) {
 				em.persist(indisp);
+				em.flush();
+				em.clear();
+			}
+
+			em.getTransaction().commit();
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void importUtilisateur(List<Utilisateur> utilisateurs) {
+		try {
+			EntityManager em = factory.createEntityManager();
+			em.getTransaction().begin();
+			// em.createQuery("DELETE FROM Utilisateur").executeUpdate();
+			for (Utilisateur utilisateur : utilisateurs) {
+				em.persist(utilisateur);
 				em.flush();
 				em.clear();
 			}

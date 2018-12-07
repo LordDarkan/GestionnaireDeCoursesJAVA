@@ -1,6 +1,9 @@
 package models;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import util.Titre;
 
@@ -60,5 +63,19 @@ public class Utilisateur {
 
 	public void setTitre(Titre titre) {
 		this.titre = titre;
+	}
+	
+	public String getRowCsv() {
+		StringBuilder str = new StringBuilder();
+		str.append(name);
+		str.append(";");
+		str.append(firstname);
+		str.append(";");
+		str.append(admin?"OUI":"NON");
+		str.append(";END");
+		return str.toString();
+	}
+	public static String getEnTeteCsv() {
+		return "NOM;PRENOM;ADMIN;END";
 	}
 }

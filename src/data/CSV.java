@@ -18,6 +18,7 @@ import models.Course;
 import models.Hopital;
 import models.Indisponibilite;
 import models.Residence;
+import models.Utilisateur;
 import util.DateTime;
 import util.Titre;
 import util.TypeCourse;
@@ -387,6 +388,53 @@ public class CSV {
 		}
 		return residences;
 	}
+	
+
+
+	public static List<Utilisateur> readUtilisateur(InputStreamReader inputStreamReader, Mapper mapper) {
+		List<Utilisateur> utilisateurs = new LinkedList<Utilisateur>();
+		Utilisateur utilisateur;
+		BufferedReader br = null;
+		String line = "";
+		String[] row;
+		String cvsSplitBy = ";";
+		String temp;
+		boolean end = false;
+		try {
+			br = new BufferedReader(inputStreamReader);
+			br.readLine();
+			while (!end && (line = br.readLine()) != null) {
+				while (!end && !line.endsWith("END")) {
+					if ((temp = br.readLine()) != null) {
+						line += "\n" + temp;
+					} else {
+						end = true;
+					}
+				}
+				if (!end) {
+					row = line.split(cvsSplitBy);
+					utilisateur = new Utilisateur();
+					utilisateur.setName(row[0].trim());
+					utilisateur.setFirstname(row[1].trim());
+					utilisateur.setAdmin(row[2].trim().equalsIgnoreCase("oui"));
+					utilisateurs.add(utilisateur);
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return utilisateurs;
+	}
 
 	public static void wirteAppelant(List<Appelant> list, File file) {
 		try (BufferedWriter writer = new BufferedWriter(
@@ -470,6 +518,21 @@ public class CSV {
 			writer.newLine();
 			for (Residence residence : list) {
 				writer.write(residence.getRowCsv());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void wirteUtilisateur(List<Utilisateur> list, File file) {
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+			writer.write(Residence.getEnTeteCsv());
+			writer.newLine();
+			for (Utilisateur utilisateur : list) {
+				writer.write(utilisateur.getRowCsv());
 				writer.newLine();
 			}
 			writer.close();

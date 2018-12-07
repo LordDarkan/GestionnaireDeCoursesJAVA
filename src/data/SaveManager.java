@@ -39,18 +39,24 @@ public class SaveManager {
 		if (file.isFile() && file.getName().endsWith(extention)) {
 			Mapper mapper = Mapper.getInstance();
 			mapper.deleteAll();
-			boolean res = false, hop = false, chauf = false, app = false, course = false, indisp = false;
+			boolean res = false, hop = false, chauf = false, app = false, course = false, indisp = false, user = false;
 			try (ZipFile zf = new ZipFile(file)) {
 				Enumeration<? extends ZipEntry> entries;
 				ZipEntry zipentry;
 				int limite = 4;
-				while (!(res && hop && chauf && app && course && indisp) && limite > 0) {
-					limite++;
+				while (!(user && res && hop && chauf && app && course && indisp) && limite > 0) {
+					limite--;
 					entries = zf.entries();
 					while (entries.hasMoreElements()) {
 						zipentry = entries.nextElement();
 						String entryName = zipentry.getName();
-						if (!res && entryName.equals("Residence.csv")) {
+
+						if (!user && entryName.equals("Utilisateur.csv")) {
+							mapper.importUtilisateur(CSV.readUtilisateur(
+									new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8),
+									mapper));
+							user = true;
+						} else if (!res && entryName.equals("Residence.csv")) {
 							mapper.importResidences(CSV.readResidence(
 									new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)));
 							res = true;
@@ -76,6 +82,10 @@ public class SaveManager {
 									new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8),
 									mapper));
 							indisp = true;
+						} else if (!hop && entryName.equals("Hopital.csv")) {
+							mapper.importHopitaux(CSV.readHopital(
+									new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)));
+							hop = true;
 						}
 					}
 				}
@@ -132,6 +142,8 @@ public class SaveManager {
 		CSV.wirteHopital(mapper.getListHopital(), write);
 		write = new File(save.getAbsolutePath() + separator + "Residence.csv");
 		CSV.wirteResidence(mapper.getListResidence(), write);
+		write = new File(save.getAbsolutePath() + separator + "Utilisateur.csv");
+		CSV.wirteUtilisateur(mapper.getAllUser(), write);
 
 		compress(save.getAbsolutePath());
 		for (File content : save.listFiles()) {

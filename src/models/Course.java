@@ -42,7 +42,7 @@ public class Course {
 	private String cpDest = "";
 	private String localiteDest = "";
 	
-	private boolean attente = false;
+	private boolean attente = true;
 	private Chauffeur chauffeurSec = null;
 	private LocalTime heureRetour = LocalTime.MIDNIGHT;
 	private String adresseRet;
