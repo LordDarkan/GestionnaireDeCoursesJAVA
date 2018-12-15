@@ -83,7 +83,7 @@ public class Appelant {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite.toUpperCase();
+		this.localite = localite;
 	}
 	public String getQuartier() {
 		return quartier;
@@ -189,7 +189,7 @@ public class Appelant {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse.toUpperCase();
+		this.adresse = adresse;
 	}
 	public String getResidence() {
 		return residence;

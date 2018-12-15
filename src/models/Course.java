@@ -126,7 +126,7 @@ public class Course {
 	}
 
 	public void setAdresseDep(String adresseDep) {
-		this.adresseDep = adresseDep.toUpperCase();
+		this.adresseDep = adresseDep;
 	}
 
 	public String getCpDep() {
@@ -142,7 +142,7 @@ public class Course {
 	}
 
 	public void setLocaliteDep(String localiteDep) {
-		this.localiteDep = localiteDep.toUpperCase();
+		this.localiteDep = localiteDep;
 	}
 
 	public TypeCourse getTypeCourse() {
@@ -182,7 +182,7 @@ public class Course {
 	}
 
 	public void setAdresseDest(String adresseDest) {
-		this.adresseDest = adresseDest.toUpperCase();
+		this.adresseDest = adresseDest;
 	}
 
 	public String getCpDest() {
@@ -198,7 +198,7 @@ public class Course {
 	}
 
 	public void setLocaliteDest(String localiteDest) {
-		this.localiteDest = localiteDest.toUpperCase();
+		this.localiteDest = localiteDest;
 	}
 
 	public Chauffeur getChauffeurSec() {
@@ -222,7 +222,7 @@ public class Course {
 	}
 
 	public void setAdresseRet(String adresseRet) {
-		this.adresseRet = adresseRet.toUpperCase();
+		this.adresseRet = adresseRet;
 	}
 
 	public String getCpRet() {
@@ -238,7 +238,7 @@ public class Course {
 	}
 
 	public void setLocaliteRet(String localiteRet) {
-		this.localiteRet = localiteRet.toUpperCase();
+		this.localiteRet = localiteRet;
 	}
 
 	public String getNotes() {

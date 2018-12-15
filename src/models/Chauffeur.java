@@ -51,7 +51,7 @@ public class Chauffeur {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse.toUpperCase();
+		this.adresse = adresse;
 	}
 	public String getInfos() {
 		return infos;
@@ -69,7 +69,7 @@ public class Chauffeur {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite.toUpperCase();
+		this.localite = localite;
 	}
 	
 	public String getFullName() {

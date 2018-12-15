@@ -8,7 +8,7 @@ public class Adresse {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse.toUpperCase();
+		this.adresse = adresse;
 	}
 	public String getCp() {
 		return cp;
@@ -20,7 +20,7 @@ public class Adresse {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite.toUpperCase();
+		this.localite = localite;
 	}
 	
 }

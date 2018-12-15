@@ -21,6 +21,7 @@ public class PlanningControlleur {
 	}
 	
 	protected void clear(){
+		user.getId();//TODO to suppr
 		user = null;
 		mapper = null;
 	}

@@ -22,12 +22,12 @@ public class Utilisateur {
 	}
 	
 	public void setName(String name) {
-		this.name = name.trim().toUpperCase();
+		this.name = name.trim();
 	}
 
 	public void setFirstname(String firstname) {
 		firstname = firstname.trim();
-		this.firstname = firstname.substring(0,1).toUpperCase()+firstname.substring(1);
+		this.firstname = firstname.substring(0,1)+firstname.substring(1);
 	}
 	
 	public String getFullName() {
