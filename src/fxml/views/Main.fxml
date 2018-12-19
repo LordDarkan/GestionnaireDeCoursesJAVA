@@ -39,7 +39,7 @@
 	   <HBox fx:id="mainBoxLogged" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 	      <children>
 	         <Label fx:id="mainLabelName" text="Nom" />
-	         <Button fx:id="mainBtnLogout" alignment="CENTER" mnemonicParsing="false" text="Déconexion">
+	         <Button fx:id="mainBtnLogout" alignment="CENTER" mnemonicParsing="false" text="Déconnexion ">
 	            <HBox.margin>
 	               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	            </HBox.margin>

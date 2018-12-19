@@ -87,7 +87,9 @@ public abstract class Mapper implements Closeable{
 	public abstract void delRestrict(Long id, Long id2);
 	public abstract List<Residence> getListResidence();
 	public abstract List<Hopital> getListHopital();
+	
 	public abstract Settings getSettings();
+	public abstract void setSettings(Settings settings);
 	public abstract void importApplantsOld(List<Appelant> appelants);
 	
 	public abstract Collection<PlanningChauffeur> getPlanning(LocalDate date);

@@ -46,8 +46,9 @@ public abstract class ImportExportController {
 	}
 	
 	protected void importerOld(File file) {
-		Mapper.getInstance().importApplantsOld(SaveManager.old2Appelants(file));
-		main.logout();
+		settings.setPathSaveDirectory(file.getAbsolutePath());
+		Mapper.getInstance().setSettings(settings);
+		//Mapper.getInstance().getSettings();//importApplantsOld(SaveManager.old2Appelants(file));
 	}
 
 	public File getFileSaveDirectory() {

@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import models.Utilisateur;
@@ -79,6 +80,19 @@ public class ImportExportControllerFXML extends ImportExportController implement
 	}
 
 	private void importerOld() {
+		DirectoryChooser dc = new DirectoryChooser();
+		dc.setInitialDirectory(getFileSaveDirectory());
+		dc.setTitle("Choose Save Directory");
+		
+		File file = dc.showDialog((Stage)importer.getScene().getWindow());
+		
+		if (file!=null && file.isDirectory() && Message.comfirmation("Importation", "Le dossier de sauvegarde sera modifié !")) {
+			importerOld(file);
+		}
+	}
+	
+	/* 
+	 private void importerOld() {
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Save File (*.csv)", "*.csv");
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose Save File");
@@ -88,7 +102,8 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		if (file!=null && Message.comfirmation("Importation", "Les anciennes données seront remplacé par de nouvelles!")) {
 			importerOld(file);
 		}
-	}
+	} 
+	 * */
 	
 	private void importer() {
 		String extention = SaveManager.getExtention();

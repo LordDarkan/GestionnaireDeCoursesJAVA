@@ -312,13 +312,13 @@ public class Course {
 		StringBuilder str = new StringBuilder();
 		str.append(nameCreation);
 		str.append(";");
-		str.append(DateTime.toString(dateCreation));
+		str.append(DateTime.saveToString(dateCreation));//date
 		str.append(";");
 		str.append(DateTime.toString(heureCreation));
 		str.append(";");
 		str.append(appelant.getId());
 		str.append(";");
-		str.append(DateTime.toString(date));
+		str.append(DateTime.saveToString(date));//date
 		str.append(";");
 		if (chauffeur!=null)
 			str.append(chauffeur.getId());
@@ -326,7 +326,7 @@ public class Course {
 		str.append(nameAttribution);
 		str.append(";");
 		if (dateAttribution!=null)
-			str.append(DateTime.toString(dateAttribution));
+			str.append(DateTime.saveToString(dateAttribution));//date
 		str.append(";");
 		str.append(DateTime.toString(heureDomicile));
 		str.append(";");

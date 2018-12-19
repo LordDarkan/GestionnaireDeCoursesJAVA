@@ -1027,4 +1027,13 @@ public class MapperJPA extends Mapper {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public void setSettings(Settings settings) {
+		EntityManager em = factory.createEntityManager();
+		em.getTransaction().begin();
+		em.merge(settings);
+		em.getTransaction().commit();
+		em.close();
+	}
 }
