@@ -218,7 +218,7 @@ public class Appelant {
 		str.append(";");
 		str.append(firstname);
 		str.append(";");
-		str.append(DateTime.toString(birthday));
+		str.append(DateTime.saveToString(birthday));//date
 		str.append(";");
 		str.append(tel);
 		str.append(";");

@@ -19,8 +19,8 @@
    <children>
       <Button fx:id="importer" mnemonicParsing="false" text="Importation Sauvegarde" />
       <Button fx:id="exporter" mnemonicParsing="false" text="Création Sauvegarde" GridPane.columnIndex="1" />
-      <Button fx:id="importerOld" mnemonicParsing="false" text="Old Import" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-      <Label prefWidth="121.0" text="Import le csv : PourDenis Requête.csv" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
+      <Button fx:id="importerOld" mnemonicParsing="false" text="Modifié dossier de sauvegarde" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <!--Label prefWidth="121.0" text="Import le csv : PourDenis Requête.csv" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" /-->
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

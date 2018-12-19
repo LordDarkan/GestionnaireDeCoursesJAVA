@@ -83,11 +83,11 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 		StringBuilder str = new StringBuilder();
 		str.append(idChauffeur);
 		str.append(";");
-		str.append(DateTime.toString(dateStart));
+		str.append(DateTime.saveToString(dateStart));//date
 		str.append(";");
 		str.append(DateTime.toString(heureStart));
 		str.append(";");
-		str.append(DateTime.toString(dateEnd));
+		str.append(DateTime.saveToString(dateEnd));//date
 		str.append(";");
 		str.append(DateTime.toString(heureEnd));
 		str.append(";");
