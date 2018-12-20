@@ -30,11 +30,12 @@ public class Message {
 		return result.get() == ButtonType.OK;
 	}
 	
-	public static String justification(String msg) {
+	public static String getString(String msg,String txt) {
 		
-		TextInputDialog dialog = new TextInputDialog("test");
-		dialog.setTitle("Validaton");
-		dialog.setHeaderText("msg");
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle("Encodage");
+		dialog.setHeaderText(msg);
+		dialog.setContentText(txt);
 		Optional<String> result = dialog.showAndWait();
 		String entered = null;
 		if (result.isPresent()) {
@@ -42,6 +43,4 @@ public class Message {
 		}
 		return entered;
 	}
-
-	
 }

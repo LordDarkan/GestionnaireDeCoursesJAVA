@@ -99,4 +99,6 @@ public abstract class Mapper implements Closeable{
 	public abstract List<Indisponibilite> getAllIndisponibilite();
 	public abstract void importIndisponibilite(List<Indisponibilite> readIndisponibilite);
 	public abstract void importUtilisateur(List<Utilisateur> readUtilisateur);
+	public abstract Long addNew(Appelant entity);
+	public abstract boolean validIdAppelant(Long id);
 }

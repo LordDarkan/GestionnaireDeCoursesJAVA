@@ -168,6 +168,18 @@ public class MapperJPA extends Mapper {
 		}
 		return result;
 	}
+	
+
+	
+	@Override
+	public Long addNew(Appelant entity) {
+		EntityManager em = factory.createEntityManager();
+		em.getTransaction().begin();
+		em.persist(entity);
+		em.getTransaction().commit();
+		em.close();
+		return entity.getId();
+	}
 
 	@Override
 	public Long addOrUpdate(Appelant entity) {
@@ -687,7 +699,7 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Course> q = em.createQuery(
-					"SELECT c FROM Course c WHERE  c.appelant.id=:arg1 ORDER BY c.date, c.heureDomicile", Course.class);
+					"SELECT c FROM Course c WHERE c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureDomicile", Course.class);
 			q.setParameter("arg1", id);
 			for (Course tuple : q.getResultList()) {
 				result.add(new CourseItemList(tuple));
@@ -1035,5 +1047,13 @@ public class MapperJPA extends Mapper {
 		em.merge(settings);
 		em.getTransaction().commit();
 		em.close();
+	}
+
+	@Override
+	public boolean validIdAppelant(Long id) {
+		EntityManager em = factory.createEntityManager();
+		Appelant app = em.find(Appelant.class, id);
+		em.close();
+		return app == null;
 	}
 }

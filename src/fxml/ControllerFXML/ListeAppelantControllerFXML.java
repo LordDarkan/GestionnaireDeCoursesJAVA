@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import javax.xml.bind.ValidationException;
+
 import controllers.ListeAppelantController;
 import fxml.Message;
-import javafx.fxml.Initializable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -16,7 +17,15 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
@@ -31,7 +40,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Alert.AlertType;
 import models.Appelant;
 import models.Residence;
 import models.Utilisateur;
@@ -43,6 +51,10 @@ import util.Security;
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
 	@FXML
     private Button btnAdd;
+	@FXML
+    private Button btnPrint;
+	@FXML
+    private Button btnClear;
     @FXML
     private TextField recherche;
     @FXML
@@ -192,6 +204,10 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		datePNais.setStyle("-fx-opacity: 1");
 		datePNais.getEditor().setStyle("-fx-opacity: 1");
 		
+		btnClear.setOnAction((ActionEvent e) -> clearSearch());
+		btnPrint.setOnAction((ActionEvent e) -> imprimer());
+		
+		
 		btnAdd.setOnAction((ActionEvent e) -> addF());
 		btnNewCourse.setOnAction((ActionEvent e) -> newCourse());
 		btnEdit.setOnAction((ActionEvent e) -> editerF());
@@ -307,13 +323,42 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		try {
 			Appelant app = getInfoAppelant();
 			Appelant.valdation(app);
-			super.save(app);
+			
+			if (app.getId() == null && Message.comfirmation("Voulez-vous encoder un identifiant ?", null)) {
+				app.setId(selectId());
+				super.saveNew(app);
+			} else {
+				super.save(app);
+			}
 			editMode(false);
 			showAppelant(getSelectedAppelant());
 			majList();
-		} catch (Exception e) {
+		} catch (ValidationException e) {//id
+		} catch (Exception e) {//validation
 			alert(e.getMessage());
 		}
+	}
+
+	private Long selectId() throws ValidationException {
+		Long id = null;
+		boolean valid = false;
+		String err = null;
+		String strId;
+		while (!valid) {
+			strId = Message.getString(err,"CODE:");
+			if (strId==null)
+				throw new ValidationException("Annulation encodage");
+			
+			try {
+				id = Long.parseLong(strId.trim());
+				valid = validIdApplant(id);
+				err = "L'identifiant est déjà utilisé";
+			} catch (Exception e) {
+				err = "L'identifiant doit être un chiffre";
+			}
+		}
+		
+		return id;
 	}
 
 	private Appelant getInfoAppelant() {
@@ -509,5 +554,42 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		}
 	}
 	
+	private void clearSearch() {
+		recherche.setText("");
+		//setListeAppelant(search(""));
+	}
+	
+	
+	private void imprimer() {
+		if (isSelected()) {
+			/*if (print == null) {
+				print = new PrintCourseControllerFXML();
+			}*/
+			PrintCourseControllerFXML print = new PrintCourseControllerFXML();
+			Node myPrint = print.getNode(getSelectedAppelant());
+			
+			if (myPrint == null){
+				System.err.println("No file is open!");
+				return;
+			}
+			
+			PrinterJob printAction = PrinterJob.createPrinterJob();
+			if (printAction == null){
+				System.err.println("Unable to access system print utilities");
+				return;
+			}
+			PageLayout pageLayout = Printer.getDefaultPrinter().createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+			printAction.getJobSettings().setPageLayout(pageLayout);
+			boolean notCancelled = printAction.showPrintDialog(listViewAppelant.getScene().getWindow());
+			if (notCancelled){
+				//boolean success = printAction.printPage(pageLayout, myPrint);
+				boolean success = printAction.printPage(myPrint);
+				if (success)
+					printAction.endJob();
+				else
+					 System.err.println("Print may have failed");
+			}
+		}
+	}
 	
 }

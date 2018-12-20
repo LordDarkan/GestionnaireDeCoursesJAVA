@@ -195,7 +195,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private Button btnAnnulerCourse;
     
-    private PrintCourseControllerFXML print;
+    //private PrintCourseControllerFXML print;
 	
 	public ListeCourseControllerFXML(Utilisateur user, TabPane tabContainer) {
 		super(user);
@@ -315,9 +315,9 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	
 	private void imprimer() {
 		if (isSelected()) {
-			if (print == null) {
-				print= new PrintCourseControllerFXML();
-			}
+			/*if (print == null) {
+				print = new PrintCourseControllerFXML();
+			}*/
 			PrintCourseControllerFXML print = new PrintCourseControllerFXML();
 			Node myPrint = print.getNode(getSelectedCourse());
 			
@@ -523,11 +523,9 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	
 	private void annulationF() {
 		if (isSelected()) {
-			String str = Message.justification("retest");
+			String str = Message.getString("Raison de l'annulation",null);
 			if (str!=null) {
-				
 				super.annulation(str);
-				
 			}
 		}
 	}
@@ -669,7 +667,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		if (course.getChauffeur()!=null) {
 			affChaufeur.setText(course.getChauffeur().getFullName());
 		} else {
-			affChaufeur.setText("SANS CHAUFFEUR");
+			affChaufeur.setText("");
 		}
 	    affDate.setText(DateTime.toString(course.getDate()));
 	    affType.setText(course.getTypeCourse().toString());
@@ -691,7 +689,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	    if (course.getChauffeurSec()!=null) {
 	    	affChaufeurSec.setText(course.getChauffeurSec().getFullName());
 		}  else {
-			affChaufeur.setText("");
+			affChaufeurSec.setText("");
 		}
 	    affAttente.setText(course.isAttente()?"oui":"non");
 	    affNote.setText(course.getNotes());

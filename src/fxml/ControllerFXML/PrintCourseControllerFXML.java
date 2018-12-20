@@ -133,7 +133,7 @@ public class PrintCourseControllerFXML implements Initializable {
 		if (course.getChauffeur()!=null) {
 			affChaufeur.setText(course.getChauffeur().getFullName());
 		} else {
-			affChaufeur.setText("SANS CHAUFFEUR");
+			affChaufeur.setText("");
 		}
 	    affDate.setText(DateTime.toString(course.getDate()));
 	    affType.setText(course.getTypeCourse().toString());
@@ -155,10 +155,19 @@ public class PrintCourseControllerFXML implements Initializable {
 	    if (course.getChauffeurSec()!=null) {
 	    	affChaufeurSec.setText(course.getChauffeurSec().getFullName());
 		}  else {
-			affChaufeur.setText("");
+			affChaufeurSec.setText("");
 		}
 	    affAttente.setText(course.isAttente()?"oui":"non");
 	    affNote.setText(course.getNotes());
+	}
+	
+
+	public Node getNode(Appelant app) {
+		codeApplant.setText(app.getId().toString());
+	    nomCompletAppelant.setText(app.getFullName());
+	    handicapAppelant.setText(app.getMobilite());
+	    aideAppelant.setText(app.getAideParticuliere());
+		return content;
 	}
 
 	@Override

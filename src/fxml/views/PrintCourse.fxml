@@ -18,11 +18,11 @@
             <HBox alignment="TOP_RIGHT">
                <children>
                   <Label text="Crée le " />
-                  <Label fx:id="creatDate" text="xx/xx/xx" />
+                  <Label fx:id="creatDate" text="      /      /     " />
                   <Label text=" à " />
-                  <Label fx:id="creatHeure" text="xxHxx" />
+                  <Label fx:id="creatHeure" text="      H      " />
                   <Label text=" par " />
-                  <Label fx:id="creatName" text="xxxxxxx" />
+                  <Label fx:id="creatName" text="                                    " />
                </children>
             </HBox>
             <Label text="Appelant" />
@@ -33,14 +33,14 @@
                         <HBox alignment="BOTTOM_CENTER">
                            <children>
                               <Label text="(" />
-                              <Label fx:id="codeApplant" text="Code" />
+                              <Label fx:id="codeApplant" text=" _ _ _ _ " />
                               <Label text=")" />
                            </children>
                            <padding>
                               <Insets bottom="6.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="nomCompletAppelant" text="XXX XXXXX XXXXX">
+                        <Label fx:id="nomCompletAppelant" text="_________________________________">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -55,7 +55,7 @@
                         <VBox>
                            <children>
                               <Label text="Handicap(s) particulier(s)" />
-                              <Label fx:id="handicapAppelant" minWidth="150.0" style="-fx-border-color: black;" text="xxx" wrapText="true">
+                              <Label fx:id="handicapAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
@@ -65,7 +65,7 @@
                         <VBox>
                            <children>
                               <Label text="Aide spécialisée" />
-                              <Label fx:id="aideAppelant" minWidth="150.0" style="-fx-border-color: black;" text="xxx" wrapText="true">
+                              <Label fx:id="aideAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding></Label>
@@ -83,28 +83,30 @@
             </VBox>
             <GridPane hgap="10.0" vgap="5.0">
               <columnConstraints>
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="15.0" />
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="30.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="26.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="15.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                 <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Chauffeur :">
-                     <padding>
-                        <Insets left="20.0" />
-                     </padding>
-                  </Label>
-                  <Label text="Date :" GridPane.rowIndex="1" />
+                  <Label text="Date :" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="24.0" />
+                     </font></Label>
                   <Label text="Type de service :" GridPane.columnIndex="2" />
                   <Label text="Attestation mutuelle :" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="affChaufeur" text="xxxx xxxx" GridPane.columnIndex="1" />
-                  <Label fx:id="affDate" text="xx/xx/xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="affType" text="xxxxxx" GridPane.columnIndex="3" />
+                  <Label fx:id="affChaufeur" GridPane.columnIndex="1" />
+                  <Label fx:id="affDate" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="20.0" />
+                     </font></Label>
+                  <Label fx:id="affType" GridPane.columnIndex="3" />
                   <Label fx:id="affAttestation" text="oui/non" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Label text="Chauffeur :" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -132,11 +134,11 @@
                   <Label text="Localité" GridPane.columnIndex="2" />
                   <Label text="Résidence" GridPane.columnIndex="4" />
                   <Label text="Code postal" GridPane.columnIndex="3" />
-                  <Label fx:id="affHeureDepart" text="xxHxx" GridPane.rowIndex="1" />
-                  <Label fx:id="affAdresseDepart" text="xxxx xx xxx, xx" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="affLocaliteDepart" text="xxxxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="affCpDepart" text="xxxx" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="affResidence" text="xxxxxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Label fx:id="affHeureDepart" text="H" GridPane.rowIndex="1" />
+                  <Label fx:id="affAdresseDepart" text="                                                  " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="affLocaliteDepart" text="                        " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="affCpDepart" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Label fx:id="affResidence" text="                  " GridPane.columnIndex="4" GridPane.rowIndex="1" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -161,11 +163,11 @@
                   <Label text="Localité" GridPane.columnIndex="2" />
                   <Label text="Hopital" GridPane.columnIndex="4" />
                   <Label text="Code postal" GridPane.columnIndex="3" />
-                  <Label fx:id="affHeureRDV" text="xxHxx" GridPane.rowIndex="1" />
-                  <Label fx:id="affAdresseRDV" text="xxxx xx xxx, xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="affLocaliteRDV" text="xxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="affCpRDV" text="xxxx" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="affHopital" text="xxxxxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Label fx:id="affHeureRDV" text="H" GridPane.rowIndex="1" />
+                  <Label fx:id="affAdresseRDV" text="                                                  " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="affLocaliteRDV" text="                        " GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="affCpRDV" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <Label fx:id="affHopital" text="                  " GridPane.columnIndex="4" GridPane.rowIndex="1" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -189,17 +191,17 @@
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.columnSpan="2">
                      <children>
                         <Label text="Second chauffeur :" />
-                        <Label fx:id="affChaufeurSec" prefWidth="150.0" text="xxxxxx xxxx" />
+                        <Label fx:id="affChaufeurSec" />
                      </children></HBox>
                   <Label text="Heure de retour" GridPane.rowIndex="1" />
                   <Label text="Adresse" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label text="Localité" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                   <Label text="Code postal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <Label text="Attente :" GridPane.halignment="RIGHT" />
-                  <Label fx:id="affHeureRetour" text="xxHxx" GridPane.rowIndex="2" />
-                  <Label fx:id="affAdresseRetour" text="xxxx xx xxx, xx" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label fx:id="affLocaliteRetour" text="xxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Label fx:id="affCpRetour" text="xxxx" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                  <Label fx:id="affHeureRetour" text="H" GridPane.rowIndex="2" />
+                  <Label fx:id="affAdresseRetour" text="                                                  " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label fx:id="affLocaliteRetour" text="                        " GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label fx:id="affCpRetour" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                   <Label fx:id="affAttente" text="oui/non" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
                </children>
                <padding>
@@ -207,30 +209,30 @@
                </padding>
             </GridPane>
             <Label text="Notes" />
-            <Label fx:id="affNote" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="666.0" style="-fx-border-color: black;" text="xxx" wrapText="true">
+            <Label fx:id="affNote" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="666.0" style="-fx-border-color: black;" wrapText="true">
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding></Label>
             <HBox alignment="TOP_RIGHT">
                <children>
                   <Label text="Transport attribué par " />
-                  <Label fx:id="attributionName" text="xxx" />
+                  <Label fx:id="attributionName" text="                                    " />
                   <Label text=" le " />
-                  <Label fx:id="attributionDate" text="xx/xx/xx" />
+                  <Label fx:id="attributionDate" text="       /       /       " />
                </children>
             </HBox>
             <HBox alignment="TOP_RIGHT">
                <children>
                   <Label text="Le cas échéant, annulé par " />
-                  <Label fx:id="annulationName" text="xxx" />
+                  <Label fx:id="annulationName" text="                                    " />
                   <Label text=" le " />
-                  <Label fx:id="annulationDate" text="xx/xx/xx" />
+                  <Label fx:id="annulationDate" text="       /       /       " />
                </children>
             </HBox>
             <HBox alignment="TOP_RIGHT">
                <children>
                   <Label text="Car " />
-                  <Label fx:id="annulationRaison" text="xxxxxxxxxxxxxxxxxxx" />
+                  <Label fx:id="annulationRaison" text="                                                                 " />
                </children>
             </HBox>
          </children>

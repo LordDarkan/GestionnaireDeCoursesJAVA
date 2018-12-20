@@ -93,6 +93,13 @@ public abstract class ListeAppelantController {
 		}
 		return app;
 	}
+	
+	protected void saveNew(Appelant app) {
+		mapper.addNew(app);
+		selectedAppelant = app;
+		appelantsFull = mapper.getAppelantList();
+		recherche(true);
+	}
 
 	protected void save(Appelant app) {
 		mapper.addOrUpdate(app);
@@ -172,5 +179,9 @@ public abstract class ListeAppelantController {
 
 	protected List<CourseItemList> getCourses(Long id) {
 		return mapper.getCourseApplant(id);
+	}
+
+	protected boolean validIdApplant(Long id) {
+		return mapper.validIdAppelant(id);
 	}
 }
