@@ -15,13 +15,14 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox minHeight="600.0" minWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" hgap="5.0" vgap="5.0">
       	<columnConstraints>
       	    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="300.0" />
-      	    <ColumnConstraints hgrow="SOMETIMES" />
+      	    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
       	      <ColumnConstraints hgrow="SOMETIMES" />
             <ColumnConstraints hgrow="SOMETIMES" />
             <ColumnConstraints />
@@ -40,12 +41,7 @@
       	    
       	  </rowConstraints>
       	   <children>
-      	      <Button fx:id="btnAdd" mnemonicParsing="false" text="Ajouter" />
-            <TextField fx:id="recherche" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-            </TextField>
+      	      <Button fx:id="btnAdd" mnemonicParsing="false" text="Nouvel Appelant" />
       	      <ListView fx:id="listViewAppelant" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" GridPane.rowIndex="2" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
@@ -63,7 +59,6 @@
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnNewCourse" mnemonicParsing="false" text="Nouvelle Course" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -100,7 +95,7 @@
                   </Label>
                </children>
             </HBox>
-            <ScrollPane fitToWidth="true" maxWidth="900.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="7">
+            <ScrollPane fitToWidth="true" maxWidth="1200.0" GridPane.columnIndex="1" GridPane.columnSpan="4" GridPane.rowIndex="2" GridPane.rowSpan="7">
                <content>
                   <VBox alignment="CENTER" spacing="10.0">
                      <children>
@@ -222,7 +217,7 @@
                                     <Insets />
                                  </GridPane.margin>
                               </Label>
-                              <TextArea fx:id="infos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+                              <TextArea fx:id="infos" prefHeight="200.0" prefWidth="200.0" wrapText="true" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
@@ -253,10 +248,13 @@
                                     <Insets />
                                  </GridPane.margin>
                               </TextArea>
-                              <Label text="Autres remarques" GridPane.columnIndex="2" GridPane.valignment="BOTTOM">
+                              <Label text="Remarques Permanence" GridPane.columnIndex="2" GridPane.valignment="BOTTOM">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
                               </Label>
                               <TextField fx:id="tel" GridPane.rowIndex="1">
                                  <GridPane.margin>
@@ -321,9 +319,9 @@
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                            <children>
-                              <Label text="Famile" />
-                              <Label text="Chauffeurs Proches" GridPane.columnIndex="2" />
-                              <Label text="Restrictions Chauffeurs" GridPane.columnIndex="4" />
+                              <Label text="Famile" GridPane.columnSpan="2" />
+                              <Label text="Chauffeurs Proches" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                              <Label text="Restrictions Chauffeurs" GridPane.columnIndex="4" GridPane.columnSpan="2" />
                               <ListView fx:id="listViewFamille" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                               <ListView fx:id="listViewProche" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                               <ListView fx:id="listViewRestrict" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="1" />
@@ -344,6 +342,25 @@
                   </VBox>
                </content>
             </ScrollPane>
+            <GridPane alignment="CENTER" GridPane.rowIndex="1">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="55.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <TextField fx:id="recherche" />
+                  <Button fx:id="btnClear" mnemonicParsing="false" text="Effacer" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" GridPane.columnIndex="1">
+               <children>
+                  <Button fx:id="btnNewCourse" mnemonicParsing="false" text="Nouvelle Course" />
+                  <Button fx:id="btnPrint" mnemonicParsing="false" text="Imprimer Fiche Course" />
+               </children>
+            </HBox>
       	   </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
