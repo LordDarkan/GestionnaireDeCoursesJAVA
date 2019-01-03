@@ -1,6 +1,5 @@
 package data;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -434,7 +433,7 @@ public class MapperJPA extends Mapper {
 	@Override
 	public List<CourseItemList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date) {
 		StringBuilder query = new StringBuilder("SELECT t FROM Course t");
-		query.append(" WHERE t.date");
+		query.append(" WHERE t.annulation = false AND t.date");
 		if (day) {
 			query.append("=:locdate");
 		} else {
@@ -701,7 +700,7 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Course> q = em.createQuery(
-					"SELECT c FROM Course c WHERE c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureRDV", Course.class);
+					"SELECT c FROM Course c WHERE c.annulation = false AND c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureRDV", Course.class);
 			q.setParameter("arg1", id);
 			for (Course tuple : q.getResultList()) {
 				result.add(new CourseItemList(tuple));

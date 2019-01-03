@@ -99,11 +99,17 @@ public class Course {
 		dateAttribution = LocalDate.now();
 	}
 	
-	public void setChauffeur() {
+	public void setChauffeur(String nameAttribution) {
+		this.chauffeur = null;
+		this.nameAttribution = nameAttribution;
+		dateAttribution = LocalDate.now();
+	}
+	
+	/*TODO public void setChauffeur() {
 		this.chauffeur = null;
 		this.nameAttribution = "";
 		dateAttribution = null;
-	}
+	}*/
 
 	public LocalDate getDate() {
 		return date;

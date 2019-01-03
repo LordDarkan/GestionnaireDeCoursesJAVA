@@ -355,7 +355,7 @@
                      </GridPane>
                      <HBox alignment="TOP_RIGHT">
                         <children>
-                           <Label text="Transport attribué par " />
+                           <Label text="Dernière modification par " />
                            <Label fx:id="attributionName" text="xxx" />
                            <Label text=" le " />
                            <Label fx:id="attributionDate" text="xx/xx/xx" />
@@ -377,7 +377,7 @@
                      </HBox>
                      <HBox alignment="TOP_RIGHT">
                         <children>
-                           <Label text="Car " />
+                           <Label text="Raison annulation: " />
                            <Label fx:id="annulationRaison" text="xxxxxxxxxxxxxxxxxxx" />
                         </children>
                      </HBox>
