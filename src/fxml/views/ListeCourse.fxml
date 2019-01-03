@@ -345,17 +345,17 @@
                          <RowConstraints vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                           <TextArea fx:id="editNote" maxHeight="180.0" maxWidth="500.0" visible="false" />
                            <ScrollPane maxHeight="180.0" maxWidth="500.0">
                               <content>
                                  <Label fx:id="affNote" text="xxx" />
                               </content>
                            </ScrollPane>
+                           <TextArea fx:id="editNote" maxHeight="180.0" maxWidth="500.0" visible="false" />
                         </children>
                      </GridPane>
                      <HBox alignment="TOP_RIGHT">
                         <children>
-                           <Label text="Transport attribué par " />
+                           <Label text="Dernière modification par " />
                            <Label fx:id="attributionName" text="xxx" />
                            <Label text=" le " />
                            <Label fx:id="attributionDate" text="xx/xx/xx" />
@@ -377,7 +377,7 @@
                      </HBox>
                      <HBox alignment="TOP_RIGHT">
                         <children>
-                           <Label text="Car " />
+                           <Label text="Raison annulation: " />
                            <Label fx:id="annulationRaison" text="xxxxxxxxxxxxxxxxxxx" />
                         </children>
                      </HBox>

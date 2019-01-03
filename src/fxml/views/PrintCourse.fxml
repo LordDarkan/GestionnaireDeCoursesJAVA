@@ -40,7 +40,7 @@
                               <Insets bottom="6.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="nomCompletAppelant" text="_________________________________">
+                        <Label fx:id="nomCompletAppelant" text="__________________________">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -69,6 +69,16 @@
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding></Label>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label text="Téléphone" />
+                              <Label fx:id="telAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </Label>
                            </children>
                         </VBox>
                      </children>
@@ -215,7 +225,7 @@
                </padding></Label>
             <HBox alignment="TOP_RIGHT">
                <children>
-                  <Label text="Transport attribué par " />
+                  <Label text="Dernière modification par " />
                   <Label fx:id="attributionName" text="                                    " />
                   <Label text=" le " />
                   <Label fx:id="attributionDate" text="       /       /       " />
@@ -231,7 +241,7 @@
             </HBox>
             <HBox alignment="TOP_RIGHT">
                <children>
-                  <Label text="Car " />
+                  <Label text="Raison annulation:" />
                   <Label fx:id="annulationRaison" text="                                                                 " />
                </children>
             </HBox>

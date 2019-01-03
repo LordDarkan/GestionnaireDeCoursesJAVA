@@ -134,6 +134,9 @@ public class ListeCourseController {
 	protected void annulation(String str) {
 		selected.setAnnulation(true, user.getFullName());
 		selected.setRaisonAnnulation(str);
+		Chauffeur none = null;
+		selected.setChauffeur(none);
+		selected.setChauffeurSec(none);
 		mapper.addOrUpdate(selected);
 	}
 }

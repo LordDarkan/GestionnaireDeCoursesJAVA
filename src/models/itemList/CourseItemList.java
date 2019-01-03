@@ -17,6 +17,8 @@ public class CourseItemList {
 	private String adresseDest;
 	private String cpDest;
 	private String localiteDest;
+	private boolean annulation = false;
+	private String raisonAnnulation = "";
 	
 	public CourseItemList(Course course) {
 		id = course.getId();
@@ -26,11 +28,13 @@ public class CourseItemList {
 		}
 		type = course .getTypeCourse();
 		date = course.getDate();
-		heure = course.getHeureDomicile();
+		heure = course.getHeureRDV();
 		hopital = course.getHopital();
 		adresseDest = course.getAdresseDest();
 		cpDest = course.getCpDest();
 		localiteDest = course.getLocaliteDest();
+		annulation = course.isAnnulation();
+		raisonAnnulation = course.getRaisonAnnulation();
 	}
 	
 	public Long getId() {
@@ -81,7 +85,10 @@ public class CourseItemList {
 		str.append(" (");
 		str.append(cpDest);
 		str.append(")\n");
-		if (chauffeur!= null) {
+		if (annulation) {
+			str.append("/!\\ ANNULE /!\\ : ");
+			str.append(raisonAnnulation);
+		} else if (chauffeur!= null) {
 			str.append("Chauffeur: \t");
 			str.append(chauffeur.getName());
 			str.append(" ");
