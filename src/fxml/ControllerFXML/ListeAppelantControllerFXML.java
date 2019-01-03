@@ -39,6 +39,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import models.Appelant;
 import models.Residence;
@@ -165,6 +166,32 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		cbMr.setVisible(false);
 		cbMme.setVisible(false);
+		
+		/*listeViewCourse.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CourseItemList>() {
+		    @Override
+		    public void changed(ObservableValue<? extends CourseItemList> observable, CourseItemList oldValue, CourseItemList newValue) {
+		    	if(newValue!=null) {
+		    		selectCourse(newValue.getId());
+		    		listeViewCourse.getSelectionModel().select(-1);
+		    		//TODO int index = listeViewCourse.getSelectionModel().getSelectedIndex();
+		    		//listeViewCourse.getSelectionModel().clearSelection(index);
+		    	}
+		    }
+		});*/
+		
+		listeViewCourse.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+		    @Override
+		    public void handle(MouseEvent click) {
+
+		        if (click.getClickCount() == 2) {
+		        	CourseItemList courseItemList = listeViewCourse.getSelectionModel()
+		                                                    .getSelectedItem();
+		           selectCourse(courseItemList.getId());
+		        }
+		    }
+		});
+		
 		listViewAppelant.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AppelantItemList>() {
 		    @Override
 		    public void changed(ObservableValue<? extends AppelantItemList> observable, AppelantItemList oldValue, AppelantItemList newValue) {
@@ -309,6 +336,12 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	private void newCourse() {
 		if(isSelected()){
 			main.newCourse(getSelectedAppelant().getId());
+		}
+	}
+	
+	private void selectCourse(long idCourse) {
+		if(isSelected()){
+			main.selectCourse(idCourse);
 		}
 	}
 

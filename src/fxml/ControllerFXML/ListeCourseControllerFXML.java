@@ -572,6 +572,14 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editMode(true);
 	}
 	
+
+
+	public void selectCourse(Long idCourse) {
+		setSelectedCourse(idCourse);
+		affCourse(getSelectedCourse());
+		editMode(false);
+	}
+	
 	private void editMode(boolean edit) {
 		affichage.setVisible(isSelected());
 		edit &=isSelected();

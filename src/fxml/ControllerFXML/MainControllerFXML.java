@@ -96,9 +96,17 @@ public class MainControllerFXML extends MainController implements Initializable 
 		tabContainer.getSelectionModel().select(indiceCourseControllerFXML);
 		((ListeCourseControllerFXML)tabsController.get(indiceCourseControllerFXML)).newCourse(id);
 	}
+	
+	public void selectCourse(Long idCourse) {
+		int indiceCourseControllerFXML = 1;
+		tabContainer.getSelectionModel().select(indiceCourseControllerFXML);
+		((ListeCourseControllerFXML)tabsController.get(indiceCourseControllerFXML)).selectCourse(idCourse);
+	}
 
 	@Override
 	public void logout() {
 		login();
 	}
+
+	
 }
