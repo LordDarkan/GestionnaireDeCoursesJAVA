@@ -599,7 +599,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 				print = new PrintCourseControllerFXML();
 			}*/
 			PrintCourseControllerFXML print = new PrintCourseControllerFXML();
-			Node myPrint = print.getNode(getSelectedAppelant());
+			Node myPrint = print.getNode(getSelectedAppelant(),getUser());
 			
 			if (myPrint == null){
 				System.err.println("No file is open!");

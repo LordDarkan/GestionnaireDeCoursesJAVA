@@ -2,6 +2,8 @@ package fxml.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import models.Appelant;
 import models.Course;
+import models.Utilisateur;
 import util.DateTime;
 
 public class PrintCourseControllerFXML implements Initializable {
@@ -31,6 +34,8 @@ public class PrintCourseControllerFXML implements Initializable {
     private Label handicapAppelant;
     @FXML
     private Label aideAppelant;
+    @FXML
+    private Label telAppelant;
     @FXML
     private Label affChaufeur;
     @FXML
@@ -130,6 +135,7 @@ public class PrintCourseControllerFXML implements Initializable {
 	    nomCompletAppelant.setText(app.getFullName());
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticuliere());
+	    telAppelant.setText(app.getTel());
 		if (course.getChauffeur()!=null) {
 			affChaufeur.setText(course.getChauffeur().getFullName());
 		} else {
@@ -162,11 +168,22 @@ public class PrintCourseControllerFXML implements Initializable {
 	}
 	
 
-	public Node getNode(Appelant app) {
+	public Node getNode(Appelant app,Utilisateur user) {
+		creatDate.setText(DateTime.toString(LocalDate.now()));
+	    creatHeure.setText(DateTime.toString(LocalTime.now()));
+	    creatName.setText(user.getFullName());
+		
 		codeApplant.setText(app.getId().toString());
 	    nomCompletAppelant.setText(app.getFullName());
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticuliere());
+	    telAppelant.setText(app.getTel());
+	    
+	    affAdresseDepart.setText(app.getAdresse());
+	    affLocaliteDepart.setText(app.getLocalite());
+	    affCpDepart.setText(app.getCp());
+	    affResidence.setText(app.getResidence());
+	    
 		return content;
 	}
 

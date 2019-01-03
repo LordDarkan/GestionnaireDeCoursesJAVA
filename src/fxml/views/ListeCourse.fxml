@@ -345,12 +345,12 @@
                          <RowConstraints vgrow="SOMETIMES" />
                        </rowConstraints>
                         <children>
-                           <TextArea fx:id="editNote" maxHeight="180.0" maxWidth="500.0" visible="false" />
                            <ScrollPane maxHeight="180.0" maxWidth="500.0">
                               <content>
                                  <Label fx:id="affNote" text="xxx" />
                               </content>
                            </ScrollPane>
+                           <TextArea fx:id="editNote" maxHeight="180.0" maxWidth="500.0" visible="false" />
                         </children>
                      </GridPane>
                      <HBox alignment="TOP_RIGHT">

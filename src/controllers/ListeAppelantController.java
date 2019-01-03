@@ -22,6 +22,10 @@ public abstract class ListeAppelantController {
 		newLog(user);
 	}
 	
+	protected Utilisateur getUser() {
+		return user;
+	}
+	
 	protected void newLog(Utilisateur user) {
 		this.user = user;
 		mapper = Mapper.getInstance();
