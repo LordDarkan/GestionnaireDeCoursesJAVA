@@ -2,6 +2,7 @@ package data;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
+import application.Variable;
 import models.Appelant;
 import models.Chauffeur;
 import models.Course;
@@ -447,7 +449,7 @@ public class MapperJPA extends Mapper {
 						"((t.chauffeur IS NOT NULL AND t.chauffeur.id=:idchauf) OR (t.chauffeurSec IS NOT NULL AND t.chauffeurSec.id=:idchauf2))");
 			}
 		}
-		query.append(" ORDER BY t.date, t.heureDomicile");
+		query.append(" ORDER BY t.date, t.heureRDV");
 		List<CourseItemList> result = new LinkedList<CourseItemList>();
 		try {
 			EntityManager em = factory.createEntityManager();
@@ -699,7 +701,7 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Course> q = em.createQuery(
-					"SELECT c FROM Course c WHERE c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureDomicile", Course.class);
+					"SELECT c FROM Course c WHERE c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureRDV", Course.class);
 			q.setParameter("arg1", id);
 			for (Course tuple : q.getResultList()) {
 				result.add(new CourseItemList(tuple));
@@ -911,8 +913,9 @@ public class MapperJPA extends Mapper {
 						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
 						i.setDateStart(date);
 						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureDomicile());
-						i.setHeureEnd(course.getHeureRetour());
+						i.setHeureStart(course.getHeureRDV());
+						LocalTime fin = course.getHeureRetour().equals(LocalTime.MIDNIGHT)?course.getHeureRDV().plusHours(Variable.FORFAIT_HEURE):course.getHeureRetour();
+						i.setHeureEnd(fin);
 						result.get(c.getId()).add(i);
 					}
 				} else {
@@ -921,28 +924,28 @@ public class MapperJPA extends Mapper {
 						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
 						i.setDateStart(date);
 						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureDomicile());
-						i.setHeureEnd(course.getHeureRDV().plusMinutes(30));
+						i.setHeureStart(course.getHeureRDV());
+						i.setHeureEnd(course.getHeureRDV().plusHours(Variable.FORFAIT_HEURE));
 						result.get(c.getId()).add(i);
 					}
-
-					long elapsedMinutes = Duration.between(course.getHeureDomicile(), course.getHeureRDV()).toMinutes();
+					
+					LocalTime fin = course.getHeureRetour().equals(LocalTime.MIDNIGHT)?course.getHeureRDV().plusHours(Variable.RDV_RETOUR_DEFAULT_HEURE):course.getHeureRetour();
 
 					if (cs != null) {
 						i = new IndisponibiliteCourse(course.getAppelant().getFullName());
 						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
 						i.setDateStart(date);
 						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureRetour().minusMinutes(elapsedMinutes));
-						i.setHeureEnd(course.getHeureRetour());
+						i.setHeureStart(fin.minusHours(Variable.FORFAIT_HEURE));
+						i.setHeureEnd(fin);
 						result.get(cs.getId()).add(i);
 					} else if (c != null) {
 						i = new IndisponibiliteCourse(course.getAppelant().getFullName());
 						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
 						i.setDateStart(date);
 						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureRetour().minusMinutes(elapsedMinutes));
-						i.setHeureEnd(course.getHeureRetour());
+						i.setHeureStart(fin.minusHours(Variable.FORFAIT_HEURE));
+						i.setHeureEnd(fin);
 						result.get(c.getId()).add(i);
 					}
 				}
