@@ -24,8 +24,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+import application.Variable;
 import models.Appelant;
 import models.Settings;
+import models.Utilisateur;
 import util.DateTime;
 
 public class SaveManager {
@@ -101,7 +103,7 @@ public class SaveManager {
 		Settings settings = mapper.getSettings();
 		LocalDate lastSave = settings.getLastSave();
 		LocalDate time = LocalDate.now();
-		if (lastSave.plusDays(settings.getSaveFrequency()).isBefore(time)) {
+		if (lastSave.plusDays(1+Variable.SAVE_FREQUENCE_JOUR/*settings.getSaveFrequency()*/).isBefore(time)) {
 			String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 					+ DateTime.getNameSave(time);
 			creatSave(pathName, mapper);
@@ -115,6 +117,16 @@ public class SaveManager {
 		LocalDateTime time = LocalDateTime.now();
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time);
+		creatSave(pathName, mapper);
+		settings.save();
+	}
+	
+	public static void saveDeco(Utilisateur user) {
+		Mapper mapper = Mapper.getInstance();
+		Settings settings = mapper.getSettings();
+		LocalDateTime time = LocalDateTime.now();
+		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
+				+ DateTime.getNameSave(time)+" "+user.getFullName();
 		creatSave(pathName, mapper);
 		settings.save();
 	}

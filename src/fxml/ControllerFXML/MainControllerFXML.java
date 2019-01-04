@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 
 import application.MyApp;
 import controllers.MainController;
+import data.SaveManager;
+import fxml.Message;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,6 +38,8 @@ public class MainControllerFXML extends MainController implements Initializable 
     
     private TabPane tabContainer;
     
+    private Utilisateur user;
+    
     public MainControllerFXML() {
     	tabsController = new LinkedList<ITabController>();
     	tabContainer = null;
@@ -43,7 +47,7 @@ public class MainControllerFXML extends MainController implements Initializable 
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		mainBtnLogout.setOnAction((ActionEvent e) -> login());
+		mainBtnLogout.setOnAction((ActionEvent e) -> logout());
 		login();
 	}
 	
@@ -65,6 +69,7 @@ public class MainControllerFXML extends MainController implements Initializable 
 	
 	@Override
 	public void connectWith(Utilisateur user) {
+		this.user = user;
 		super.connectWith(user);
 		mainContainer.getChildren().clear();
 		mainLabelName.setText(getUser().getShortName());
@@ -105,6 +110,11 @@ public class MainControllerFXML extends MainController implements Initializable 
 
 	@Override
 	public void logout() {
+		try {
+			SaveManager.saveDeco(user);
+		} catch (Exception e) {
+			Message.alert(e.getMessage());
+		}
 		login();
 	}
 
