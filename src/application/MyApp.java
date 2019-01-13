@@ -22,16 +22,17 @@ public class MyApp extends Application {
 	@Override
 	public void start(Stage stage) {
 		if (UniqueInstanceTester.launch(null/* FIXME stage */)) {
-			try {
-				LogFileManager.checkFiles();
-			} catch (Exception e) {
-				//TODO fxml.Message.msg("");
-			}
 			stage.setTitle("Gestionnaire de Courses");
 			stage.getIcons().add(new Image(MyApp.class.getResourceAsStream("short.png")));
 			try {
 				Mapper.setInstance(new MapperJPA());
 				Mapper.getInstance().init();
+				try {
+					LogFileManager.checkFiles();
+				} catch (Exception e) {
+					LoggerManager.info("ERR CHECK FILES");
+					//TODO fxml.Message.msg("");
+				}
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(MyApp.class.getClassLoader().getResource("fxml/views/Main.fxml"));
 				loader.setController(new MainControllerFXML());

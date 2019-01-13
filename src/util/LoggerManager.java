@@ -15,13 +15,26 @@ public class LoggerManager {
 		LOGGER = Logger.getLogger("GDC-Global");
 		if (LogFileManager.ENABLE) {
 			try {
-				Handler handler = new FileHandler(LogFileManager.PATH_DEFAULT,true);
+				Handler handler = new FileHandler(LogFileManager.getDefaultPath(),true);
 				handler.setFormatter(new SimpleFormatter());
 				LOGGER.addHandler(handler);
 			} catch (SecurityException | IOException e) {
-				LOGGER.log(Level.SEVERE, "Handler "+LogFileManager.PATH_DEFAULT, e);
+				LOGGER.log(Level.SEVERE, "Handler "+LogFileManager.getDefaultPath(), e);
 			}
 		}
+	}
+	
+	public static Logger getPathLogger(String path) {
+		System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
+		Logger log = Logger.getLogger("GDC-Settings");
+		Handler handler;
+		try {
+			handler = new FileHandler(path+LogFileManager.SEPARATOR+"settings"+LogFileManager.EXTENTION,true);
+			handler.setFormatter(new SimpleFormatter());
+			log.addHandler(handler);
+		} catch (Exception e) {
+		}
+		return log;
 	}
 
 	public static Logger getLogger() {
