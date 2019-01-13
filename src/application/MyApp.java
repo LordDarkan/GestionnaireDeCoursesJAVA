@@ -1,6 +1,10 @@
 package application;
 
-import data.*;
+import java.util.logging.Level;
+
+import data.Mapper;
+import data.MapperJPA;
+import data.SaveManager;
 import fxml.ControllerFXML.MainControllerFXML;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,13 +12,21 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import util.LogFileManager;
+import util.LoggerManager;
 import util.UniqueInstanceTester;
+import util.UserManager;
 
 public class MyApp extends Application {
 
 	@Override
 	public void start(Stage stage) {
 		if (UniqueInstanceTester.launch(null/* FIXME stage */)) {
+			try {
+				LogFileManager.checkFiles();
+			} catch (Exception e) {
+				//TODO fxml.Message.msg("");
+			}
 			stage.setTitle("Gestionnaire de Courses");
 			stage.getIcons().add(new Image(MyApp.class.getResourceAsStream("short.png")));
 			try {
@@ -29,10 +41,12 @@ public class MyApp extends Application {
 				stage.setScene(scene);
 				stage.setOnCloseRequest(event -> close(stage));
 				stage.setMaximized(true);
-				stage.setResizable(true);// TODO
+				stage.setResizable(true);// TODO setResizable?
 				stage.show();
+
+				LoggerManager.info("App START");
 			} catch (Exception e) {
-				e.printStackTrace();
+				LoggerManager.getLogger().log(Level.SEVERE, "App START", e);
 				System.exit(-1);
 			}
 		} else {
@@ -46,10 +60,9 @@ public class MyApp extends Application {
 	}
 
 	public void close(Stage stage) {
+		LoggerManager.info("App CLOSED by "+UserManager.getFullName());
 		stage.close();
-
-		// SaveManager.compress("D:/Users/Denis/OneDrive/perso/teleservice/test2");
-
+		
 		SaveManager.autoSave();
 
 		System.exit(0);

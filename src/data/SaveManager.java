@@ -27,8 +27,8 @@ import java.util.zip.ZipOutputStream;
 import application.Variable;
 import models.Appelant;
 import models.Settings;
-import models.Utilisateur;
 import util.DateTime;
+import util.UserManager;
 
 public class SaveManager {
 	private static final String extention = ".gdc.zip";
@@ -118,17 +118,17 @@ public class SaveManager {
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time);
 		creatSave(pathName, mapper);
-		settings.save();
+		//TODO settings.save();
 	}
 	
-	public static void saveDeco(Utilisateur user) {
+	public static void saveDeco() {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
 		LocalDateTime time = LocalDateTime.now();
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
-				+ DateTime.getNameSave(time)+" "+user.getFullName();
+				+ DateTime.getNameSave(time)+" "+UserManager.getFullName();
 		creatSave(pathName, mapper);
-		settings.save();
+		//TODO settings.save();
 	}
 
 	private static void creatSave(String pathName, Mapper mapper) {
@@ -190,6 +190,7 @@ public class SaveManager {
 		}
 	}
 
+	@Deprecated
 	public static List<Appelant> old2Appelants(File file) {// 24.03.1949
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		List<Appelant> appelants = new LinkedList<Appelant>();
@@ -282,6 +283,7 @@ public class SaveManager {
 		return appelants;
 	}
 
+	@Deprecated
 	public static List<Appelant> oldAppelants(File file) {// 24.03.1949
 		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 		List<Appelant> appelants = new LinkedList<Appelant>();

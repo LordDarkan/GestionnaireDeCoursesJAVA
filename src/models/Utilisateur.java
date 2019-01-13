@@ -31,7 +31,13 @@ public class Utilisateur {
 	}
 	
 	public String getFullName() {
-		return String.format("%s %s", name, firstname);
+		String fullName;
+		if (firstname.isEmpty() && name.isEmpty()) {
+			fullName = "SOMEONE";
+		} else {
+			fullName = String.format("%s %s", name, firstname);
+		}
+		return fullName;
 	}
 
 	public String getShortName() {

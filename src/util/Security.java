@@ -38,4 +38,8 @@ public class Security {
 	public static boolean isDelOk() {
 		return false;
 	}
+	
+	public static boolean isAnnulationOk() {
+		return false;
+	}
 }

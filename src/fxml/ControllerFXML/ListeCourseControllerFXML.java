@@ -8,6 +8,10 @@ import java.util.ResourceBundle;
 
 import controllers.ListeCourseController;
 import fxml.Message;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.print.PageLayout;
@@ -15,12 +19,6 @@ import javafx.print.PageOrientation;
 import javafx.print.Paper;
 import javafx.print.Printer;
 import javafx.print.PrinterJob;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -31,6 +29,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -47,6 +47,7 @@ import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import util.DateTime;
+import util.Security;
 import util.TypeCourse;
 
 public class ListeCourseControllerFXML extends ListeCourseController implements Initializable, ITabController {
@@ -529,7 +530,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 
 	private void annulationF() {
-		if (isSelected()) {
+		if (Security.isAnnulationOk() && isSelected()) {
 			String str = Message.getString("Raison de l'annulation", null);
 			if (str != null) {
 				super.annulation(str);
@@ -600,7 +601,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		btnSave.setVisible(edit);
 		btnAnn.setVisible(edit);
 
-		btnAnnulerCourse.setVisible(!edit && isSelected() && !getSelectedCourse().isAnnulation());
+		btnAnnulerCourse.setVisible(Security.isAnnulationOk() && !edit && isSelected() && !getSelectedCourse().isAnnulation());
 
 		listViewCourses.setDisable(edit);
 		editChauffeur.setVisible(edit);

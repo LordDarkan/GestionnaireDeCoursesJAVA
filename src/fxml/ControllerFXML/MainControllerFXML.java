@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import application.MyApp;
 import controllers.MainController;
@@ -22,8 +24,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import models.Utilisateur;
+import util.LoggerManager;
+import util.UserManager;
 
 public class MainControllerFXML extends MainController implements Initializable {
+	private static final Logger LOG = LoggerManager.getLogger();
 
 	@FXML
     private VBox mainContainer;
@@ -37,8 +42,6 @@ public class MainControllerFXML extends MainController implements Initializable 
     private List<ITabController> tabsController;
     
     private TabPane tabContainer;
-    
-    private Utilisateur user;
     
     public MainControllerFXML() {
     	tabsController = new LinkedList<ITabController>();
@@ -69,7 +72,8 @@ public class MainControllerFXML extends MainController implements Initializable 
 	
 	@Override
 	public void connectWith(Utilisateur user) {
-		this.user = user;
+		LOG.info("LOGIN "+user.getFullName());
+		UserManager.setUser(user);
 		super.connectWith(user);
 		mainContainer.getChildren().clear();
 		mainLabelName.setText(getUser().getShortName());
@@ -110,9 +114,11 @@ public class MainControllerFXML extends MainController implements Initializable 
 
 	@Override
 	public void logout() {
+		LOG.info("LOGOUT "+UserManager.getFullName());
 		try {
-			SaveManager.saveDeco(user);
+			SaveManager.saveDeco();
 		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "SAVE LOGOUT "+ UserManager.getFullName(), e);
 			Message.alert(e.getMessage());
 		}
 		login();
