@@ -380,7 +380,7 @@ public class Course {
 		str.append(nameAnnulation);
 		str.append(";");
 		if (dateAnnulation != null)
-			str.append(DateTime.toString(dateAnnulation));
+			str.append(DateTime.saveToString(dateAnnulation));//FIXME SUPP ANNULATION
 		str.append(";END");
 		return str.toString();
 	}

@@ -18,3 +18,5 @@ build/
 
 bin/
 /derby.log
+
+*.log

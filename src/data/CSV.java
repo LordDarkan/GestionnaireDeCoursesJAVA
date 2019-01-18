@@ -3,7 +3,6 @@ package data;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,6 +10,8 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import models.Appelant;
 import models.Chauffeur;
@@ -20,10 +21,12 @@ import models.Indisponibilite;
 import models.Residence;
 import models.Utilisateur;
 import util.DateTime;
+import util.LoggerManager;
 import util.Titre;
 import util.TypeCourse;
 
 public class CSV {
+	public static final Logger LOG = LoggerManager.getLogger();
 
 	public static List<Appelant> readAppelant(InputStreamReader inputStreamReader) {
 		List<Appelant> appelants = new LinkedList<Appelant>();
@@ -52,8 +55,7 @@ public class CSV {
 						try {
 							appelant.setId(Long.parseLong(row[0].trim()));
 						} catch (Exception e) {
-							// e.printStackTrace();
-							System.out.println(row[0].trim());
+							LOG.log(Level.WARNING, "idApplant : "+row[0].trim());
 						}
 						appelant.setTitre(Titre.get(row[1].trim()));
 						appelant.setName(row[2].trim());
@@ -86,10 +88,8 @@ public class CSV {
 					}
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readAppelant", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -129,8 +129,7 @@ public class CSV {
 						try {
 							chauffeur.setId(Long.parseLong(row[0].trim()));
 						} catch (Exception e) {
-							// e.printStackTrace();
-							System.out.println(row[0].trim());
+							LOG.log(Level.WARNING, "idChauffeur : "+row[0].trim());
 						}
 						chauffeur.setTitre(Titre.get(row[1].trim()));
 						chauffeur.setName(row[2].trim());
@@ -144,10 +143,8 @@ public class CSV {
 					}
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readChauffeur", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -229,10 +226,8 @@ public class CSV {
 					courses.add(course);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readCourse", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -279,10 +274,8 @@ public class CSV {
 					indisponibilites.add(indisp);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readIndisponibilite", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -326,10 +319,8 @@ public class CSV {
 					hopitaux.add(hopital);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readHopital", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -373,10 +364,8 @@ public class CSV {
 					residences.add(residence);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readResidence", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -420,10 +409,8 @@ public class CSV {
 					utilisateurs.add(utilisateur);
 				}
 			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "readUtilisateur", e);
 		} finally {
 			if (br != null) {
 				try {
@@ -446,9 +433,9 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteAppelant", e);
+		} 
 	}
 
 	public static void wirteChauffeur(List<Chauffeur> list, File file) {
@@ -461,9 +448,9 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteChauffeur", e);
+		} 
 	}
 
 	public static void wirteCourse(List<Course> list, File file) {
@@ -476,9 +463,9 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteCourse", e);
+		} 
 	}
 
 	public static void wirteIndisponibilite(List<Indisponibilite> list, File file) {
@@ -491,9 +478,9 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteIndisponibilite", e);
+		} 
 	}
 
 	public static void wirteHopital(List<Hopital> list, File file) {
@@ -506,9 +493,9 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteHopital", e);
+		} 
 	}
 
 	public static void wirteResidence(List<Residence> list, File file) {
@@ -521,9 +508,9 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteResidence", e);
+		} 
 	}
 
 	public static void wirteUtilisateur(List<Utilisateur> list, File file) {
@@ -536,8 +523,8 @@ public class CSV {
 				writer.newLine();
 			}
 			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+		} 
 	}
 }

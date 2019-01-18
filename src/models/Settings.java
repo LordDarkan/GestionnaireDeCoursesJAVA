@@ -1,10 +1,14 @@
 package models;
 
+import java.io.File;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.logging.Level;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import util.LoggerManager;
 
 @Entity
 public class Settings {
@@ -31,11 +35,15 @@ public class Settings {
 		    myDocuments = new String(b);
 		    myDocuments = myDocuments.split("\\s\\s+")[4];
 		    pathSaveDirectory = myDocuments+"\\Sauvegarde Gestionnaire de courses";
-		} catch(Throwable t) {
-		    t.printStackTrace();
+		} catch(Exception t) {
 		    pathSaveDirectory = System.getProperty("user.home")+System.getProperty("file.separator")+"Sauvegarde Gestionnaire de courses";
+			LoggerManager.getPathLogger(pathSaveDirectory).log(Level.SEVERE, "path save : "+myDocuments, t);
 		}
-		setSaveFrequency(30L);
+		File file = new File(pathSaveDirectory);
+		if(!file.exists()) { 
+			file.mkdirs();
+		}
+		setSaveFrequency(30L);//TODO setSaveFrequency
 		lasteSave = LocalDate.now();
 	}
 	

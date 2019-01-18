@@ -12,6 +12,7 @@ public class DateTime {
 	private static final DateTimeFormatter formatHeure = DateTimeFormatter.ofPattern("HH'H'mm");
 	private static final DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 	private static final DateTimeFormatter formatDateSave = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	private static final DateTimeFormatter formatDateLog = DateTimeFormatter.ofPattern("MMMM yyyy");
 	
 	public static String toString(LocalTime heure) {
         return heure.format(formatHeure);
@@ -42,11 +43,15 @@ public class DateTime {
         return LocalTime.of((totalSeconds / 3600) % 24, (totalSeconds / 60) % 60);
 	}
 
-	public static String getNameSave(LocalDate heure) {
-        return heure.format(formatIdAutoSave);
+	public static String getNameSave(LocalDate date) {
+        return date.format(formatIdAutoSave);
 	}
 	
 	public static String getNameSave(LocalDateTime heure) {
         return heure.format(formatIdSave);
+	}
+	
+	public static String getNameLog(LocalDate date) {
+        return date.format(formatDateLog);
 	}
 }
