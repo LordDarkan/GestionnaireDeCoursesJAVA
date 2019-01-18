@@ -111,13 +111,13 @@ public class SaveManager {
 		}
 	}
 
-	public static void save() {
+	public static boolean save() {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
 		LocalDateTime time = LocalDateTime.now();
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time);
-		creatSave(pathName, mapper);
+		return creatSave(pathName, mapper);
 		//TODO settings.save();
 	}
 	
@@ -131,7 +131,8 @@ public class SaveManager {
 		//TODO settings.save();
 	}
 
-	private static void creatSave(String pathName, Mapper mapper) {
+	private static boolean creatSave(String pathName, Mapper mapper) {
+		boolean saveOk = true;
 		String separator = System.getProperty("file.separator");
 		File save = new File(pathName);
 		if (save.exists()) {
@@ -143,25 +144,26 @@ public class SaveManager {
 		}
 
 		File write = new File(save.getAbsolutePath() + separator + "Appelant.csv");
-		CSV.wirteAppelant(mapper.getAllAppelant(), write);
+		saveOk &= CSV.wirteAppelant(mapper.getAllAppelant(), write);
 		write = new File(save.getAbsolutePath() + separator + "Chauffeur.csv");
-		CSV.wirteChauffeur(mapper.getAllChauffeur(), write);
+		saveOk &=CSV.wirteChauffeur(mapper.getAllChauffeur(), write);
 		write = new File(save.getAbsolutePath() + separator + "Course.csv");
-		CSV.wirteCourse(mapper.getAllCourse(), write);
+		saveOk &=CSV.wirteCourse(mapper.getAllCourse(), write);
 		write = new File(save.getAbsolutePath() + separator + "Indisponibilite.csv");
-		CSV.wirteIndisponibilite(mapper.getAllIndisponibilite(), write);
+		saveOk &=CSV.wirteIndisponibilite(mapper.getAllIndisponibilite(), write);
 		write = new File(save.getAbsolutePath() + separator + "Hopital.csv");
-		CSV.wirteHopital(mapper.getListHopital(), write);
+		saveOk &=CSV.wirteHopital(mapper.getListHopital(), write);
 		write = new File(save.getAbsolutePath() + separator + "Residence.csv");
-		CSV.wirteResidence(mapper.getListResidence(), write);
+		saveOk &=CSV.wirteResidence(mapper.getListResidence(), write);
 		write = new File(save.getAbsolutePath() + separator + "Utilisateur.csv");
-		CSV.wirteUtilisateur(mapper.getAllUser(), write);
+		saveOk &=CSV.wirteUtilisateur(mapper.getAllUser(), write);
 
 		compress(save.getAbsolutePath());
 		for (File content : save.listFiles()) {
 			content.delete();
 		}
 		save.delete();
+		return saveOk;
 	}
 
 	private static void compress(String dirPath) {

@@ -72,8 +72,11 @@ public class ImportExportControllerFXML extends ImportExportController implement
 	
 	private void saveF() {
 		try {
-			super.save();
-			Message.msg("Sauvegarde effectuée");
+			if (super.save()) {
+				Message.msg("Sauvegarde effectuée");
+			} else {
+				Message.alert("Sauvegarde effectuée\nMais une erreur s'est produite!");
+			}
 		} catch (Exception e) {
 			Message.alert("Erreur lors de la sauvagarde");
 		}
