@@ -20,7 +20,7 @@ public class Appelant {
 	private Titre titre = Titre.Aucun;
 	private String name = "";
 	private String firstname = "";
-	private LocalDate birthday = LocalDate.now();
+	private LocalDate birthday = null;
 	private String tel = "";
 	
 	private String residence = "";
@@ -60,10 +60,6 @@ public class Appelant {
 	}
 	public void setFirstname(String firstname) {
 		this.firstname = firstname;
-	}
-	
-	public String getStrBirthday() {
-		return String.format("%d-%d-%d", birthday.getDayOfMonth(),birthday.getMonth(),birthday.getYear());
 	}
 	
 	public LocalDate getBirthday() {
@@ -218,7 +214,8 @@ public class Appelant {
 		str.append(";");
 		str.append(firstname);
 		str.append(";");
-		str.append(DateTime.saveToString(birthday));//date
+		if (birthday!=null)
+			str.append(DateTime.saveToString(birthday));//date
 		str.append(";");
 		str.append(tel);
 		str.append(";");
