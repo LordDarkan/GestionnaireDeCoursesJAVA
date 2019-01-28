@@ -133,4 +133,9 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		newLog(user);
 		tab.setDisable(!isAdmin());
 	}
+
+	@Override
+	public void select(Long id) {
+		throw new UnsupportedOperationException();
+	}
 }

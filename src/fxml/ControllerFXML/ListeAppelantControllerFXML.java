@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.bind.ValidationException;
 
@@ -33,10 +35,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.MouseEvent;
@@ -47,9 +47,12 @@ import models.Utilisateur;
 import models.itemList.AppelantItemList;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
+import util.LoggerManager;
 import util.Security;
+import util.UserManager;
 
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
+	private static final Logger LOG = LoggerManager.getLogger();
 	@FXML
     private Button btnAdd;
 	@FXML
@@ -73,10 +76,6 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private Label code;
     @FXML
-    private RadioButton cbMr;
-    @FXML
-    private RadioButton cbMme;
-    @FXML
     private TextField nom;
     @FXML
     private TextField prenom;
@@ -93,17 +92,17 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private TextField quartier;
     @FXML
-    private TextArea infos;
+    private TextField infos;
     @FXML
     private ComboBox<String> residence;
     @FXML
-    private TextArea autre;
+    private TextField autre;
     @FXML
     private TextField tel;
     @FXML
     private TextField mobilite;
     @FXML
-    private TextField mutualite;
+    private TextField payement;
     @FXML
     private TextField cotisation;
     @FXML
@@ -164,8 +163,6 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		cbMr.setVisible(false);
-		cbMme.setVisible(false);
 		
 		/*listeViewCourse.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<CourseItemList>() {
 		    @Override
@@ -187,7 +184,9 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		        if (click.getClickCount() == 2) {
 		        	CourseItemList courseItemList = listeViewCourse.getSelectionModel()
 		                                                    .getSelectedItem();
-		           selectCourse(courseItemList.getId());
+		        	if(courseItemList != null) {
+		        		selectCourse(courseItemList.getId());
+		        	}
 		        }
 		    }
 		});
@@ -411,7 +410,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		app.setQuartier(quartier.getText().trim());
 		app.setTel(tel.getText().trim());
 		app.setMobilite(mobilite.getText().trim());
-		app.setMutualite(mutualite.getText().trim());
+		//app.setMutualite(mutualite.getText().trim());
+		app.setPayement(payement.getText().trim());
 		try {
 			app.setCotisation(Integer.parseInt(cotisation.getText().trim()));
 		} catch (Exception e) {
@@ -438,6 +438,9 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	private void editerF() {
 		if(isSelected()) {
 			editMode(true);
+			if(!isAdmin()) {
+				autre.requestFocus();
+			}
 		}
 	}
 
@@ -492,7 +495,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		quartier.setEditable(b);
 		tel.setEditable(b);
 		mobilite.setEditable(b);
-		mutualite.setEditable(b);
+		payement.setEditable(b);
+		//mutualite.setEditable(b);
 		cotisation.setEditable(b);
 		aide.setEditable(b);
 		infos.setEditable(b);
@@ -517,7 +521,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		quartier.setText(app.getQuartier());
 		tel.setText(app.getTel());
 		mobilite.setText(app.getMobilite());
-		mutualite.setText(app.getMutualite());
+		//mutualite.setText(app.getMutualite());
+		payement.setText(app.getPayement());
 		cotisation.setText(""+app.getCotisation());
 		aide.setText(app.getAideParticuliere());
 		infos.setText(app.getInfos());
@@ -589,6 +594,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	
 	private void clearSearch() {
 		recherche.setText("");
+		recherche.requestFocus();
 		//setListeAppelant(search(""));
 	}
 	
@@ -608,7 +614,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 			
 			PrinterJob printAction = PrinterJob.createPrinterJob();
 			if (printAction == null){
-				System.err.println("Unable to access system print utilities");
+				LOG.log(Level.WARNING, "IMPRIMER FROM APPELANT Unable to access system print utilities "+ UserManager.getFullName());
 				return;
 			}
 			PageLayout pageLayout = Printer.getDefaultPrinter().createPageLayout(Paper.A4, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
@@ -620,9 +626,13 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 				if (success)
 					printAction.endJob();
 				else
-					 System.err.println("Print may have failed");
+					LOG.log(Level.WARNING, "IMPRIMER FROM APPELANT "+ UserManager.getFullName());
 			}
 		}
 	}
-	
+
+	@Override
+	public void select(Long id) {
+		throw new UnsupportedOperationException();
+	}
 }

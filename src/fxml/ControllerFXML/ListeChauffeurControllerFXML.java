@@ -241,4 +241,9 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		editMode(false);
 		setListeChauffeur(search(""));
 	}
+
+	@Override
+	public void select(Long id) {
+		throw new UnsupportedOperationException();
+	}
 }

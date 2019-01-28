@@ -22,6 +22,7 @@ import models.Residence;
 import models.Utilisateur;
 import util.DateTime;
 import util.LoggerManager;
+import util.Trajet;
 import util.Titre;
 import util.TypeCourse;
 
@@ -200,28 +201,19 @@ public class CSV {
 					course.setCpDep(row[11].trim());
 					course.setLocaliteDep(row[12].trim());
 					course.setTypeCourse(TypeCourse.get(row[13].trim()));
-					course.setMutuelle(row[14].trim().equalsIgnoreCase("oui"));
+					
+					course.setTrajet(Trajet.get(row[14].trim()));
+					
 					course.setHeureRDV(DateTime.toLocalTime(row[15].trim()));
 					course.setHopital(row[16].trim());
 					course.setAdresseDest(row[17].trim());
 					course.setCpDest(row[18].trim());
 					course.setLocaliteDest(row[19].trim());
-					course.setAttente(row[20].trim().equalsIgnoreCase("oui"));
-					if (!row[21].trim().isEmpty()) {
-						id = Long.parseLong(row[21].trim());
-						course.setChauffeurSec(mapper.getChauffeur(id));
-					}
 					course.setHeureRetour(DateTime.toLocalTime(row[22].trim()));
 					course.setAdresseRet(row[23].trim());
 					course.setCpRet(row[24].trim());
 					course.setLocaliteRet(row[25].trim());
 					course.setNotes(row[26].trim());
-					course.setAnnulation(row[27].trim().equalsIgnoreCase("oui"));
-					course.setRaisonAnnulation(row[28].trim());
-					course.setNameAnnulation(row[29].trim());
-					if (!row[30].trim().isEmpty()) {
-						course.setDateAnnulation(DateTime.saveToLocalDate(row[30].trim()));//DATE
-					}
 
 					courses.add(course);
 				}

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import util.DateTime;
+import util.Trajet;
 
 @Entity
 public class Indisponibilite implements Comparable<Indisponibilite> {
@@ -71,6 +72,12 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public Trajet getModeCourse() {
+		return null;
+	}
+	public void setModeCourse(Trajet mode) {
+	}
 	@Override
 	public int compareTo(Indisponibilite arg0) {
 		int resultat = dateStart.compareTo(arg0.dateStart);
@@ -98,5 +105,4 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 	public static String getEnTeteCsv() {
 		return "ID_CHAUFFEUR;DATE_START;HEURE_START;DATE_END;HEURE_END;DESCRIPTION;END";
 	}
-	
 }

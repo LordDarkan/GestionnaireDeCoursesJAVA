@@ -13,7 +13,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox fx:id="affichage" maxHeight="734.0" maxWidth="487.0">
+      <VBox fx:id="affichage" maxHeight="734.0" maxWidth="487.0" prefHeight="734.0" prefWidth="487.0">
          <children>
             <HBox alignment="TOP_RIGHT">
                <children>
@@ -26,7 +26,7 @@
                </children>
             </HBox>
             <Label text="Appelant" />
-            <VBox spacing="10.0" style="-fx-border-color: black;">
+            <VBox spacing="5.0" style="-fx-border-color: black;">
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
                      <children>
@@ -50,12 +50,39 @@
                         <Insets left="20.0" />
                      </VBox.margin>
                   </HBox>
-                  <HBox spacing="10.0">
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
+                     <children>
+                        <VBox>
+                           <children>
+                              <Label text="Téléphone" />
+                              <Label fx:id="telAppelant" minWidth="250.0" style="-fx-border-color: black;" wrapText="true">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox>
+                           <children>
+                              <Label text="Paiement" />
+                              <Label fx:id="facturationAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
+                                 <padding>
+                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
                         <VBox>
                            <children>
                               <Label text="Handicap(s) particulier(s)" />
-                              <Label fx:id="handicapAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
+                              <Label fx:id="handicapAppelant" minWidth="200.0" style="-fx-border-color: black;" wrapText="true">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding>
@@ -65,58 +92,65 @@
                         <VBox>
                            <children>
                               <Label text="Aide spécialisée" />
-                              <Label fx:id="aideAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
+                              <Label fx:id="aideAppelant" minWidth="200.0" style="-fx-border-color: black;" wrapText="true">
                                  <padding>
                                     <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                  </padding></Label>
                            </children>
                         </VBox>
-                        <VBox>
-                           <children>
-                              <Label text="Téléphone" />
-                              <Label fx:id="telAppelant" minWidth="150.0" style="-fx-border-color: black;" wrapText="true">
-                                 <padding>
-                                    <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                        </VBox>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                        <Insets />
                      </VBox.margin>
                   </HBox>
                </children>
                <VBox.margin>
-                  <Insets />
+                  <Insets bottom="5.0" />
                </VBox.margin>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
             </VBox>
             <GridPane hgap="10.0" vgap="5.0">
               <columnConstraints>
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="15.0" />
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="26.0" />
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="15.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="40.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label fx:id="affDate" text="Date :">
+                     <font>
+                        <Font size="24.0" />
+                     </font></Label>
+                  <Label fx:id="modeCourse" text="aller-retour / aller / retour" GridPane.columnIndex="2">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </VBox.margin>
+            </GridPane>
+            <GridPane hgap="10.0" vgap="5.0">
+              <columnConstraints>
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="15.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" percentWidth="35.0" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" percentWidth="20.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                 <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label text="Date :" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="24.0" />
-                     </font></Label>
-                  <Label text="Type de service :" GridPane.columnIndex="2" />
-                  <Label text="Attestation mutuelle :" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="affChaufeur" GridPane.columnIndex="1" />
-                  <Label fx:id="affDate" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font size="20.0" />
-                     </font></Label>
-                  <Label fx:id="affType" GridPane.columnIndex="3" />
-                  <Label fx:id="affAttestation" text="oui/non" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label text="Chauffeur :" />
+                  <Label text="Chauffeur :" GridPane.rowIndex="1" />
+                  <Label fx:id="affChaufeur" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label text="Type de service :" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="affType" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                </children>
                <VBox.margin>
                   <Insets />
@@ -125,30 +159,26 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
             </GridPane>
-            <Label text="Départ" />
+            <Label text="Aller" />
             <GridPane hgap="5.0" style="-fx-border-color: black;" vgap="5.0">
               <columnConstraints>
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="19.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="25.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                   <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="Heure de départ" textAlignment="CENTER" wrapText="true" />
-                  <Label text="Adresse" GridPane.columnIndex="1" />
-                  <Label text="Localité" GridPane.columnIndex="2" />
-                  <Label text="Résidence" GridPane.columnIndex="4" />
-                  <Label text="Code postal" GridPane.columnIndex="3" />
+                  <Label text="Adresse" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <Label text="Localité" textAlignment="CENTER" GridPane.columnIndex="2" />
                   <Label fx:id="affHeureDepart" text="H" GridPane.rowIndex="1" />
-                  <Label fx:id="affAdresseDepart" text="                                                  " wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="affLocaliteDepart" text="                        " GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="affCpDepart" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="affResidence" text="                  " GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Label fx:id="affAdresseDepart" text="________________________________________" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="affLocaliteDepart" text="_______________________" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="affResidence" text="              " GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -157,27 +187,23 @@
             <Label text="Destination" />
             <GridPane hgap="5.0" style="-fx-border-color: black;" vgap="5.0">
                <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="19.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="25.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
+                  <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints vgrow="SOMETIMES" />
                   <RowConstraints vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <Label text="Heure de R.D.V." />
-                  <Label text="Adresse" GridPane.columnIndex="1" />
-                  <Label text="Localité" GridPane.columnIndex="2" />
-                  <Label text="Hopital" GridPane.columnIndex="4" />
-                  <Label text="Code postal" GridPane.columnIndex="3" />
+                  <Label text="Heure de R.D.V." textAlignment="CENTER" wrapText="true" />
+                  <Label text="Adresse" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <Label text="Localité" textAlignment="CENTER" GridPane.columnIndex="2" />
                   <Label fx:id="affHeureRDV" text="H" GridPane.rowIndex="1" />
-                  <Label fx:id="affAdresseRDV" text="                                                  " GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="affLocaliteRDV" text="                        " GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label fx:id="affCpRDV" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label fx:id="affHopital" text="                  " GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                  <Label fx:id="affAdresseRDV" text="________________________________________" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="affLocaliteRDV" text="_______________________" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <Label fx:id="affHopital" text="                " GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
@@ -186,63 +212,44 @@
             <Label text="Retour" />
             <GridPane hgap="5.0" style="-fx-border-color: black;" vgap="5.0">
                <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="19.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="25.0" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
-                  <RowConstraints valignment="BOTTOM" vgrow="SOMETIMES" />
                   <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <ComboBox style="-fx-background-color: white;" GridPane.columnIndex="3" />
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.columnSpan="2">
-                     <children>
-                        <Label text="Second chauffeur :" />
-                        <Label fx:id="affChaufeurSec" />
-                     </children></HBox>
-                  <Label text="Heure de retour" GridPane.rowIndex="1" />
-                  <Label text="Adresse" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label text="Localité" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="Code postal" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <Label text="Attente :" GridPane.halignment="RIGHT" />
-                  <Label fx:id="affHeureRetour" text="H" GridPane.rowIndex="2" />
-                  <Label fx:id="affAdresseRetour" text="                                                  " GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label fx:id="affLocaliteRetour" text="                        " GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <Label fx:id="affCpRetour" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                  <Label fx:id="affAttente" text="oui/non" GridPane.columnIndex="1" GridPane.halignment="LEFT" />
+                  <ComboBox style="-fx-background-color: white;" GridPane.columnIndex="2" />
+                  <HBox alignment="CENTER_LEFT" minWidth="52.0" prefHeight="100.0" prefWidth="52.0" spacing="5.0" style="-fx-background-color: white;" GridPane.columnIndex="2" GridPane.columnSpan="2" />
+                  <Label text="Heure de retour" textAlignment="CENTER" wrapText="true" />
+                  <Label text="Adresse" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <Label text="Localité" textAlignment="CENTER" GridPane.columnIndex="2" />
+                  <Label fx:id="affHeureRetour" text="H" GridPane.rowIndex="1" />
+                  <Label fx:id="affAdresseRetour" text="________________________________________" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="affLocaliteRetour" text="_______________________" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                </padding>
             </GridPane>
             <Label text="Notes" />
-            <Label fx:id="affNote" alignment="TOP_LEFT" prefHeight="600.0" prefWidth="666.0" style="-fx-border-color: black;" wrapText="true">
+            <VBox prefHeight="666.0" prefWidth="666.0" spacing="5.0" style="-fx-border-color: black;">
+               <children>
+                  <Label fx:id="affNote" alignment="TOP_LEFT" wrapText="true" />
+                  <Label alignment="TOP_LEFT" wrapText="true" />
+               </children>
                <padding>
-                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-               </padding></Label>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </VBox>
             <HBox alignment="TOP_RIGHT">
                <children>
                   <Label text="Dernière modification par " />
                   <Label fx:id="attributionName" text="                                    " />
                   <Label text=" le " />
                   <Label fx:id="attributionDate" text="       /       /       " />
-               </children>
-            </HBox>
-            <HBox alignment="TOP_RIGHT">
-               <children>
-                  <Label text="Le cas échéant, annulé par " />
-                  <Label fx:id="annulationName" text="                                    " />
-                  <Label text=" le " />
-                  <Label fx:id="annulationDate" text="       /       /       " />
-               </children>
-            </HBox>
-            <HBox alignment="TOP_RIGHT">
-               <children>
-                  <Label text="Raison annulation:" />
-                  <Label fx:id="annulationRaison" text="                                                                 " />
                </children>
             </HBox>
          </children>

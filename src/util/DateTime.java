@@ -9,8 +9,11 @@ public class DateTime {
 
 	private static final DateTimeFormatter formatIdAutoSave = DateTimeFormatter.ofPattern("yyMM 'Auto Save' dd MMM yyyy");
 	private static final DateTimeFormatter formatIdSave = DateTimeFormatter.ofPattern("yyMM-dd MMM yyyy HH'H'mm");
+	
 	private static final DateTimeFormatter formatHeure = DateTimeFormatter.ofPattern("HH'H'mm");
 	private static final DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+	private static final DateTimeFormatter formatDateJour = DateTimeFormatter.ofPattern("EEEE dd MMMM yyyy");
+	
 	private static final DateTimeFormatter formatDateSave = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	private static final DateTimeFormatter formatDateLog = DateTimeFormatter.ofPattern("MMMM yyyy");
 	
@@ -20,6 +23,10 @@ public class DateTime {
 	
 	public static String toString(LocalDate date) {
         return date.format(formatDate);
+	}
+	
+	public static String toDateJour(LocalDate date) {
+        return date.format(formatDateJour);
 	}
 	
 	public static String saveToString(LocalDate date) {

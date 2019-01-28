@@ -8,14 +8,14 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox alignment="TOP_CENTER" minHeight="300.0" minWidth="150.0" prefHeight="800.0" prefWidth="250.0">
+      <VBox alignment="TOP_CENTER" maxWidth="120.0" minHeight="300.0" minWidth="80.0" prefHeight="800.0" prefWidth="200.0">
          <children>
-            <Label fx:id="nomChauffeur" text="Label" />
-            <ListView fx:id="listViewPlanning" prefHeight="9999.0" style="-fx-selection-bar: white; -fx-selection-bar-non-focused: white;" />
+            <Label fx:id="nomChauffeur" minHeight="40" text="Label" textAlignment="CENTER" wrapText="true">
+               <padding>
+                  <Insets left="1.0" right="1.0" />
+               </padding></Label>
+            <ListView fx:id="listViewPlanning" minHeight="1000" prefHeight="9999.0" style="-fx-selection-bar: white; -fx-selection-bar-non-focused: white;" />
          </children>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
       </VBox>
    </children>
 </AnchorPane>

@@ -37,21 +37,21 @@ public class PrintCourseControllerFXML implements Initializable {
     @FXML
     private Label telAppelant;
     @FXML
+    private Label facturationAppelant;
+    @FXML
     private Label affChaufeur;
     @FXML
     private Label affDate;
     @FXML
-    private Label affType;
+    private Label modeCourse;
     @FXML
-    private Label affAttestation;
+    private Label affType;
     @FXML
     private Label affHeureDepart;
     @FXML
     private Label affAdresseDepart;
     @FXML
     private Label affLocaliteDepart;
-    @FXML
-    private Label affCpDepart;
     @FXML
     private Label affResidence;
     @FXML
@@ -61,11 +61,7 @@ public class PrintCourseControllerFXML implements Initializable {
     @FXML
     private Label affLocaliteRDV;
     @FXML
-    private Label affCpRDV;
-    @FXML
     private Label affHopital;
-    @FXML
-    private Label affChaufeurSec;
     @FXML
     private Label affHeureRetour;
     @FXML
@@ -73,21 +69,11 @@ public class PrintCourseControllerFXML implements Initializable {
     @FXML
     private Label affLocaliteRetour;
     @FXML
-    private Label affCpRetour;
-    @FXML
-    private Label affAttente;
-    @FXML
     private Label affNote;
     @FXML
     private Label attributionName;
     @FXML
     private Label attributionDate;
-    @FXML
-    private Label annulationName;
-    @FXML
-    private Label annulationDate;
-    @FXML
-    private Label annulationRaison;
     
     private Node content;
 	
@@ -121,49 +107,31 @@ public class PrintCourseControllerFXML implements Initializable {
 	    	attributionDate.setText("");
 	    	attributionName.setText("");
 	    }
-	    
-	    if(course.getDateAnnulation()!=null) {
-	    	annulationDate.setText(DateTime.toString(course.getDateAnnulation()));
-	    	annulationName.setText(course.getNameAttribution());
-	    	annulationRaison.setText(course.getRaisonAnnulation());
-	    } else {
-	    	annulationDate.setText("");
-	    	annulationName.setText("");
-	    	annulationRaison.setText("");
-	    }
 		codeApplant.setText(app.getId().toString());
 	    nomCompletAppelant.setText(app.getFullName());
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticuliere());
 	    telAppelant.setText(app.getTel());
+	    facturationAppelant.setText(app.getPayement());
 		if (course.getChauffeur()!=null) {
 			affChaufeur.setText(course.getChauffeur().getFullName());
 		} else {
 			affChaufeur.setText("");
 		}
-	    affDate.setText(DateTime.toString(course.getDate()));
+	    affDate.setText(DateTime.toDateJour(course.getDate()));
+	    modeCourse.setText(course.getTrajet().toString());
 	    affType.setText(course.getTypeCourse().toString());
-	    affAttestation.setText(course.isMutuelle()?"oui":"non");
 	    affHeureDepart.setText(DateTime.toString(course.getHeureDomicile()));
 	    affAdresseDepart.setText(course.getAdresseDep());
 	    affLocaliteDepart.setText(course.getLocaliteDep());
-	    affCpDepart.setText(course.getCpDep());
 	    affResidence.setText(course.getResidence());
 	    affHeureRDV.setText(DateTime.toString(course.getHeureRDV()));
 	    affAdresseRDV.setText(course.getAdresseDest());
 	    affLocaliteRDV.setText(course.getLocaliteDest());
-	    affCpRDV.setText(course.getCpDest());
 	    affHopital.setText(course.getHopital());
 	    affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 	    affAdresseRetour.setText(course.getAdresseRet());
 	    affLocaliteRetour.setText(course.getLocaliteRet());
-	    affCpRetour.setText(course.getCpRet());
-	    if (course.getChauffeurSec()!=null) {
-	    	affChaufeurSec.setText(course.getChauffeurSec().getFullName());
-		}  else {
-			affChaufeurSec.setText("");
-		}
-	    affAttente.setText(course.isAttente()?"oui":"non");
 	    affNote.setText(course.getNotes());
 	}
 	
@@ -178,10 +146,10 @@ public class PrintCourseControllerFXML implements Initializable {
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticuliere());
 	    telAppelant.setText(app.getTel());
+	    facturationAppelant.setText(app.getPayement());
 	    
 	    affAdresseDepart.setText(app.getAdresse());
 	    affLocaliteDepart.setText(app.getLocalite());
-	    affCpDepart.setText(app.getCp());
 	    affResidence.setText(app.getResidence());
 	    
 		return content;

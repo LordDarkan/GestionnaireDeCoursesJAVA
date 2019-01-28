@@ -17,8 +17,6 @@ public class CourseItemList {
 	private String adresseDest;
 	private String cpDest;
 	private String localiteDest;
-	private boolean annulation = false;
-	private String raisonAnnulation = "";
 	
 	public CourseItemList(Course course) {
 		id = course.getId();
@@ -33,8 +31,6 @@ public class CourseItemList {
 		adresseDest = course.getAdresseDest();
 		cpDest = course.getCpDest();
 		localiteDest = course.getLocaliteDest();
-		annulation = course.isAnnulation();
-		raisonAnnulation = course.getRaisonAnnulation();
 	}
 	
 	public Long getId() {
@@ -68,8 +64,8 @@ public class CourseItemList {
 	@Override
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str.append("Date: \t");
-		str.append(DateTime.toString(date));
+		//str.append("Date: \t");
+		str.append(DateTime.toDateJour(date));
 		str.append(" à ");
 		str.append(DateTime.toString(heure));
 		str.append("\t\tpour\t\t");
@@ -77,18 +73,27 @@ public class CourseItemList {
 		str.append("\t\t(");
 		str.append(type.toString());
 		str.append(")\n");
-
-		str.append("Destination: \t");
-		str.append(adresseDest);
-		str.append("\tà\t");
+		
+		//str.append("Destination: \t");
+		if (hopital!= null && !hopital.isEmpty()) {
+			str.append(hopital);
+			str.append(" : \t");
+		}
+		
+		if (adresseDest!= null && !adresseDest.isEmpty()) {
+			str.append(adresseDest);
+			str.append(" à ");
+		}
+		
 		str.append(localiteDest);
-		str.append(" (");
-		str.append(cpDest);
-		str.append(")\n");
-		if (annulation) {
-			str.append("/!\\ ANNULE /!\\ : ");
-			str.append(raisonAnnulation);
-		} else if (chauffeur!= null) {
+		if(cpDest!= null && !cpDest.isEmpty()) {
+
+			str.append(" (");
+			str.append(cpDest);
+			str.append(")");
+		}
+		str.append("\n");
+		if (chauffeur!= null) {
 			str.append("Chauffeur: \t");
 			str.append(chauffeur.getName());
 			str.append(" ");

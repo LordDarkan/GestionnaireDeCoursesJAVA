@@ -1,20 +1,20 @@
 package data;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
-import application.Variable;
 import models.Appelant;
 import models.Chauffeur;
 import models.Course;
@@ -28,9 +28,11 @@ import models.itemList.AppelantItemList;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import models.itemList.PlanningChauffeur;
+import util.LoggerManager;
+import util.UserManager;
 
 public class MapperJPA extends Mapper {
-
+	private static final Logger LOG = LoggerManager.getLogger();
 	private static final String PERSISTENCE_UNIT_NAME = "GestionnaireDeCourses";
 	private static EntityManagerFactory factory = null;
 
@@ -174,6 +176,7 @@ public class MapperJPA extends Mapper {
 	
 	@Override
 	public Long addNew(Appelant entity) {
+		LOG.info("AJOUT APPLANT '"+entity.getId()+"' par "+UserManager.getFullName());
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
 		em.persist(entity);
@@ -188,7 +191,9 @@ public class MapperJPA extends Mapper {
 		em.getTransaction().begin();
 		if (entity.getId() == null) {
 			em.persist(entity);
+			LOG.info("AJOUT APPLANT "+entity.getId()+" par "+UserManager.getFullName());
 		} else {
+			LOG.info("MODIFICATION APPLANT "+entity.getId()+" par "+UserManager.getFullName());
 			Appelant oldEntity = em.find(Appelant.class, entity.getId());
 			entity.setFamilleStr(oldEntity.getFamilleStr());
 			entity.setAffiniteStr(oldEntity.getAffiniteStr());
@@ -254,7 +259,9 @@ public class MapperJPA extends Mapper {
 		em.getTransaction().begin();
 		if (entity.getId() == null) {
 			em.persist(entity);
+			LOG.info("AJOUT COURSE "+entity.getId()+" par "+UserManager.getFullName());
 		} else {
+			LOG.info("MODIFICATION COURSE "+entity.getId()+" par "+UserManager.getFullName());
 			em.merge(entity);
 		}
 		em.getTransaction().commit();
@@ -895,58 +902,27 @@ public class MapperJPA extends Mapper {
 			}
 
 			TypedQuery<Course> q = em.createQuery(
-					"SELECT t FROM Course t WHERE t.annulation = FALSE AND t.date=:locdate AND (t.chauffeur IS NOT NULL OR t.chauffeurSec IS NOT NULL) ORDER BY t.date, t.heureDomicile",
+					//TODO MODECOURSE "SELECT t FROM Course t WHERE t.annulation = FALSE AND t.date=:locdate AND (t.chauffeur IS NOT NULL OR t.chauffeurSec IS NOT NULL) ORDER BY t.date, t.heureDomicile",
+					"SELECT t FROM Course t WHERE t.date=:locdate AND t.chauffeur IS NOT NULL ORDER BY t.date, t.heureDomicile",
 					Course.class);
 			q.setParameter("locdate", date);
 
-			Chauffeur c, cs;
+			Chauffeur c;
 			Indisponibilite i;
 
 			for (Course course : q.getResultList()) {
 				c = course.getChauffeur();
-				cs = course.getChauffeurSec();
-
-				if (course.isAttente()) {
-					if (c != null) {
-						i = new IndisponibiliteCourse(course.getAppelant().getFullName());
-						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
-						i.setDateStart(date);
-						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureRDV());
-						LocalTime fin = course.getHeureRetour().equals(LocalTime.MIDNIGHT)?course.getHeureRDV().plusHours(Variable.FORFAIT_HEURE):course.getHeureRetour();
-						i.setHeureEnd(fin);
-						result.get(c.getId()).add(i);
-					}
-				} else {
-					if (c != null) {
-						i = new IndisponibiliteCourse(course.getAppelant().getFullName());
-						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
-						i.setDateStart(date);
-						i.setDateEnd(date);
-						i.setHeureStart(course.getHeureRDV());
-						i.setHeureEnd(course.getHeureRDV().plusHours(Variable.FORFAIT_HEURE));
-						result.get(c.getId()).add(i);
-					}
-					
-					LocalTime fin = course.getHeureRetour().equals(LocalTime.MIDNIGHT)?course.getHeureRDV().plusHours(Variable.RDV_RETOUR_DEFAULT_HEURE):course.getHeureRetour();
-
-					if (cs != null) {
-						i = new IndisponibiliteCourse(course.getAppelant().getFullName());
-						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
-						i.setDateStart(date);
-						i.setDateEnd(date);
-						i.setHeureStart(fin.minusHours(Variable.FORFAIT_HEURE));
-						i.setHeureEnd(fin);
-						result.get(cs.getId()).add(i);
-					} else if (c != null) {
-						i = new IndisponibiliteCourse(course.getAppelant().getFullName());
-						i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
-						i.setDateStart(date);
-						i.setDateEnd(date);
-						i.setHeureStart(fin.minusHours(Variable.FORFAIT_HEURE));
-						i.setHeureEnd(fin);
-						result.get(c.getId()).add(i);
-					}
+				if (c != null) {
+					i = new IndisponibiliteCourse(course.getAppelant().getFullName());
+					i.setId(course.getId());
+					i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
+					i.setDateStart(date);
+					i.setDateEnd(date);
+					i.setHeureStart(course.getHeureRDV());
+					//LocalTime fin = course.getHeureRetour().equals(LocalTime.MIDNIGHT)?course.getHeureRDV().plusHours(Variable.FORFAIT_HEURE):course.getHeureRetour();
+					//i.setHeureEnd(fin);
+					i.setModeCourse(course.getTrajet());
+					result.get(c.getId()).add(i);
 				}
 			}
 
@@ -963,30 +939,36 @@ public class MapperJPA extends Mapper {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result.values();
+		List<PlanningChauffeur> planning = new ArrayList<PlanningChauffeur>(result.values());
+		Collections.sort(planning);
+		return planning;
 	}
 
 	@Override
 	public void addOrUpdateIndisponibilite(Indisponibilite entity) {
-		EntityManager em = factory.createEntityManager();
-		em.getTransaction().begin();
-		if (entity.getId() == null) {
-			em.persist(entity);
-		} else {
-			em.merge(entity);
+		if(!entity.isCourse()) {
+			EntityManager em = factory.createEntityManager();
+			em.getTransaction().begin();
+			if (entity.getId() == null) {
+				em.persist(entity);
+			} else {
+				em.merge(entity);
+			}
+			em.getTransaction().commit();
+			em.close();
 		}
-		em.getTransaction().commit();
-		em.close();
 	}
 	
 	@Override
 	public void delete(Indisponibilite entity) {
-		EntityManager em = factory.createEntityManager();
-		entity = em.find(Indisponibilite.class, entity.getId());
-		em.getTransaction().begin();
-		em.remove(entity);
-		em.getTransaction().commit();
-		em.close();
+		if(!entity.isCourse()) {
+			EntityManager em = factory.createEntityManager();
+			entity = em.find(Indisponibilite.class, entity.getId());
+			em.getTransaction().begin();
+			em.remove(entity);
+			em.getTransaction().commit();
+			em.close();
+		}
 	}
 
 	@Override

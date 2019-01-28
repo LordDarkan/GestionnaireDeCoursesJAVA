@@ -8,16 +8,19 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import models.Indisponibilite;
 import util.DateTime;
+import util.Trajet;
 
 public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
 	private AnchorPane content;
+	
+	@FXML
+    private VBox vBox;
+    
 	@FXML
     private Label heureStart;
-
-    @FXML
-    private Label heureEnd;
 
     @FXML
     private Label titre;
@@ -44,12 +47,28 @@ public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
         setStyle("-fx-background-color:white");
         setGraphic(null); 
         setText(null); 
-        setContentDisplay(ContentDisplay.LEFT); 
+        setContentDisplay(ContentDisplay.LEFT);
         if (!empty && item != null) {
-        	heureStart.setText(DateTime.toString(item.getHeureStart()));
-        	heureEnd.setText(DateTime.toString(item.getHeureEnd()));
+        	String str = DateTime.toString(item.getHeureStart());
         	titre.setText(item.getTitre());
         	description.setText(item.getDescription());
+        	
+        	if (item.isCourse()) {
+        		Trajet mode = item.getModeCourse();
+        		if (mode == Trajet.ALLER) {
+        			vBox.setStyle("-fx-border-color: black;-fx-background-color:#C2FF80;");
+				} else if (mode == Trajet.RETOUR) {
+					vBox.setStyle("-fx-border-color: black;-fx-background-color:#80B6FF;");
+				} else {
+					vBox.setStyle("-fx-border-color: black;-fx-background-color:white;");
+				}
+        		str+=" "+item.getModeCourse().toString();
+        	} else {
+        		vBox.setStyle("-fx-border-color: black;-fx-background-color:#DD0000;");
+        		str+=" - "+DateTime.toString(item.getHeureEnd());
+        	}
+        	
+        	heureStart.setText(str);
             setText(null); 
             setGraphic(content); 
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 

@@ -8,16 +8,14 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox maxHeight="-Infinity" minHeight="63.0" minWidth="100.0" style="-fx-border-color: black;">
+      <VBox fx:id="vBox" maxHeight="-Infinity" maxWidth="100" minHeight="63.0" minWidth="100.0" style="-fx-border-color: black;">
          <children>
-            <HBox>
+            <HBox spacing="2.0">
                <children>
-                  <Label fx:id="heureStart" text="xxHxx" />
-                  <Label text=" - " />
-                  <Label fx:id="heureEnd" text="xxHxx" />
+                  <Label fx:id="heureStart" text="xxHxx" wrapText="true" />
                </children>
             </HBox>
-            <Label fx:id="titre" text="Titre" />
+            <Label fx:id="titre" text="Titre" wrapText="true" />
             <Label fx:id="description" text="description" wrapText="true" />
          </children>
          <padding>

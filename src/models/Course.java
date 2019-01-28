@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import util.DateTime;
+import util.Trajet;
 import util.TypeCourse;
 
 @Entity
@@ -24,16 +25,19 @@ public class Course {
 	private Appelant appelant;
 	private LocalDate date = LocalDate.now();
 	private Chauffeur chauffeur = null;
-	private String nameAttribution = "";
-	private LocalDate dateAttribution = null;
+	private String nameAttribution = "";//TODO RENAME MODIF + séparé chauffeur 
+	private LocalDate dateAttribution = null;//RENAME MODIF + séparé chauffeur 
 	
 	private LocalTime heureDomicile = LocalTime.MIDNIGHT;
 	private String residence;
 	private String adresseDep;
 	private String cpDep;
 	private String localiteDep;
-	
+	//private Trajet mode = Trajet.ALLER_RETOUR;//TODO ADD mode course
 	private TypeCourse typeCourse = TypeCourse.AUTRE;
+	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private boolean mutuelle = false;
 	
 	private LocalTime heureRDV = LocalTime.MIDNIGHT;
@@ -42,8 +46,14 @@ public class Course {
 	private String cpDest = "";
 	private String localiteDest = "";
 	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private boolean attente = true;
+	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private Chauffeur chauffeurSec = null;
+	
 	private LocalTime heureRetour = LocalTime.MIDNIGHT;
 	private String adresseRet;
 	private String cpRet;
@@ -51,9 +61,18 @@ public class Course {
 	
 	private String notes = "";
 	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private boolean annulation = false;
+	
+	@Deprecated//Trajet
 	private String raisonAnnulation = "";
+	
+	@SuppressWarnings("unused")
+	@Deprecated
 	private String nameAnnulation = "";
+	@SuppressWarnings("unused")
+	@Deprecated
 	private LocalDate dateAnnulation = null;
 	
 	public Course() {
@@ -104,12 +123,6 @@ public class Course {
 		this.nameAttribution = nameAttribution;
 		dateAttribution = LocalDate.now();
 	}
-	
-	/*TODO public void setChauffeur() {
-		this.chauffeur = null;
-		this.nameAttribution = "";
-		dateAttribution = null;
-	}*/
 
 	public LocalDate getDate() {
 		return date;
@@ -159,14 +172,6 @@ public class Course {
 		this.typeCourse = typeCourse;
 	}
 
-	public boolean isMutuelle() {
-		return mutuelle;
-	}
-
-	public void setMutuelle(boolean mutuelle) {
-		this.mutuelle = mutuelle;
-	}
-
 	public LocalTime getHeureRDV() {
 		return heureRDV;
 	}
@@ -205,14 +210,6 @@ public class Course {
 
 	public void setLocaliteDest(String localiteDest) {
 		this.localiteDest = localiteDest;
-	}
-
-	public Chauffeur getChauffeurSec() {
-		return chauffeurSec;
-	}
-
-	public void setChauffeurSec(Chauffeur chauffeurSec) {
-		this.chauffeurSec = chauffeurSec;
 	}
 
 	public LocalTime getHeureRetour() {
@@ -255,35 +252,8 @@ public class Course {
 		this.notes = notes;
 	}
 
-	public boolean isAnnulation() {
-		return annulation;
-	}
-
-	public void setAnnulation(boolean annulation, String nameAnnulation) {
-		this.annulation = annulation;
-		if(annulation) {
-			this.nameAnnulation = nameAnnulation;
-			dateAnnulation = LocalDate.now();
-		} else {
-			this.nameAnnulation = "";
-			dateAnnulation = null;
-		}
-	}
-
-	public String getRaisonAnnulation() {
-		return raisonAnnulation;
-	}
-
-	public void setRaisonAnnulation(String raisonAnnulation) {
-		this.raisonAnnulation = raisonAnnulation;
-	}
-
 	public String getNameCreation() {
 		return nameCreation;
-	}
-
-	public String getNameAnnulation() {
-		return nameAnnulation;
 	}
 
 	public String getNameAttribution() {
@@ -297,23 +267,57 @@ public class Course {
 	public void setResidence(String residence) {
 		this.residence = residence;
 	}
-
-	public boolean isAttente() {
-		return attente;
-	}
-
-	public void setAttente(boolean attente) {
-		this.attente = attente;
-	}
 	
 	public LocalDate getDateAttribution() {
 		return dateAttribution;
 	}
+	
+	public void setNameCreation(String nameCreation) {
+		this.nameCreation = nameCreation;
+	}
 
-	public LocalDate getDateAnnulation() {
-		return dateAnnulation;
+	public void setDateCreation(LocalDate dateCreation) {
+		this.dateCreation = dateCreation;
+	}
+
+	public void setHeureCreation(LocalTime heureCreation) {
+		this.heureCreation = heureCreation;
+	}
+
+	public void setAppelant(Appelant appelant) {
+		this.appelant = appelant;
+	}
+
+	public void setChauffeur(Chauffeur chauffeur) {
+		this.chauffeur = chauffeur;
+	}
+
+	public void setNameAttribution(String nameAttribution) {
+		this.nameAttribution = nameAttribution;
+	}
+
+	public void setDateAttribution(LocalDate dateAttribution) {
+		this.dateAttribution = dateAttribution;
 	}
 	
+	public Trajet getTrajet() {
+		return Trajet.get(raisonAnnulation);
+	}
+	
+	public void setTrajet(Trajet mode) {
+		if (mode == Trajet.ALLER) {
+			raisonAnnulation = "ALLER";
+		} else if (mode == Trajet.RETOUR) {
+			raisonAnnulation = "RETOUR";
+		} else {
+			raisonAnnulation = "ALLER-RETOUR";
+		}
+	}
+	
+	public static String getEnTeteCsv() {
+		return "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;TRAJET;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;VIDE;VIDE;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;VIDE;VIDE;VIDE;VIDE;END";
+	}
+
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(nameCreation);
@@ -346,7 +350,7 @@ public class Course {
 		str.append(";");
 		str.append(typeCourse.toString());
 		str.append(";");
-		str.append(mutuelle?"OUI":"NON");
+		str.append(raisonAnnulation);//Trajet
 		str.append(";");
 		str.append(DateTime.toString(heureRDV));
 		str.append(";");
@@ -358,10 +362,9 @@ public class Course {
 		str.append(";");
 		str.append(localiteDest);
 		str.append(";");
-		str.append(attente?"OUI":"NON");
+		
 		str.append(";");
-		if (chauffeurSec!=null)
-			str.append(chauffeurSec.getId());
+		
 		str.append(";");
 		str.append(DateTime.toString(heureRetour));
 		str.append(";");
@@ -373,61 +376,77 @@ public class Course {
 		str.append(";");
 		str.append(notes);
 		str.append(";");
-		str.append(annulation?"OUI":"NON");
+		
 		str.append(";");
-		str.append(raisonAnnulation);
+		
 		str.append(";");
-		str.append(nameAnnulation);
+		
 		str.append(";");
-		if (dateAnnulation != null)
-			str.append(DateTime.saveToString(dateAnnulation));//FIXME SUPP ANNULATION
+		
 		str.append(";END");
 		return str.toString();
 	}
-
-	public void setNameCreation(String nameCreation) {
-		this.nameCreation = nameCreation;
-	}
-
-	public void setDateCreation(LocalDate dateCreation) {
-		this.dateCreation = dateCreation;
-	}
-
-	public void setHeureCreation(LocalTime heureCreation) {
-		this.heureCreation = heureCreation;
-	}
-
-	public void setAppelant(Appelant appelant) {
-		this.appelant = appelant;
-	}
-
-	public void setChauffeur(Chauffeur chauffeur) {
-		this.chauffeur = chauffeur;
-	}
-
-	public void setNameAttribution(String nameAttribution) {
-		this.nameAttribution = nameAttribution;
-	}
-
-	public void setDateAttribution(LocalDate dateAttribution) {
-		this.dateAttribution = dateAttribution;
-	}
-
-	public void setAnnulation(boolean annulation) {
-		this.annulation = annulation;
-	}
-
-	public void setNameAnnulation(String nameAnnulation) {
-		this.nameAnnulation = nameAnnulation;
-	}
-
-	public void setDateAnnulation(LocalDate dateAnnulation) {
-		this.dateAnnulation = dateAnnulation;
-	}
-
-	public static String getEnTeteCsv() {
-		return "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;MUTUELLE;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;ATTENTE;CHAUFFEURSEC;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;ANNULATION;RAISONANNULATION;NAMEANNULATION;DATEANNULATION;END";
-	}
+	/*
+	public static String getEnTeteCsvNew() { 
+		return "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;MODECOURSE;TYPECOURSE;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;END"; 
+	} 
+	 
+	public String getRowCsvNew() { 
+		StringBuilder str = new StringBuilder(); 
+		str.append(nameCreation); 
+		str.append(";"); 
+		str.append(DateTime.saveToString(dateCreation));//date 
+		str.append(";"); 
+		str.append(DateTime.toString(heureCreation)); 
+		str.append(";"); 
+		str.append(appelant.getId()); 
+		str.append(";"); 
+		str.append(DateTime.saveToString(date));//date 
+		str.append(";"); 
+		if (chauffeur!=null) 
+			str.append(chauffeur.getId()); 
+		str.append(";"); 
+		str.append(nameAttribution); 
+		str.append(";"); 
+		if (dateAttribution!=null) 
+			str.append(DateTime.saveToString(dateAttribution));//date 
+		str.append(";"); 
+		str.append(DateTime.toString(heureDomicile)); 
+		str.append(";"); 
+		str.append(residence); 
+		str.append(";"); 
+		str.append(adresseDep); 
+		str.append(";"); 
+		str.append(cpDep); 
+		str.append(";"); 
+		str.append(localiteDep); 
+		str.append(";"); 
+		//str.append(mode.toString()); 
+		str.append(";"); 
+		str.append(typeCourse.toString()); 
+		str.append(";"); 
+		str.append(DateTime.toString(heureRDV)); 
+		str.append(";"); 
+		str.append(hopital); 
+		str.append(";"); 
+		str.append(adresseDest); 
+		str.append(";"); 
+		str.append(cpDest); 
+		str.append(";"); 
+		str.append(localiteDest); 
+		str.append(";"); 
+		str.append(DateTime.toString(heureRetour)); 
+		str.append(";"); 
+		str.append(adresseRet); 
+		str.append(";"); 
+		str.append(cpRet); 
+		str.append(";"); 
+		str.append(localiteRet); 
+		str.append(";"); 
+		str.append(notes); 
+		str.append(";END"); 
+		return str.toString(); 
+	} */
 
 	public static void valdation(Course obj) throws IllegalArgumentException {//TODO
 		if (obj.appelant == null) throw new IllegalArgumentException("La course n'est pas lié à un appelant");
