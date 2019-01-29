@@ -102,17 +102,11 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
     @FXML
     private Label affModeCourse;
 	@FXML
-	@Deprecated
-	private CheckBox editAttestation;
-	@FXML
 	private Label affChaufeur;
 	@FXML
 	private Label affDate;
 	@FXML
 	private Label affType;
-	@FXML
-	@Deprecated
-	private Label affAttestation;
 	@FXML
 	private HBox edit1;
 	@FXML

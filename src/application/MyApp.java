@@ -29,6 +29,7 @@ public class MyApp extends Application {
 				Mapper.getInstance().init();
 				try {
 					LogFileManager.checkFiles();
+					Mapper.getInstance().setLogger();
 				} catch (Exception e) {
 					LoggerManager.info("ERR CHECK FILES");
 					//TODO fxml.Message.msg("");

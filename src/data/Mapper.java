@@ -30,6 +30,8 @@ public abstract class Mapper implements Closeable{
 		return instance;
 	}
 
+
+	public abstract void setLogger();
 	public abstract void close();
 	public abstract void init();
 	

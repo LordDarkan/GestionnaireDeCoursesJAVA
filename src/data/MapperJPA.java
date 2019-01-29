@@ -32,7 +32,7 @@ import util.LoggerManager;
 import util.UserManager;
 
 public class MapperJPA extends Mapper {
-	private static final Logger LOG = LoggerManager.getLogger();
+	private static Logger LOG;
 	private static final String PERSISTENCE_UNIT_NAME = "GestionnaireDeCourses";
 	private static EntityManagerFactory factory = null;
 
@@ -52,6 +52,11 @@ public class MapperJPA extends Mapper {
 		if (factory != null)
 			factory.close();
 		factory = null;
+	}
+	
+	@Override
+	public void setLogger() {
+		LOG = LoggerManager.getLogger();
 	}
 
 	@Override
@@ -284,7 +289,7 @@ public class MapperJPA extends Mapper {
 		List<Chauffeur> result = new LinkedList<Chauffeur>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.id", Chauffeur.class);
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name", Chauffeur.class);
 			result = new LinkedList<Chauffeur>(q.getResultList());
 			em.close();
 		} catch (Exception e) {
@@ -437,7 +442,7 @@ public class MapperJPA extends Mapper {
 		em.close();
 	}
 
-	@Override
+	@Override//TODO sup chauf sec
 	public List<CourseItemList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date) {
 		StringBuilder query = new StringBuilder("SELECT t FROM Course t");
 		query.append(" WHERE t.annulation = false AND t.date");
@@ -483,7 +488,7 @@ public class MapperJPA extends Mapper {
 		List<ChauffeurItemList> result = new LinkedList<ChauffeurItemList>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.id", Chauffeur.class);
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name, t.firstname", Chauffeur.class);//LOWER(t.name)
 			for (Chauffeur tuple : q.getResultList()) {
 				result.add(new ChauffeurItemList(tuple));
 			}
@@ -688,7 +693,7 @@ public class MapperJPA extends Mapper {
 		List<ChauffeurItemList> result = new LinkedList<ChauffeurItemList>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.id", Chauffeur.class);
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name, t.firstname", Chauffeur.class);
 			for (Chauffeur tuple : q.getResultList()) {
 				if (ids.contains(tuple.getId())) {
 					result.add(new ChauffeurItemList(tuple));
@@ -896,7 +901,7 @@ public class MapperJPA extends Mapper {
 		Map<Long, PlanningChauffeur> result = new HashMap<Long, PlanningChauffeur>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name", Chauffeur.class);
+			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t", Chauffeur.class);//TODO actif
 			for (Chauffeur tuple : q1.getResultList()) {
 				result.put(tuple.getId(), new PlanningChauffeur(tuple.getFullName()));
 			}

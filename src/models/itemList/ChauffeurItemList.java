@@ -27,6 +27,6 @@ public class ChauffeurItemList {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s", firstname, name);
+		return String.format("%s %s", name, firstname);
 	}
 }

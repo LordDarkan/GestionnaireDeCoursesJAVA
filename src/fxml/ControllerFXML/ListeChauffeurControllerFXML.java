@@ -20,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import models.Chauffeur;
@@ -52,7 +51,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     @FXML
     private TextField localite;
     @FXML
-    private TextArea infos;
+    private TextField infos;
     @FXML
     private TextField nom;
     @FXML
@@ -63,6 +62,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     private ListView<PlanningChauffeur> listeViewPlanning;//TODO
     @FXML
     private Button btnIndisponibilite;
+    
+    private Long id;
 
     public ListeChauffeurControllerFXML(Utilisateur user, TabPane tabContainer) {
     	super(user);
@@ -159,6 +160,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 
 	private Chauffeur getInfoChauffeur() {
 		Chauffeur app = new Chauffeur();
+		app.setId(id);
 		app.setName(nom.getText().trim());
 		app.setFirstname(prenom.getText().trim());
 		app.setAdresse(adresse.getText().trim());
@@ -213,14 +215,26 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	
 	private void showChauffeur(Chauffeur app) {
 		editMode(false);
-		
-		nom.setText(app.getName());
-		prenom.setText(app.getFirstname());
-		adresse.setText(app.getAdresse());
-		cp.setText(app.getCp());
-		localite.setText(app.getLocalite());
-		tel.setText(app.getTel());
-		infos.setText(app.getInfos());
+		if (app == null) {
+			id = null;
+			nom.setText("");
+			prenom.setText("");
+			adresse.setText("");
+			cp.setText("");
+			localite.setText("");
+			tel.setText("");
+			infos.setText("");
+		} else {
+
+			id = app.getId();
+			nom.setText(app.getName());
+			prenom.setText(app.getFirstname());
+			adresse.setText(app.getAdresse());
+			cp.setText(app.getCp());
+			localite.setText(app.getLocalite());
+			tel.setText(app.getTel());
+			infos.setText(app.getInfos());
+		}
 	}
 	
 	private void setListeChauffeur(List<ChauffeurItemList> chauf) {
