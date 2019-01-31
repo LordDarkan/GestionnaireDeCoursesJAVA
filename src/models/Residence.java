@@ -3,8 +3,10 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import data.CSVRow;
+
 @Entity
-public class Residence {
+public class Residence implements CSVRow {
 	@Id
 	private String name = "";
 	private String adresse = "";
@@ -47,7 +49,8 @@ public class Residence {
 	public String toString() {
 		return String.format("%s\t|\t%s\t%s (%s)\t|\tN° Tel: %s", name,adresse,localite,cp,tel);
 	}
-	
+
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(name);
@@ -63,9 +66,12 @@ public class Residence {
 		return str.toString();
 	}
 	
-	public static String getEnTeteCsv() {
-		return "Nom;Adresse;CP;Localité;Téléphone;END";
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
+	
+	public static final String enteteCSV = "Nom;Adresse;CP;Localité;Téléphone;END";
 	
 	public static void valdation(Hopital obj) throws IllegalArgumentException {//TODO
 		

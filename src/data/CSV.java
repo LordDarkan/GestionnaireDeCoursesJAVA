@@ -21,9 +21,10 @@ import models.Indisponibilite;
 import models.Residence;
 import models.Utilisateur;
 import util.DateTime;
+import util.FLS;
 import util.LoggerManager;
-import util.Trajet;
 import util.Titre;
+import util.Trajet;
 import util.TypeCourse;
 
 public class CSV {
@@ -71,9 +72,9 @@ public class CSV {
 						appelant.setCp(row[8].trim());
 						appelant.setLocalite(row[9].trim());
 						appelant.setQuartier(row[10].trim());
-						appelant.setFamilleStr(row[11].trim());
-						appelant.setAffiniteStr(row[12].trim());
-						appelant.setRestrictionStr(row[13].trim());
+						appelant.setFamilleStr(FLS.parse(row[11].trim()));
+						appelant.setAffiniteStr(FLS.parse(row[12].trim()));
+						appelant.setRestrictionStr(FLS.parse(row[13].trim()));
 						appelant.setMutualite(row[14].trim());
 						appelant.setPayement(row[15].trim());
 						try {
@@ -415,7 +416,7 @@ public class CSV {
 		return utilisateurs;
 	}
 
-	public static boolean wirteAppelant(List<Appelant> list, File file) {
+	/*public static boolean wirteAppelant(List<Appelant> list, File file) {
 		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
@@ -531,6 +532,50 @@ public class CSV {
 			writer.newLine();
 			for (Utilisateur utilisateur : list) {
 				writer.write(utilisateur.getRowCsv());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			save = false ;
+		}
+		return save;
+	}*/
+	
+	public static boolean wirte(List<? extends CSVRow> list, File file) {
+		boolean save = true;
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+			boolean first = true;
+			for (CSVRow row : list) {
+				if (first) {
+					writer.write(row.getEnTeteCsv());
+					writer.newLine();
+					first = false;
+				}
+				writer.write(row.getRowCsv());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			save = false ;
+		}
+		return save;
+	}
+	
+	public static boolean export(List<? extends CSVRow> list, File file) {
+		boolean save = true;
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(file), "Cp1252"))) {
+			boolean first = true;
+			for (CSVRow row : list) {
+				if (first) {
+					writer.write(row.getEnTeteCsv());
+					writer.newLine();
+					first = false;
+				}
+				writer.write(row.getRowCsv());
 				writer.newLine();
 			}
 			writer.close();

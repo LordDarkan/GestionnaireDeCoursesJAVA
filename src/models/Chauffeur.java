@@ -5,10 +5,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import data.CSVRow;
 import util.Titre;
 
 @Entity
-public class Chauffeur {
+public class Chauffeur implements CSVRow {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -81,7 +82,8 @@ public class Chauffeur {
 	public void setTitre(Titre titre) {
 		this.titre = titre;
 	}
-	
+
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(id);
@@ -105,9 +107,12 @@ public class Chauffeur {
 		return str.toString();
 	}
 	
-	public static String getEnTeteCsv() {
-		return "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;END";
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
+	
+	public static final String enteteCSV = "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;END";
 	
 	public static void valdation(Chauffeur obj) throws IllegalArgumentException {//TODO
 		if(obj.getFirstname().length()<2) throw new IllegalArgumentException("Le prénom est invalide");

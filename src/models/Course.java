@@ -8,12 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import data.CSVRow;
 import util.DateTime;
 import util.Trajet;
 import util.TypeCourse;
 
 @Entity
-public class Course {
+public class Course implements CSVRow {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -314,10 +315,14 @@ public class Course {
 		}
 	}
 	
-	public static String getEnTeteCsv() {
-		return "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;TRAJET;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;VIDE;VIDE;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;VIDE;VIDE;VIDE;VIDE;END";
+	public static final String enteteCSV = "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;TRAJET;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;VIDE;VIDE;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;VIDE;VIDE;VIDE;VIDE;END";
+
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
 
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(nameCreation);
