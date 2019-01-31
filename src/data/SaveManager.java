@@ -174,9 +174,6 @@ public class SaveManager {
 		write = new File(export.getAbsolutePath() + separator + "Utilisateur.csv");
 		exportOk &=CSV.export(mapper.getAllUser(), write);
 		
-		
-		FileManager.compress(export.getAbsolutePath(),".zip");
-		FileManager.delete(export);
 		return exportOk;
 	}
 }
