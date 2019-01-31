@@ -16,6 +16,7 @@ import models.Appelant;
 import models.Course;
 import models.Utilisateur;
 import util.DateTime;
+import util.Trajet;
 
 public class PrintCourseControllerFXML implements Initializable {
 	@FXML
@@ -119,19 +120,33 @@ public class PrintCourseControllerFXML implements Initializable {
 			affChaufeur.setText("");
 		}
 	    affDate.setText(DateTime.toDateJour(course.getDate()));
-	    modeCourse.setText(course.getTrajet().toString());
+	    Trajet trajet = course.getTrajet();
+	    modeCourse.setText(trajet.toString());
 	    affType.setText(course.getTypeCourse().toString());
+	    
 	    affHeureDepart.setText(DateTime.toString(course.getHeureDomicile()));
 	    affAdresseDepart.setText(course.getAdresseDep());
 	    affLocaliteDepart.setText(course.getLocaliteDep());
+	    
+	    affHeureDepart.setVisible(trajet != Trajet.RETOUR);
+	    affAdresseDepart.setVisible(trajet != Trajet.RETOUR);
+	    affLocaliteDepart.setVisible(trajet != Trajet.RETOUR);
+	    
+	    
 	    affResidence.setText(course.getResidence());
 	    affHeureRDV.setText(DateTime.toString(course.getHeureRDV()));
 	    affAdresseRDV.setText(course.getAdresseDest());
 	    affLocaliteRDV.setText(course.getLocaliteDest());
 	    affHopital.setText(course.getHopital());
+	    
 	    affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 	    affAdresseRetour.setText(course.getAdresseRet());
 	    affLocaliteRetour.setText(course.getLocaliteRet());
+	    
+	    affHeureRetour.setVisible(trajet != Trajet.ALLER);
+	    affAdresseRetour.setVisible(trajet != Trajet.ALLER);
+	    affLocaliteRetour.setVisible(trajet != Trajet.ALLER);
+	    
 	    affNote.setText(course.getNotes());
 	}
 	

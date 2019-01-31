@@ -4,6 +4,10 @@ public class Gate {
 	//TODO en annotation???
 	
 	public static String encoding(String encoding){
-		return encoding.replace(";", ",");
+		String result = "";
+		if (encoding != null) {
+			result = encoding.replace(";", ",");
+		}
+		return result;
 	}
 }

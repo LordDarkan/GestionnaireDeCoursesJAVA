@@ -232,7 +232,7 @@
                         </padding>
                      </GridPane>
                      <Label text="Départ" />
-                     <GridPane hgap="5.0" style="-fx-border-color: black;">
+                     <GridPane fx:id="gridDeparture" hgap="5.0" style="-fx-border-color: black;">
                        <columnConstraints>
                          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="15.0" prefWidth="100.0" />
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" percentWidth="30.0" prefWidth="100.0" />
@@ -314,7 +314,7 @@
                         </padding>
                      </GridPane>
                      <Label text="Retour" />
-                     <GridPane hgap="5.0" style="-fx-border-color: black;">
+                     <GridPane fx:id="gridReturn" hgap="5.0" style="-fx-border-color: black;">
                         <columnConstraints>
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="15.0" />
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="30.0" />
