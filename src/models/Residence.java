@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import data.CSVRow;
+import util.Gate;
 
 @Entity
 public class Residence implements CSVRow {
@@ -18,31 +19,31 @@ public class Residence implements CSVRow {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name =  Gate.encoding(name);
 	}
 	public String getAdresse() {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse =  Gate.encoding(adresse);
 	}
 	public String getCp() {
 		return cp;
 	}
 	public void setCp(String cp) {
-		this.cp = cp;
+		this.cp =  Gate.encoding(cp);
 	}
 	public String getLocalite() {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite =  Gate.encoding(localite);
 	}
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel =  Gate.encoding(tel);
 	}
 	
 	@Override

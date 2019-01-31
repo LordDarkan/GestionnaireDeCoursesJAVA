@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import data.CSVRow;
+import util.Gate;
 import util.Titre;
 
 @Entity
@@ -31,19 +32,19 @@ public class Chauffeur implements CSVRow {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name =  Gate.encoding(name);
 	}
 	public String getFirstname() {
 		return firstname;
 	}
 	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+		this.firstname =  Gate.encoding(firstname);
 	}
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel =  Gate.encoding(tel);
 	}
 	public Long getId() {
 		return id;
@@ -52,25 +53,25 @@ public class Chauffeur implements CSVRow {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse =  Gate.encoding(adresse);
 	}
 	public String getInfos() {
 		return infos;
 	}
 	public void setInfos(String infos) {
-		this.infos = infos;
+		this.infos =  Gate.encoding(infos);
 	}
 	public String getCp() {
 		return cp;
 	}
 	public void setCp(String cp) {
-		this.cp = cp;
+		this.cp =  Gate.encoding(cp);
 	}
 	public String getLocalite() {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite =  Gate.encoding(localite);
 	}
 	
 	public String getFullName() {

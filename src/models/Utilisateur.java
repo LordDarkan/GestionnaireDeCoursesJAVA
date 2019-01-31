@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import data.CSVRow;
+import util.Gate;
 import util.Titre;
 
 @Entity
@@ -23,12 +24,11 @@ public class Utilisateur implements CSVRow  {
 	}
 	
 	public void setName(String name) {
-		this.name = name.trim();
+		this.name =  Gate.encoding(name.trim());
 	}
 
 	public void setFirstname(String firstname) {
-		firstname = firstname.trim();
-		this.firstname = firstname.substring(0,1)+firstname.substring(1);
+		this.firstname = Gate.encoding(firstname.trim());
 	}
 	
 	public String getFullName() {

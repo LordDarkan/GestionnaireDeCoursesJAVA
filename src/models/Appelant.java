@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import data.CSVRow;
 import util.DateTime;
 import util.FLS;
+import util.Gate;
 import util.Titre;
 
 @Entity
@@ -54,13 +55,13 @@ public class Appelant implements CSVRow {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name =  Gate.encoding(name);
 	}
 	public String getFirstname() {
 		return firstname;
 	}
 	public void setFirstname(String firstname) {
-		this.firstname = firstname;
+		this.firstname =  Gate.encoding(firstname);
 	}
 	
 	public LocalDate getBirthday() {
@@ -74,43 +75,43 @@ public class Appelant implements CSVRow {
 		return cp;
 	}
 	public void setCp(String cp) {
-		this.cp = cp;
+		this.cp =  Gate.encoding(cp);
 	}
 	public String getLocalite() {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite =  Gate.encoding(localite);
 	}
 	public String getQuartier() {
 		return quartier;
 	}
 	public void setQuartier(String quartier) {
-		this.quartier = quartier;
+		this.quartier =  Gate.encoding(quartier);
 	}
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel =  Gate.encoding(tel);
 	}
 	public String getMobilite() {
 		return mobilite;
 	}
 	public void setMobilite(String mobilite) {
-		this.mobilite = mobilite;
+		this.mobilite =  Gate.encoding(mobilite);
 	}
 	public String getMutualite() {
 		return mutualite;
 	}
 	public void setMutualite(String mutualite) {
-		this.mutualite = mutualite;
+		this.mutualite =  Gate.encoding(mutualite);
 	}
 	public String getAffiniteStr() {
 		return affinite;
 	}
 	public void setAffiniteStr(String affinite) {
-		this.affinite = affinite;
+		this.affinite =  Gate.encoding(affinite);
 	}
 	public List<Long> getAffinite() {
 		return FLS.toList(affinite);
@@ -125,7 +126,7 @@ public class Appelant implements CSVRow {
 		return restriction;
 	}
 	public void setRestrictionStr(String restriction) {
-		this.restriction = restriction;
+		this.restriction =  Gate.encoding(restriction);
 	}
 	public List<Long> getRestriction() {
 		return FLS.toList(restriction);
@@ -140,7 +141,7 @@ public class Appelant implements CSVRow {
 		return payement;
 	}
 	public void setPayement(String payement) {
-		this.payement = payement;
+		this.payement =  Gate.encoding(payement);
 	}
 	public int getCotisation() {
 		return cotisation;
@@ -153,7 +154,7 @@ public class Appelant implements CSVRow {
 		return famille;
 	}
 	public void setFamilleStr(String famille) {
-		this.famille = famille;
+		this.famille =  Gate.encoding(famille);
 	}
 	public List<Long> getFamille() {
 		return FLS.toList(famille);
@@ -168,31 +169,31 @@ public class Appelant implements CSVRow {
 		return aideParticuliere;
 	}
 	public void setAideParticuliere(String aideParticuliere) {
-		this.aideParticuliere = aideParticuliere;
+		this.aideParticuliere =  Gate.encoding(aideParticuliere);
 	}
 	public String getInfos() {
 		return infos;
 	}
 	public void setInfos(String infos) {
-		this.infos = infos;
+		this.infos =  Gate.encoding(infos);
 	}
 	public String getRemarques() {
 		return remarques;
 	}
 	public void setRemarques(String remarques) {
-		this.remarques = remarques;
+		this.remarques =  Gate.encoding(remarques);
 	}
 	public String getAdresse() {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse =  Gate.encoding(adresse);
 	}
 	public String getResidence() {
 		return residence;
 	}
 	public void setResidence(String home) {
-		this.residence = home;
+		this.residence =  Gate.encoding(home);
 	}
 	
 	public String getFullName() {

@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import data.CSVRow;
 import util.DateTime;
+import util.Gate;
 import util.Trajet;
 import util.TypeCourse;
 
@@ -81,7 +82,7 @@ public class Course implements CSVRow {
 	
 	public Course(Appelant appelant,String nameCreation) {
 		this.appelant = appelant;
-		this.nameCreation = nameCreation;
+		this.nameCreation =  Gate.encoding(nameCreation);
 		dateCreation = LocalDate.now();
 		heureCreation = LocalTime.now();
 		residence = appelant.getResidence();
@@ -115,13 +116,13 @@ public class Course implements CSVRow {
 
 	public void setChauffeur(Chauffeur chauffeur,String nameAttribution) {
 		this.chauffeur = chauffeur;
-		this.nameAttribution = nameAttribution;
+		this.nameAttribution =  Gate.encoding(nameAttribution);
 		dateAttribution = LocalDate.now();
 	}
 	
 	public void setChauffeur(String nameAttribution) {
 		this.chauffeur = null;
-		this.nameAttribution = nameAttribution;
+		this.nameAttribution =  Gate.encoding(nameAttribution);
 		dateAttribution = LocalDate.now();
 	}
 
@@ -146,7 +147,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setAdresseDep(String adresseDep) {
-		this.adresseDep = adresseDep;
+		this.adresseDep =  Gate.encoding(adresseDep);
 	}
 
 	public String getCpDep() {
@@ -154,7 +155,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setCpDep(String cpDep) {
-		this.cpDep = cpDep;
+		this.cpDep =  Gate.encoding(cpDep);
 	}
 
 	public String getLocaliteDep() {
@@ -162,7 +163,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setLocaliteDep(String localiteDep) {
-		this.localiteDep = localiteDep;
+		this.localiteDep =  Gate.encoding(localiteDep);
 	}
 
 	public TypeCourse getTypeCourse() {
@@ -186,7 +187,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setHopital(String hopital) {
-		this.hopital = hopital;
+		this.hopital =  Gate.encoding(hopital);
 	}
 
 	public String getAdresseDest() {
@@ -194,7 +195,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setAdresseDest(String adresseDest) {
-		this.adresseDest = adresseDest;
+		this.adresseDest =  Gate.encoding(adresseDest);
 	}
 
 	public String getCpDest() {
@@ -202,7 +203,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setCpDest(String cpDest) {
-		this.cpDest = cpDest;
+		this.cpDest =  Gate.encoding(cpDest);
 	}
 
 	public String getLocaliteDest() {
@@ -210,7 +211,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setLocaliteDest(String localiteDest) {
-		this.localiteDest = localiteDest;
+		this.localiteDest =  Gate.encoding(localiteDest);
 	}
 
 	public LocalTime getHeureRetour() {
@@ -226,7 +227,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setAdresseRet(String adresseRet) {
-		this.adresseRet = adresseRet;
+		this.adresseRet =  Gate.encoding(adresseRet);
 	}
 
 	public String getCpRet() {
@@ -234,7 +235,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setCpRet(String cpRet) {
-		this.cpRet = cpRet;
+		this.cpRet =  Gate.encoding(cpRet);
 	}
 
 	public String getLocaliteRet() {
@@ -242,7 +243,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setLocaliteRet(String localiteRet) {
-		this.localiteRet = localiteRet;
+		this.localiteRet =  Gate.encoding(localiteRet);
 	}
 
 	public String getNotes() {
@@ -250,7 +251,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setNotes(String notes) {
-		this.notes = notes;
+		this.notes =  Gate.encoding(notes);
 	}
 
 	public String getNameCreation() {
@@ -266,7 +267,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setResidence(String residence) {
-		this.residence = residence;
+		this.residence =  Gate.encoding(residence);
 	}
 	
 	public LocalDate getDateAttribution() {
@@ -274,7 +275,7 @@ public class Course implements CSVRow {
 	}
 	
 	public void setNameCreation(String nameCreation) {
-		this.nameCreation = nameCreation;
+		this.nameCreation =  Gate.encoding(nameCreation);
 	}
 
 	public void setDateCreation(LocalDate dateCreation) {
@@ -294,7 +295,7 @@ public class Course implements CSVRow {
 	}
 
 	public void setNameAttribution(String nameAttribution) {
-		this.nameAttribution = nameAttribution;
+		this.nameAttribution =  Gate.encoding(nameAttribution);
 	}
 
 	public void setDateAttribution(LocalDate dateAttribution) {

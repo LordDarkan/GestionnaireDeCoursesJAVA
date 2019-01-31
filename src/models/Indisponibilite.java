@@ -10,6 +10,7 @@ import javax.persistence.Id;
 
 import data.CSVRow;
 import util.DateTime;
+import util.Gate;
 import util.Trajet;
 
 @Entity
@@ -71,7 +72,7 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 		return description;
 	}
 	public void setDescription(String description) {
-		this.description = description;
+		this.description =  Gate.encoding(description);
 	}
 	
 	public Trajet getModeCourse() {
