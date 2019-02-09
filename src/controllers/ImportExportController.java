@@ -36,19 +36,22 @@ public abstract class ImportExportController {
 		return user.isAdmin();
 	}
 	
+	protected boolean export(){
+		return SaveManager.export();
+	}
+	
 	protected boolean save(){
 		return SaveManager.save();
 	}
 
 	protected void importer(File file) {
 		SaveManager.importSave(file);
-		main.logout();
+		main.logoutAuto();
 	}
 	
-	protected void importerOld(File file) {
+	protected void changeSaveDirectory(File file) {
 		settings.setPathSaveDirectory(file.getAbsolutePath());
 		Mapper.getInstance().setSettings(settings);
-		//Mapper.getInstance().getSettings();//importApplantsOld(SaveManager.old2Appelants(file));
 	}
 
 	public File getFileSaveDirectory() {

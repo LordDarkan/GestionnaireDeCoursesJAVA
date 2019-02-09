@@ -26,12 +26,12 @@ public class ImportExportControllerFXML extends ImportExportController implement
 
 	@FXML
     private Button importer;
-
     @FXML
     private Button exporter;
-    
     @FXML
-    private Button importerOld;
+    private Button changeD;
+    @FXML
+    private Button export;
     
     private Tab tab;
 	
@@ -67,7 +67,20 @@ public class ImportExportControllerFXML extends ImportExportController implement
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		importer.setOnAction((ActionEvent e) -> importer());
 		exporter.setOnAction((ActionEvent e) -> saveF());
-		importerOld.setOnAction((ActionEvent e) -> importerOld());
+		changeD.setOnAction((ActionEvent e) -> changeSaveDirectoryF());
+		export.setOnAction((ActionEvent e) -> exportF());
+	}
+	
+	private void exportF() {
+		try {
+			if (super.export()) {
+				Message.msg("Exportation effectuée");
+			} else {
+				Message.alert("Exportation effectuée\nMais une erreur s'est produite!");
+			}
+		} catch (Exception e) {
+			Message.alert("Erreur lors de l'exportation");
+		}
 	}
 	
 	private void saveF() {
@@ -82,7 +95,8 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		}
 	}
 
-	private void importerOld() {
+	
+	private void changeSaveDirectoryF() {
 		DirectoryChooser dc = new DirectoryChooser();
 		dc.setInitialDirectory(getFileSaveDirectory());
 		dc.setTitle("Choose Save Directory");
@@ -90,7 +104,7 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		File file = dc.showDialog((Stage)importer.getScene().getWindow());
 		
 		if (file!=null && file.isDirectory() && Message.comfirmation("Importation", "Le dossier de sauvegarde sera modifié !")) {
-			importerOld(file);
+			changeSaveDirectory(file);
 		}
 	}
 	
@@ -116,9 +130,12 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		fileChooser.setTitle("Choose Save File");
 		fileChooser.getExtensionFilters().add(extFilter);
 		File file = fileChooser.showOpenDialog((Stage)importer.getScene().getWindow());
-		
-		if (file!=null && Message.comfirmation("Importation", "Les anciennes données seront remplacé par de nouvelles!")) {
-			importer(file);
+		try {
+			if (file!=null && Message.comfirmation("Importation", "Les anciennes données seront remplacé par de nouvelles!")) {
+				importer(file);
+			}
+		} catch (Exception e) {
+			Message.alert("Erreur lors de l'importation");
 		}
 	}
 	

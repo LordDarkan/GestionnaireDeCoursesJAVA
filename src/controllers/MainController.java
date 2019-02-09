@@ -28,4 +28,6 @@ public abstract class MainController {
 	}
 
 	public abstract void logout();
+
+	public abstract void logoutAuto();
 }

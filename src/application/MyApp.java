@@ -21,7 +21,7 @@ public class MyApp extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		if (UniqueInstanceTester.launch(null/* FIXME stage */)) {
+		if (UniqueInstanceTester.launch(null/* stage */)) {
 			stage.setTitle("Gestionnaire de Courses");
 			stage.getIcons().add(new Image(MyApp.class.getResourceAsStream("short.png")));
 			try {

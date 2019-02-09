@@ -53,14 +53,14 @@ public final class UniqueInstanceTester {
                             /* On attend qu'une socket se connecte sur le serveur. */
                             final Socket socket = server.accept();
  
-                            /* Si une socket est connectée, on écoute le message envoyé dans un nouveau Thrad. *FIXME/
+                            /* Si une socket est connectée, on écoute le message envoyé dans un nouveau Thrad. *TODO/
                             new Thread() {
  
                                 @Override public void run() {
                                     receive(socket,stage);
                                 }
-                            }.start();/*FIXME*/
-                            socket.close();//FIXME
+                            }.start();/*TODO */
+                            socket.close();//TODO
                         } catch(IOException e) {
                             e.printStackTrace();
                         }
@@ -78,7 +78,7 @@ public final class UniqueInstanceTester {
             unique = false;
  
             /* Dans ce cas, on envoie un message à l'autre application pour lui demander d'avoir le focus. */
-            //FIXME send();
+            //TODO send();
         }
         return unique;
     }
@@ -130,7 +130,7 @@ public final class UniqueInstanceTester {
             if("myfreetv".equals(s)) {
 
             	
-            	Platform.runLater(new Runnable() {//FIXME JAVAFX
+            	Platform.runLater(new Runnable() {//TODO JAVAFX
             	    @Override
             	    public void run() {
             	    	stage.requestFocus();
@@ -147,7 +147,7 @@ public final class UniqueInstanceTester {
                          * démarrage de l'application.
                          */
                         if(stage != null) {
-                            //stage.toFront();//FIXME
+                            //stage.toFront();//TODO
                         	//fxml.Message.alert("test");
                         	
                         	System.out.println("test");

@@ -2,6 +2,8 @@ package fxml.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -91,6 +93,10 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private Label handicapAppelant;
 	@FXML
 	private Label aideAppelant;
+	@FXML
+	private Label telAppelant;
+	@FXML
+	private Label payementAppelant;
 	@FXML
 	private ComboBox<Object> editChauffeur;
 	@FXML
@@ -267,12 +273,14 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 
 		});
 
-		editCpDepart.textProperty()
-				.addListener((observable, oldValue, newValue) -> editCp(editCpDepart, newValue, oldValue));
+		editCpDepart.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpDepart, newValue, oldValue));
 		editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV, newValue, oldValue));
-		editCpRetour.textProperty()
-				.addListener((observable, oldValue, newValue) -> editCp(editCpRetour, newValue, oldValue));
+		editCpRetour.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRetour, newValue, oldValue));
 
+		editLocaliteDepart.textProperty().addListener((observable, oldValue, newValue) -> editLocalite(editLocaliteDepart, newValue, oldValue));
+		editLocaliteRDV.textProperty().addListener((observable, oldValue, newValue) -> editLocalite(editLocaliteRDV, newValue, oldValue));
+		editLocaliteRetour.textProperty().addListener((observable, oldValue, newValue) -> editLocalite(editLocaliteRetour, newValue, oldValue));
+		
 		setChauffeurList();
 		editType.getItems().addAll(TypeCourse.values());
 		editModeCourse.getItems().addAll(Trajet.values());
@@ -354,6 +362,10 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		} else if (newValue.length() > 4) {
 			editCp.setText(oldValue);
 		}
+	}
+	
+	private void editLocalite(TextField editLocalite, String newValue, String oldValue) {
+		editLocalite.setText(Normalizer.normalize(newValue.toUpperCase(), Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""));
 	}
 
 	private void setSpinner(Spinner<Integer> spinner, Integer min, Integer max) {
@@ -723,6 +735,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		nomCompletAppelant.setText(app.getFullName());
 		handicapAppelant.setText(app.getMobilite());
 		aideAppelant.setText(app.getAideParticuliere());
+		telAppelant.setText(app.getTel());
+		payementAppelant.setText(app.getPayement());
 	}
 
 	private void setResidence() {
