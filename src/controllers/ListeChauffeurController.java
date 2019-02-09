@@ -93,9 +93,9 @@ public abstract class ListeChauffeurController {
 	}
 
 	protected void save(Chauffeur app) {
-		mapper.addOrUpdate(app);
 		if(app.getId()!=null)
 			selectedChauffeur = app;
+		mapper.addOrUpdate(app);
 		chauffeursFull = mapper.getChauffeurList();
 		recherche(true);
 	}

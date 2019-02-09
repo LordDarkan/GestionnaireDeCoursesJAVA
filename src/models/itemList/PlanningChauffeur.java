@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import models.Indisponibilite;
 
-public class PlanningChauffeur {
+public class PlanningChauffeur implements Comparable<PlanningChauffeur> {
 	private String chauffeurName;
 	private Set<Indisponibilite> indisponibilites;
 
@@ -25,5 +25,10 @@ public class PlanningChauffeur {
 	
 	public void add(Indisponibilite indisponibilite) {
 		indisponibilites.add(indisponibilite);
+	}
+
+	@Override
+	public int compareTo(PlanningChauffeur arg0) {
+		return this.chauffeurName.compareTo(arg0.chauffeurName);
 	}
 }

@@ -36,8 +36,8 @@ public abstract class ImportExportController {
 		return user.isAdmin();
 	}
 	
-	protected void save(){
-		SaveManager.save();
+	protected boolean save(){
+		return SaveManager.save();
 	}
 
 	protected void importer(File file) {

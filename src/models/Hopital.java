@@ -3,8 +3,11 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import data.CSVRow;
+import util.Gate;
+
 @Entity
-public class Hopital {
+public class Hopital implements CSVRow {
 	@Id
 	private String name = "";
 	private String adresse = "";
@@ -16,31 +19,31 @@ public class Hopital {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name =  Gate.encoding(name);
 	}
 	public String getAdresse() {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse =  Gate.encoding(adresse);
 	}
 	public String getCp() {
 		return cp;
 	}
 	public void setCp(String cp) {
-		this.cp = cp;
+		this.cp =  Gate.encoding(cp);
 	}
 	public String getLocalite() {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite =  Gate.encoding(localite);
 	}
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel =  Gate.encoding(tel);
 	}
 	
 	@Override
@@ -48,6 +51,8 @@ public class Hopital {
 		return String.format("%s\t|\t%s\t%s (%s)\t|\tN° Tel: %s", name,adresse,localite,cp,tel);
 	}
 	
+
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(name);
@@ -63,9 +68,12 @@ public class Hopital {
 		return str.toString();
 	}
 	
-	public static String getEnTeteCsv() {
-		return "Nom;Adresse;CP;Localité;Téléphone;END";
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
+	
+	public static final String enteteCSV = "Nom;Adresse;CP;Localité;Téléphone;END";
 
 	public static void valdation(Hopital obj) throws IllegalArgumentException {//TODO
 		

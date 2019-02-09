@@ -32,9 +32,12 @@ public class PlanningControlleurFXML extends PlanningControlleur implements Init
 
     @FXML
     private ListView<PlanningChauffeur> listViewChauf;
+    
+    private MainControllerFXML main;
 	
-	protected PlanningControlleurFXML(Utilisateur user, TabPane tabContainer) {
+	protected PlanningControlleurFXML(MainControllerFXML main,Utilisateur user, TabPane tabContainer) {
 		super(user);
+		this.main = main;
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getClassLoader().getResource("fxml/views/Planning.fxml"));
@@ -61,7 +64,7 @@ public class PlanningControlleurFXML extends PlanningControlleur implements Init
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		listViewChauf.setFocusTraversable(false);
-		listViewChauf.setCellFactory(lc -> new PlanningChauffeurListCell());
+		listViewChauf.setCellFactory(lc -> new PlanningChauffeurListCell(main));
 		selectedDate.setValue(LocalDate.now());
 		selectedDate.valueProperty().addListener((ov, oldValue, newValue) -> {
 			if (newValue != null) {
@@ -72,8 +75,6 @@ public class PlanningControlleurFXML extends PlanningControlleur implements Init
 
 	@Override
 	public void logout() {
-		
-		
 		clear();
 	}
 
@@ -91,5 +92,10 @@ public class PlanningControlleurFXML extends PlanningControlleur implements Init
 	
 	private void select() {
 		setListPlanningChauffeur(getListPlanningChauffeur(selectedDate.getValue()));
+	}
+
+	@Override
+	public void select(Long id) {
+		throw new UnsupportedOperationException();
 	}
 }

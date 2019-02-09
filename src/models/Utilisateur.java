@@ -5,10 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import data.CSVRow;
+import util.Gate;
 import util.Titre;
 
 @Entity
-public class Utilisateur {
+public class Utilisateur implements CSVRow  {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -22,12 +24,11 @@ public class Utilisateur {
 	}
 	
 	public void setName(String name) {
-		this.name = name.trim();
+		this.name =  Gate.encoding(name.trim());
 	}
 
 	public void setFirstname(String firstname) {
-		firstname = firstname.trim();
-		this.firstname = firstname.substring(0,1)+firstname.substring(1);
+		this.firstname = Gate.encoding(firstname.trim());
 	}
 	
 	public String getFullName() {
@@ -70,7 +71,8 @@ public class Utilisateur {
 	public void setTitre(Titre titre) {
 		this.titre = titre;
 	}
-	
+
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(name);
@@ -81,7 +83,11 @@ public class Utilisateur {
 		str.append(";END");
 		return str.toString();
 	}
-	public static String getEnTeteCsv() {
-		return "NOM;PRENOM;ADMIN;END";
+
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
+	
+	public static final String enteteCSV = "NOM;PRENOM;ADMIN;END";
 }

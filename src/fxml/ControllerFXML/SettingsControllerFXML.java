@@ -222,4 +222,9 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 			setListResidence(getListResidence());
 		}
 	}
+
+	@Override
+	public void select(Long id) {
+		throw new UnsupportedOperationException();
+	}
 }

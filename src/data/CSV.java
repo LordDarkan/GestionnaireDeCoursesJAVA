@@ -21,8 +21,10 @@ import models.Indisponibilite;
 import models.Residence;
 import models.Utilisateur;
 import util.DateTime;
+import util.FLS;
 import util.LoggerManager;
 import util.Titre;
+import util.Trajet;
 import util.TypeCourse;
 
 public class CSV {
@@ -70,9 +72,9 @@ public class CSV {
 						appelant.setCp(row[8].trim());
 						appelant.setLocalite(row[9].trim());
 						appelant.setQuartier(row[10].trim());
-						appelant.setFamilleStr(row[11].trim());
-						appelant.setAffiniteStr(row[12].trim());
-						appelant.setRestrictionStr(row[13].trim());
+						appelant.setFamilleStr(FLS.parse(row[11].trim()));
+						appelant.setAffiniteStr(FLS.parse(row[12].trim()));
+						appelant.setRestrictionStr(FLS.parse(row[13].trim()));
 						appelant.setMutualite(row[14].trim());
 						appelant.setPayement(row[15].trim());
 						try {
@@ -200,28 +202,19 @@ public class CSV {
 					course.setCpDep(row[11].trim());
 					course.setLocaliteDep(row[12].trim());
 					course.setTypeCourse(TypeCourse.get(row[13].trim()));
-					course.setMutuelle(row[14].trim().equalsIgnoreCase("oui"));
+					
+					course.setTrajet(Trajet.get(row[14].trim()));
+					
 					course.setHeureRDV(DateTime.toLocalTime(row[15].trim()));
 					course.setHopital(row[16].trim());
 					course.setAdresseDest(row[17].trim());
 					course.setCpDest(row[18].trim());
 					course.setLocaliteDest(row[19].trim());
-					course.setAttente(row[20].trim().equalsIgnoreCase("oui"));
-					if (!row[21].trim().isEmpty()) {
-						id = Long.parseLong(row[21].trim());
-						course.setChauffeurSec(mapper.getChauffeur(id));
-					}
 					course.setHeureRetour(DateTime.toLocalTime(row[22].trim()));
 					course.setAdresseRet(row[23].trim());
 					course.setCpRet(row[24].trim());
 					course.setLocaliteRet(row[25].trim());
 					course.setNotes(row[26].trim());
-					course.setAnnulation(row[27].trim().equalsIgnoreCase("oui"));
-					course.setRaisonAnnulation(row[28].trim());
-					course.setNameAnnulation(row[29].trim());
-					if (!row[30].trim().isEmpty()) {
-						course.setDateAnnulation(DateTime.saveToLocalDate(row[30].trim()));//DATE
-					}
 
 					courses.add(course);
 				}
@@ -423,7 +416,8 @@ public class CSV {
 		return utilisateurs;
 	}
 
-	public static void wirteAppelant(List<Appelant> list, File file) {
+	/*public static boolean wirteAppelant(List<Appelant> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Appelant.getEnTeteCsv());
@@ -435,10 +429,13 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteAppelant", e);
+			save = false ;
 		} 
+		return save;
 	}
 
-	public static void wirteChauffeur(List<Chauffeur> list, File file) {
+	public static boolean wirteChauffeur(List<Chauffeur> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Chauffeur.getEnTeteCsv());
@@ -450,10 +447,13 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteChauffeur", e);
+			save = false ;
 		} 
+		return save;
 	}
 
-	public static void wirteCourse(List<Course> list, File file) {
+	public static boolean wirteCourse(List<Course> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Course.getEnTeteCsv());
@@ -465,10 +465,13 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteCourse", e);
+			save = false ;
 		} 
+		return save;
 	}
 
-	public static void wirteIndisponibilite(List<Indisponibilite> list, File file) {
+	public static boolean wirteIndisponibilite(List<Indisponibilite> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Indisponibilite.getEnTeteCsv());
@@ -480,10 +483,13 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteIndisponibilite", e);
+			save = false ;
 		} 
+		return save;
 	}
 
-	public static void wirteHopital(List<Hopital> list, File file) {
+	public static boolean wirteHopital(List<Hopital> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Hopital.getEnTeteCsv());
@@ -495,10 +501,13 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteHopital", e);
+			save = false ;
 		} 
+		return save;
 	}
 
-	public static void wirteResidence(List<Residence> list, File file) {
+	public static boolean wirteResidence(List<Residence> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Residence.getEnTeteCsv());
@@ -510,10 +519,13 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteResidence", e);
+			save = false ;
 		} 
+		return save;
 	}
 
-	public static void wirteUtilisateur(List<Utilisateur> list, File file) {
+	public static boolean wirteUtilisateur(List<Utilisateur> list, File file) {
+		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
 			writer.write(Residence.getEnTeteCsv());
@@ -525,6 +537,52 @@ public class CSV {
 			writer.close();
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
-		} 
+			save = false ;
+		}
+		return save;
+	}*/
+	
+	public static boolean wirte(List<? extends CSVRow> list, File file) {
+		boolean save = true;
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+			boolean first = true;
+			for (CSVRow row : list) {
+				if (first) {
+					writer.write(row.getEnTeteCsv());
+					writer.newLine();
+					first = false;
+				}
+				writer.write(row.getRowCsv());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			save = false ;
+		}
+		return save;
+	}
+	
+	public static boolean export(List<? extends CSVRow> list, File file) {
+		boolean save = true;
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(file), "Cp1252"))) {
+			boolean first = true;
+			for (CSVRow row : list) {
+				if (first) {
+					writer.write(row.getEnTeteCsv());
+					writer.newLine();
+					first = false;
+				}
+				writer.write(row.getRowCsv());
+				writer.newLine();
+			}
+			writer.close();
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			save = false ;
+		}
+		return save;
 	}
 }

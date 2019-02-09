@@ -7,12 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import data.CSVRow;
 import util.DateTime;
 import util.FLS;
+import util.Gate;
 import util.Titre;
 
 @Entity
-public class Appelant {
+public class Appelant implements CSVRow {
 	@Id
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +22,7 @@ public class Appelant {
 	private Titre titre = Titre.Aucun;
 	private String name = "";
 	private String firstname = "";
-	private LocalDate birthday = LocalDate.now();
+	private LocalDate birthday = null;
 	private String tel = "";
 	
 	private String residence = "";
@@ -53,17 +55,13 @@ public class Appelant {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name =  Gate.encoding(name);
 	}
 	public String getFirstname() {
 		return firstname;
 	}
 	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
-	
-	public String getStrBirthday() {
-		return String.format("%d-%d-%d", birthday.getDayOfMonth(),birthday.getMonth(),birthday.getYear());
+		this.firstname =  Gate.encoding(firstname);
 	}
 	
 	public LocalDate getBirthday() {
@@ -77,43 +75,43 @@ public class Appelant {
 		return cp;
 	}
 	public void setCp(String cp) {
-		this.cp = cp;
+		this.cp =  Gate.encoding(cp);
 	}
 	public String getLocalite() {
 		return localite;
 	}
 	public void setLocalite(String localite) {
-		this.localite = localite;
+		this.localite =  Gate.encoding(localite);
 	}
 	public String getQuartier() {
 		return quartier;
 	}
 	public void setQuartier(String quartier) {
-		this.quartier = quartier;
+		this.quartier =  Gate.encoding(quartier);
 	}
 	public String getTel() {
 		return tel;
 	}
 	public void setTel(String tel) {
-		this.tel = tel;
+		this.tel =  Gate.encoding(tel);
 	}
 	public String getMobilite() {
 		return mobilite;
 	}
 	public void setMobilite(String mobilite) {
-		this.mobilite = mobilite;
+		this.mobilite =  Gate.encoding(mobilite);
 	}
 	public String getMutualite() {
 		return mutualite;
 	}
 	public void setMutualite(String mutualite) {
-		this.mutualite = mutualite;
+		this.mutualite =  Gate.encoding(mutualite);
 	}
 	public String getAffiniteStr() {
 		return affinite;
 	}
 	public void setAffiniteStr(String affinite) {
-		this.affinite = affinite;
+		this.affinite =  Gate.encoding(affinite);
 	}
 	public List<Long> getAffinite() {
 		return FLS.toList(affinite);
@@ -128,7 +126,7 @@ public class Appelant {
 		return restriction;
 	}
 	public void setRestrictionStr(String restriction) {
-		this.restriction = restriction;
+		this.restriction =  Gate.encoding(restriction);
 	}
 	public List<Long> getRestriction() {
 		return FLS.toList(restriction);
@@ -143,7 +141,7 @@ public class Appelant {
 		return payement;
 	}
 	public void setPayement(String payement) {
-		this.payement = payement;
+		this.payement =  Gate.encoding(payement);
 	}
 	public int getCotisation() {
 		return cotisation;
@@ -156,7 +154,7 @@ public class Appelant {
 		return famille;
 	}
 	public void setFamilleStr(String famille) {
-		this.famille = famille;
+		this.famille =  Gate.encoding(famille);
 	}
 	public List<Long> getFamille() {
 		return FLS.toList(famille);
@@ -171,31 +169,31 @@ public class Appelant {
 		return aideParticuliere;
 	}
 	public void setAideParticuliere(String aideParticuliere) {
-		this.aideParticuliere = aideParticuliere;
+		this.aideParticuliere =  Gate.encoding(aideParticuliere);
 	}
 	public String getInfos() {
 		return infos;
 	}
 	public void setInfos(String infos) {
-		this.infos = infos;
+		this.infos =  Gate.encoding(infos);
 	}
 	public String getRemarques() {
 		return remarques;
 	}
 	public void setRemarques(String remarques) {
-		this.remarques = remarques;
+		this.remarques =  Gate.encoding(remarques);
 	}
 	public String getAdresse() {
 		return adresse;
 	}
 	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+		this.adresse =  Gate.encoding(adresse);
 	}
 	public String getResidence() {
 		return residence;
 	}
 	public void setResidence(String home) {
-		this.residence = home;
+		this.residence =  Gate.encoding(home);
 	}
 	
 	public String getFullName() {
@@ -208,6 +206,7 @@ public class Appelant {
 		this.titre = titre;
 	}
 	
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(id);
@@ -218,7 +217,8 @@ public class Appelant {
 		str.append(";");
 		str.append(firstname);
 		str.append(";");
-		str.append(DateTime.saveToString(birthday));//date
+		if (birthday!=null)
+			str.append(DateTime.saveToString(birthday));//date
 		str.append(";");
 		str.append(tel);
 		str.append(";");
@@ -255,9 +255,12 @@ public class Appelant {
 		return str.toString();
 	}
 	
-	public static String getEnTeteCsv() {
-		return "Code;Titre;Nom;Prenom;Date de naissance;Telephone, gsm;Residence;Adresse;CP;Localite;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualite;Paiement;Cotisation;mobilite;Aide particuliere;Infos utiles;Autres remarques;END";
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
+	
+	public static final String enteteCSV = "Code;Titre;Nom;Prenom;Date de naissance;Telephone, gsm;Residence;Adresse;CP;Localite;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualite;Paiement;Cotisation;mobilite;Aide particuliere;Infos utiles;Autres remarques;END";
 	
 	public static void valdation(Appelant obj) throws IllegalArgumentException {//TODO
 		if(obj.firstname.length()<2) throw new IllegalArgumentException("Le prénom est invalide");

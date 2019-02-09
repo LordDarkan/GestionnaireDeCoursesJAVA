@@ -11,7 +11,7 @@ public class LoggerManager {
 	private static Logger LOGGER = null;
 
 	static {
-		System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s %n");
+		System.setProperty("java.util.logging.SimpleFormatter.format", "[%1$tF %1$tT] [%4$-7s] %5$s%6$s%n");
 		LOGGER = Logger.getLogger("GDC-Global");
 		if (LogFileManager.ENABLE) {
 			try {

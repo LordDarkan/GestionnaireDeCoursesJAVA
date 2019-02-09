@@ -8,10 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import data.CSVRow;
 import util.DateTime;
+import util.Gate;
+import util.Trajet;
 
 @Entity
-public class Indisponibilite implements Comparable<Indisponibilite> {
+public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -69,7 +72,13 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 		return description;
 	}
 	public void setDescription(String description) {
-		this.description = description;
+		this.description =  Gate.encoding(description);
+	}
+	
+	public Trajet getModeCourse() {
+		return null;
+	}
+	public void setModeCourse(Trajet mode) {
 	}
 	@Override
 	public int compareTo(Indisponibilite arg0) {
@@ -79,6 +88,8 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 		
 		return resultat;
 	}
+
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(idChauffeur);
@@ -95,8 +106,11 @@ public class Indisponibilite implements Comparable<Indisponibilite> {
 		str.append(";END");
 		return str.toString();
 	}
-	public static String getEnTeteCsv() {
-		return "ID_CHAUFFEUR;DATE_START;HEURE_START;DATE_END;HEURE_END;DESCRIPTION;END";
+
+	@Override
+	public String getEnTeteCsv() {
+		return enteteCSV;
 	}
 	
+	public static final String enteteCSV = "ID_CHAUFFEUR;DATE_START;HEURE_START;DATE_END;HEURE_END;DESCRIPTION;END";
 }

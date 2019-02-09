@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -38,6 +37,7 @@
       	  </rowConstraints>
       	   <children>
       	      <Button fx:id="btnAdd" mnemonicParsing="false" text="Ajouter" />
+            <Button fx:id="btnIndisponibilite" mnemonicParsing="false" text="Indisponibilité" GridPane.columnIndex="1" GridPane.rowSpan="2" />
             <TextField fx:id="recherche" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
@@ -100,8 +100,36 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
+                              <Label text="Nom" />
+                              <TextField fx:id="nom" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label text="Prénom" GridPane.columnIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="prenom" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
+                              <Label text="Téléphone" GridPane.columnIndex="2">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </Label>
+                              <TextField fx:id="tel" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                              </TextField>
                               <Label text="Adresse" GridPane.rowIndex="2">
                                  <GridPane.margin>
                                     <Insets />
@@ -112,17 +140,12 @@
                                     <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="cp" GridPane.rowIndex="5">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </TextField>
                               <Label text="Code Postal" GridPane.rowIndex="4">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
                               </Label>
-                              <TextField fx:id="localite" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                              <TextField fx:id="cp" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
@@ -132,41 +155,17 @@
                                     <Insets />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="Infos Utiles" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </Label>
-                              <TextArea fx:id="infos" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.rowSpan="3">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </TextArea>
-                              <TextField fx:id="nom" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin></TextField>
-                              <TextField fx:id="prenom" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <TextField fx:id="localite" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
                               </TextField>
-                              <TextField fx:id="tel" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </TextField>
-                              <Label text="Nom" />
-                              <Label text="Prénom" GridPane.columnIndex="1">
+                              <Label text="Infos Utiles" GridPane.rowIndex="6">
                                  <GridPane.margin>
                                     <Insets />
                                  </GridPane.margin>
                               </Label>
-                              <Label text="Téléphone" GridPane.columnIndex="2">
-                                 <GridPane.margin>
-                                    <Insets />
-                                 </GridPane.margin>
-                              </Label>
+                              <TextField fx:id="infos" GridPane.columnSpan="4" GridPane.rowIndex="7" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -181,7 +180,6 @@
                   </VBox>
                </content>
             </ScrollPane>
-            <Button fx:id="btnIndisponibilite" mnemonicParsing="false" text="Indisponibilité" GridPane.columnIndex="1" GridPane.rowSpan="2" />
       	   </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
