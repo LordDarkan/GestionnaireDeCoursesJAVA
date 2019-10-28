@@ -67,7 +67,7 @@ public abstract class ListeAppelantController {
 	
 	private boolean recherche(boolean b){
 		boolean search = false;
-		if(recherche.length()>=3 || recherche.matches("\\p{Digit}+")) {
+		if(recherche.length()>=0 || recherche.matches("\\p{Digit}+")) {
 			appelants.clear();
 			for (AppelantItemList appelant : appelantsFull) {
 				if (appelant.getName().toLowerCase().startsWith(recherche)
