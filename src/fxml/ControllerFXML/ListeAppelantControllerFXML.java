@@ -2,6 +2,8 @@ package fxml.ControllerFXML;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -211,6 +213,10 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	        } else if(newValue.length()>4) {
 	        	cp.setText(oldValue);
 	        }
+		});
+		
+		localite.textProperty().addListener((observable, oldValue, newValue) -> {
+			localite.setText(Normalizer.normalize(newValue.toUpperCase(), Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", ""));
 		});
 		
 		cotisation.textProperty().addListener((observable, oldValue, newValue) -> {

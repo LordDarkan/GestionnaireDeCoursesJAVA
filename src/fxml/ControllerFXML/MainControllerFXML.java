@@ -124,5 +124,11 @@ public class MainControllerFXML extends MainController implements Initializable 
 		login();
 	}
 
+	@Override
+	public void logoutAuto() {
+		LOG.info("LOGOUT AUTO "+UserManager.getFullName());
+		login();
+	}
+
 	
 }

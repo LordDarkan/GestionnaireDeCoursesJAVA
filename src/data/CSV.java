@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,7 +20,6 @@ import models.Indisponibilite;
 import models.Residence;
 import models.Utilisateur;
 import util.DateTime;
-import util.FLS;
 import util.LoggerManager;
 import util.Titre;
 import util.Trajet;
@@ -72,9 +70,11 @@ public class CSV {
 						appelant.setCp(row[8].trim());
 						appelant.setLocalite(row[9].trim());
 						appelant.setQuartier(row[10].trim());
-						appelant.setFamilleStr(FLS.parse(row[11].trim()));
-						appelant.setAffiniteStr(FLS.parse(row[12].trim()));
-						appelant.setRestrictionStr(FLS.parse(row[13].trim()));
+						
+						appelant.setFamilleStr(row[11].trim());
+						appelant.setAffiniteStr(row[12].trim());
+						appelant.setRestrictionStr(row[13].trim());
+						
 						appelant.setMutualite(row[14].trim());
 						appelant.setPayement(row[15].trim());
 						try {
@@ -545,7 +545,7 @@ public class CSV {
 	public static boolean wirte(List<? extends CSVRow> list, File file) {
 		boolean save = true;
 		try (BufferedWriter writer = new BufferedWriter(
-				new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+				new OutputStreamWriter(new FileOutputStream(file), "Cp1252"))) {
 			boolean first = true;
 			for (CSVRow row : list) {
 				if (first) {

@@ -145,7 +145,7 @@
                                  <VBox>
                                     <children>
                                        <Label text="Téléphone" />
-                                       <Label fx:id="aideAppelant1" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="250.0" style="-fx-border-color: gainsboro;" text="xxx" wrapText="true">
+                                       <Label fx:id="telAppelant" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="250.0" style="-fx-border-color: gainsboro;" text="xxx" wrapText="true">
                                           <padding>
                                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                           </padding>
@@ -175,7 +175,7 @@
                                  <VBox>
                                     <children>
                                        <Label text="Paiement" />
-                                       <Label fx:id="aideAppelant2" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="250.0" style="-fx-border-color: gainsboro;" text="xxx" wrapText="true">
+                                       <Label fx:id="payementAppelant" alignment="TOP_LEFT" prefHeight="60.0" prefWidth="250.0" style="-fx-border-color: gainsboro;" text="xxx" wrapText="true">
                                           <padding>
                                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                                           </padding>

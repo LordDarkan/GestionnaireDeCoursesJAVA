@@ -181,12 +181,12 @@ public class MapperJPA extends Mapper {
 	
 	@Override
 	public Long addNew(Appelant entity) {
-		LOG.info("AJOUT APPLANT '"+entity.getId()+"' par "+UserManager.getFullName());
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
 		em.persist(entity);
 		em.getTransaction().commit();
 		em.close();
+		LOG.info("AJOUT APPLANT '"+entity.getId()+"' par "+UserManager.getFullName());
 		return entity.getId();
 	}
 
@@ -194,11 +194,10 @@ public class MapperJPA extends Mapper {
 	public Long addOrUpdate(Appelant entity) {
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
-		if (entity.getId() == null) {
+		boolean add = entity.getId() == null;
+		if (add) {
 			em.persist(entity);
-			LOG.info("AJOUT APPLANT "+entity.getId()+" par "+UserManager.getFullName());
 		} else {
-			LOG.info("MODIFICATION APPLANT "+entity.getId()+" par "+UserManager.getFullName());
 			Appelant oldEntity = em.find(Appelant.class, entity.getId());
 			entity.setFamilleStr(oldEntity.getFamilleStr());
 			entity.setAffiniteStr(oldEntity.getAffiniteStr());
@@ -213,6 +212,13 @@ public class MapperJPA extends Mapper {
 		}
 		em.getTransaction().commit();
 		em.close();
+		
+		if (add) {
+			em.persist(entity);
+			LOG.info("AJOUT APPLANT "+entity.getId()+" par "+UserManager.getFullName());
+		} else {
+			LOG.info("MODIFICATION APPLANT "+entity.getId()+" par "+UserManager.getFullName());
+		}
 		return entity.getId();
 	}
 
@@ -262,15 +268,20 @@ public class MapperJPA extends Mapper {
 	public Long addOrUpdate(Course entity) {
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
-		if (entity.getId() == null) {
+		boolean add = entity.getId() == null;
+		if (add) {
 			em.persist(entity);
-			LOG.info("AJOUT COURSE "+entity.getId()+" par "+UserManager.getFullName());
 		} else {
-			LOG.info("MODIFICATION COURSE "+entity.getId()+" par "+UserManager.getFullName());
 			em.merge(entity);
 		}
 		em.getTransaction().commit();
 		em.close();
+		
+		if (add) {
+			LOG.info("AJOUT COURSE "+entity.getId()+" par "+UserManager.getFullName());
+		} else {
+			LOG.info("MODIFICATION COURSE "+entity.getId()+" par "+UserManager.getFullName());
+		}
 		return entity.getId();
 	}
 

@@ -42,7 +42,7 @@ public class FLS {
 		return allInOne.toString();
 	}
 	
-	@Deprecated
+	@Deprecated//TODO FLS
 	public static String parse(String allInOne) {
 		if (!allInOne.startsWith(START)) {
 			allInOne = START+allInOne;

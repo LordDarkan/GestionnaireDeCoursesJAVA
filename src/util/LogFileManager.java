@@ -49,7 +49,6 @@ public class LogFileManager {
 
 	private static void checkDirectory() {
 		File file = new File(PATH_DIRECTORY);
-		System.out.println(PATH_DIRECTORY);
 		if(!file.exists()) { 
 			System.out.println("don't exist");
 			file.mkdir();
