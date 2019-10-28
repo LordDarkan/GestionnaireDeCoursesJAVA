@@ -147,8 +147,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private TextField editAdresseRDV;
 	@FXML
 	private TextField editLocaliteRDV;
-	@FXML
-	private TextField editCpRDV;
+	//@FXML
+	//private TextField editCpRDV;
 	@FXML
 	private ComboBox<String> editHopital;
 	@FXML
@@ -157,8 +157,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private Label affAdresseRDV;
 	@FXML
 	private Label affLocaliteRDV;
-	@FXML
-	private Label affCpRDV;
+	//@FXML
+	//private Label affCpRDV;
 	@FXML
 	private Label affHopital;
 	@FXML
@@ -274,7 +274,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		});
 
 		editCpDepart.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpDepart, newValue, oldValue));
-		editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV, newValue, oldValue));
+		//editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV, newValue, oldValue));
 		editCpRetour.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRetour, newValue, oldValue));
 
 		editLocaliteDepart.textProperty().addListener((observable, oldValue, newValue) -> editLocalite(editLocaliteDepart, newValue, oldValue));
@@ -462,12 +462,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editType.getSelectionModel().select(TypeCourse.HOPITAL);
 		editAdresseRDV.setDisable(!nan);
 		editLocaliteRDV.setDisable(!nan);
-		editCpRDV.setDisable(!nan);
+		//editCpRDV.setDisable(!nan);
 		if (!nan) {
 			Hopital ho = getHopital(value);
 			editAdresseRDV.setText(ho.getAdresse());
 			editLocaliteRDV.setText(ho.getLocalite());
-			editCpRDV.setText(ho.getCp());
+			//editCpRDV.setText(ho.getCp());
 		}
 	}
 
@@ -519,7 +519,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 					editMinuteRDV.getValueFactory().getValue()));
 			course.setAdresseDest(editAdresseRDV.getText().trim());
 			course.setLocaliteDest(editLocaliteRDV.getText().trim());
-			course.setCpDest(editCpRDV.getText().trim());
+			//course.setCpDest(editCpRDV.getText().trim());
 			course.setHopital(editHopital.getSelectionModel().getSelectedItem());
 			course.setHeureRetour(DateTime.getLocalTime(editHeureRetour.getValueFactory().getValue(),
 					editMinuteRetour.getValueFactory().getValue()));
@@ -618,12 +618,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		edit2.setVisible(edit);
 		editAdresseRDV.setVisible(edit);
 		editLocaliteRDV.setVisible(edit);
-		editCpRDV.setVisible(edit);
+		//editCpRDV.setVisible(edit);
 		editHopital.setVisible(edit);
 		affHeureRDV.setVisible(!edit);
 		affAdresseRDV.setVisible(!edit);
 		affLocaliteRDV.setVisible(!edit);
-		affCpRDV.setVisible(!edit);
+		//affCpRDV.setVisible(!edit);
 		affHopital.setVisible(!edit);
 		edit3.setVisible(edit);
 		editAdresseRetour.setVisible(edit);
@@ -679,7 +679,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		affHeureRDV.setText(DateTime.toString(course.getHeureRDV()));
 		affAdresseRDV.setText(course.getAdresseDest());
 		affLocaliteRDV.setText(course.getLocaliteDest());
-		affCpRDV.setText(course.getCpDest());
+		//affCpRDV.setText(course.getCpDest());
 		affHopital.setText(course.getHopital());
 		affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 		affAdresseRetour.setText(course.getAdresseRet());
@@ -711,7 +711,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editMinuteRDV.getValueFactory().setValue(course.getHeureRDV().getMinute());
 		editAdresseRDV.setText(course.getAdresseDest());
 		editLocaliteRDV.setText(course.getLocaliteDest());
-		editCpRDV.setText(course.getCpDest());
+		//editCpRDV.setText(course.getCpDest());
 		editHopital.getSelectionModel().select(course.getHopital());
 		editHeureRetour.getValueFactory().setValue(course.getHeureRetour().getHour());
 		editMinuteRetour.getValueFactory().setValue(course.getHeureRetour().getMinute());

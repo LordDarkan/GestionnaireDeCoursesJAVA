@@ -52,6 +52,7 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import util.LoggerManager;
 import util.Security;
+import util.Titre;
 import util.UserManager;
 
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
@@ -84,6 +85,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     private TextField prenom;
     @FXML
     private DatePicker datePNais;
+    @FXML
+    private ComboBox<Titre> titre;
     @FXML
     private TextField aide;
     @FXML
@@ -180,6 +183,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		    	}
 		    }
 		});*/
+		
+		titre.getItems().addAll(Titre.values());
 		
 		cbOldCourse.setSelected(false);
 		cbOldCourse.selectedProperty().addListener((isOld)->setListCourse(getCourses(cbOldCourse.isSelected())));
@@ -415,6 +420,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		app.setName(nom.getText().trim());
 		app.setFirstname(prenom.getText().trim());
 		app.setBirthday(datePNais.getValue());
+		app.setTitre(titre.getValue());
 		app.setResidence(residence.getSelectionModel().getSelectedItem());
 		app.setAdresse(adresse.getText().trim());
 		app.setCp(cp.getText().trim());
@@ -501,6 +507,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		
 		nom.setEditable(b);
 		prenom.setEditable(b);
+		titre.setDisable(!b);
 		
 		residence.setDisable(!b);
 		
@@ -529,6 +536,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		nom.setText(app.getName());
 		prenom.setText(app.getFirstname());
 		datePNais.setValue(app.getBirthday());
+		titre.getSelectionModel().select(app.getTitre());
 		residence.getSelectionModel().select(app.getResidence());
 		adresse.setText(app.getAdresse());
 		cp.setText(app.getCp());

@@ -208,7 +208,7 @@ public class CSV {
 					course.setHeureRDV(DateTime.toLocalTime(row[15].trim()));
 					course.setHopital(row[16].trim());
 					course.setAdresseDest(row[17].trim());
-					course.setCpDest(row[18].trim());
+					//course.setCpDest(row[18].trim());
 					course.setLocaliteDest(row[19].trim());
 					course.setHeureRetour(DateTime.toLocalTime(row[22].trim()));
 					course.setAdresseRet(row[23].trim());
