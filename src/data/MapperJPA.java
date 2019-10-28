@@ -29,6 +29,7 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import models.itemList.PlanningChauffeur;
 import util.LoggerManager;
+import util.TypeIndisponibilite;
 import util.UserManager;
 
 public class MapperJPA extends Mapper {
@@ -734,6 +735,24 @@ public class MapperJPA extends Mapper {
 		}
 		return result;
 	}
+	
+	@Override
+	public List<CourseItemList> getOldCourseApplant(Long id) {
+		List<CourseItemList> result = new LinkedList<CourseItemList>();
+		try {
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Course> q = em.createQuery(
+					"SELECT c FROM Course c WHERE c.annulation = false AND c.appelant.id=:arg1 AND c.date<CURRENT_DATE ORDER BY c.date DESC, c.heureRDV DESC", Course.class);
+			q.setParameter("arg1", id);
+			for (Course tuple : q.getResultList()) {
+				result.add(new CourseItemList(tuple));
+			}
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	@Override
 	public List<Residence> getListResidence() {
@@ -962,7 +981,7 @@ public class MapperJPA extends Mapper {
 
 	@Override
 	public void addOrUpdateIndisponibilite(Indisponibilite entity) {
-		if(!entity.isCourse()) {
+		if(entity.getType() != TypeIndisponibilite.COURSE) {
 			EntityManager em = factory.createEntityManager();
 			em.getTransaction().begin();
 			if (entity.getId() == null) {
@@ -977,7 +996,7 @@ public class MapperJPA extends Mapper {
 	
 	@Override
 	public void delete(Indisponibilite entity) {
-		if(!entity.isCourse()) {
+		if(entity.getType() != TypeIndisponibilite.COURSE) {
 			EntityManager em = factory.createEntityManager();
 			entity = em.find(Indisponibilite.class, entity.getId());
 			em.getTransaction().begin();

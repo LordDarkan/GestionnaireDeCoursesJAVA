@@ -1,6 +1,7 @@
 package models;
 
 import util.Trajet;
+import util.TypeIndisponibilite;
 
 public class IndisponibiliteCourse extends Indisponibilite {
 	private String titre;
@@ -9,9 +10,10 @@ public class IndisponibiliteCourse extends Indisponibilite {
 	public IndisponibiliteCourse(String titre) {
 		this.titre = titre;
 	}
+	
 	@Override
-	public boolean isCourse() {
-		return true;
+	public TypeIndisponibilite getType() {
+		return TypeIndisponibilite.COURSE;
 	}
 	@Override
 	public String getTitre() {

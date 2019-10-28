@@ -12,6 +12,7 @@ import data.CSVRow;
 import util.DateTime;
 import util.Gate;
 import util.Trajet;
+import util.TypeIndisponibilite;
 
 @Entity
 public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
@@ -62,8 +63,8 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 		this.heureEnd = heureEnd;
 	}
 	
-	public boolean isCourse() {
-		return false;
+	public TypeIndisponibilite getType() {
+		return TypeIndisponibilite.INDISPO;
 	}
 	public String getTitre() {
 		return "Indisponibilité";

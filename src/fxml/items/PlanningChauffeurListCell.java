@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import models.Indisponibilite;
 import models.itemList.PlanningChauffeur;
+import util.TypeIndisponibilite;
 
 public class PlanningChauffeurListCell extends ListCell<PlanningChauffeur> implements Initializable {
 	private AnchorPane content;
@@ -56,7 +57,7 @@ public class PlanningChauffeurListCell extends ListCell<PlanningChauffeur> imple
 		        	Indisponibilite item = listViewPlanning.getSelectionModel().getSelectedItem();
 		        	
 		        	if(item != null) {
-		        		if (item.isCourse()) {
+		        		if (item.getType() == TypeIndisponibilite.COURSE) {
 		        			main.selectCourse(item.getId());
 						} else if(Message.comfirmation("Suppression Indisponibilité", "Supprimer L'indisponibilité de "+nomChauffeur.getText()+" ?\n Attention L'indisponibilité peux s'étendre sur plusieurs jours!")) {
 							Mapper.getInstance().delete(item);

@@ -32,6 +32,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -126,6 +127,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private ListView<AppelantItemList> listViewFamille;
     @FXML
+    private CheckBox cbOldCourse;
+    @FXML
     private ListView<CourseItemList> listeViewCourse;
     
     private MainControllerFXML main;
@@ -177,6 +180,9 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		    	}
 		    }
 		});*/
+		
+		cbOldCourse.setSelected(false);
+		cbOldCourse.selectedProperty().addListener((isOld)->setListCourse(getCourses(cbOldCourse.isSelected())));
 		
 		listeViewCourse.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -471,6 +477,9 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	private void editMode(boolean a) {
 		boolean b = a && isAdmin();
 		
+		cbOldCourse.setVisible(!b);
+		listeViewCourse.setVisible(!b);
+		
 		btnAdd.setVisible(!b && isAdmin());
 		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
 		btnEdit.setVisible(!a);
@@ -537,7 +546,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		setListFamille(getFamille(app.getFamille()));
 		setListProche(getChauffeurList(app.getAffinite()));
 		setListRestrict(getChauffeurList(app.getRestriction()));
-		setListCourse(getCourses(app.getId()));
+		setListCourse(getCourses(cbOldCourse.isSelected()));
 	}
 	
 	private void setListFamille(List<AppelantItemList> list) {

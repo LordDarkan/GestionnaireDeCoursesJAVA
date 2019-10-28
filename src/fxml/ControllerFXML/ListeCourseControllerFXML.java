@@ -459,6 +459,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 
 	private void testHopital(String value) {
 		boolean nan = value.equals("");
+		editType.getSelectionModel().select(TypeCourse.HOPITAL);
 		editAdresseRDV.setDisable(!nan);
 		editLocaliteRDV.setDisable(!nan);
 		editCpRDV.setDisable(!nan);

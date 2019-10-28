@@ -78,6 +78,7 @@ public abstract class Mapper implements Closeable{
 	public abstract List<ChauffeurItemList> getChauffeurList(List<Long> list);
 	public abstract List<AppelantItemList> getAppelantList(List<Long> list);
 	public abstract List<CourseItemList> getCourseApplant(Long id);
+	public abstract List<CourseItemList> getOldCourseApplant(Long id);
 	public abstract void deleteFamille(Long id, Long id2);
 	
 	public abstract void deleteAll();
