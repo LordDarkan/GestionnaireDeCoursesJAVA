@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import controllers.ListeCourseController;
 import fxml.Message;
+import fxml.items.ChauffeurListCell;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -41,6 +42,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import models.Appelant;
 import models.Course;
@@ -98,7 +100,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	@FXML
 	private Label payementAppelant;
 	@FXML
-	private ComboBox<Object> editChauffeur;
+	private ComboBox<ChauffeurItemList> editChauffeur;
 	@FXML
 	private DatePicker editDateCourse;
 	@FXML
@@ -272,6 +274,10 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			}
 
 		});
+		
+
+		
+		editChauffeur.setCellFactory(lc -> new ChauffeurListCell());
 
 		editCpDepart.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpDepart, newValue, oldValue));
 		//editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV, newValue, oldValue));
@@ -409,12 +415,13 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private void setChauffeurList() {
 		Object obj = selectChauffeur.getSelectionModel().getSelectedItem();
 		selectChauffeur.getItems().clear();
-		editChauffeur.getItems().clear();
+		//editChauffeur.getItems().clear();
 
 		List<ChauffeurItemList> chauffeurItemList = getChauffeurList();
 
-		editChauffeur.getItems().add("");
-		editChauffeur.getItems().addAll(chauffeurItemList);
+		//editChauffeur.getItems().add("");
+		//editChauffeur.getItems().addAll(chauffeurItemList)
+		
 		selectChauffeur.getItems().add("Tout");
 		selectChauffeur.getItems().add("Sans Chauffeur");
 		selectChauffeur.getItems().addAll(chauffeurItemList);
@@ -692,6 +699,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 
 	private void affEditCourse(Course course) {
+		colorChauffeur(course.getAppelant(),getChauffeurList());
 		if (course.getChauffeur() != null) {
 			editChauffeur.getSelectionModel().select(new ChauffeurItemList(course.getChauffeur()));
 		} else {
@@ -722,6 +730,24 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editNote.setText(course.getNotes());
 
 		affAllerRetour(course.getTrajet());
+	}
+
+	private void colorChauffeur(Appelant appelant, List<ChauffeurItemList> chauffeurList) {
+		editChauffeur.getItems().clear();
+		Long id;
+		List<Long> aff = appelant.getAffinite();
+		List<Long> res = appelant.getRestriction();
+		
+		for (ChauffeurItemList chauffeur : chauffeurList) {
+			id = chauffeur.getId();
+			if(res.contains(id)) {
+				chauffeur.setColor(Color.RED);
+			} else if(aff.contains(id)) {
+				chauffeur.setColor(Color.GREEN);
+			}
+		}
+
+		editChauffeur.getItems().addAll(chauffeurList);
 	}
 
 	private void affAllerRetour(Trajet trajet) {

@@ -211,7 +211,7 @@ public class Appelant implements CSVRow {
 		StringBuilder str = new StringBuilder();
 		str.append(id);
 		str.append(";");
-		str.append(titre);
+		str.append(Titre.toString(titre));
 		str.append(";");
 		str.append(name);
 		str.append(";");
@@ -260,7 +260,7 @@ public class Appelant implements CSVRow {
 		return enteteCSV;
 	}
 	
-	public static final String enteteCSV = "Code;Titre;Nom;Prenom;Date de naissance;Telephone, gsm;Residence;Adresse;CP;Localite;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualite;Paiement;Cotisation;mobilite;Aide particuliere;Infos utiles;Autres remarques;END";
+	public static final String enteteCSV = "Code;Sexe;Nom;Prenom;Date de naissance;Telephone, gsm;Residence;Adresse;CP;Localite;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualite;Paiement;Cotisation;mobilite;Aide particuliere;Infos utiles;Autres remarques;END";
 	
 	public static void valdation(Appelant obj) throws IllegalArgumentException {//TODO
 		if(obj.firstname.length()<2) throw new IllegalArgumentException("Le prénom est invalide");
