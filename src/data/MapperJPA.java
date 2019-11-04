@@ -29,6 +29,7 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import models.itemList.PlanningChauffeur;
 import util.LoggerManager;
+import util.Select;
 import util.TypeIndisponibilite;
 import util.UserManager;
 
@@ -455,14 +456,26 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override//TODO sup chauf sec
-	public List<CourseItemList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date) {
+	public List<CourseItemList> getCourse(boolean all, Long idChauffeur, Select select, LocalDate date) {
 		StringBuilder query = new StringBuilder("SELECT t FROM Course t");
 		query.append(" WHERE t.annulation = false AND t.date");
-		if (day) {
+		switch (select) {
+		case DAY:
+			query.append("=:locdate");
+			break;
+		case PASSE:
+			query.append("<CURRENT_DATE");
+			break;
+		case FUTUR:
+		default:
+			query.append(">=CURRENT_DATE");
+			break;
+		}
+		/*if (day) {
 			query.append("=:locdate");
 		} else {
 			query.append(">=CURRENT_DATE");
-		}
+		}*/
 		if (!all) {
 			query.append(" AND ");
 			if (idChauffeur == null) {
@@ -472,12 +485,16 @@ public class MapperJPA extends Mapper {
 						"((t.chauffeur IS NOT NULL AND t.chauffeur.id=:idchauf) OR (t.chauffeurSec IS NOT NULL AND t.chauffeurSec.id=:idchauf2))");
 			}
 		}
-		query.append(" ORDER BY t.date, t.heureRDV");
+		if (select == Select.PASSE) {
+			query.append(" ORDER BY t.date DESC, t.heureRDV DESC");
+		} else {
+			query.append(" ORDER BY t.date, t.heureRDV");
+		}
 		List<CourseItemList> result = new LinkedList<CourseItemList>();
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Course> q = em.createQuery(query.toString(), Course.class);
-			if (day) {
+			if (select == Select.DAY) {
 				q.setParameter("locdate", date);
 			}
 			if (!all && idChauffeur != null) {

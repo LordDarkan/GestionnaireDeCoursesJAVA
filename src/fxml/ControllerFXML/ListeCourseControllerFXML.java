@@ -53,6 +53,7 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import util.DateTime;
 import util.LoggerManager;
+import util.Select;
 import util.Trajet;
 import util.TypeCourse;
 import util.UserManager;
@@ -81,6 +82,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private RadioButton selectParJour;
 	@FXML
 	private RadioButton selectFutur;
+	@FXML
+	private RadioButton selectPasse;
 	@FXML
 	private Label creatDate;
 	@FXML
@@ -237,6 +240,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		selectFutur.setToggleGroup(group);
 		selectFutur.setSelected(true);
 		selectParJour.setToggleGroup(group);
+		selectPasse.setToggleGroup(group);
 		group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			if (group.getSelectedToggle() != null) {
 				select();
@@ -443,11 +447,17 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			all = ((String) obj).equals("Tout");
 		}
 
-		boolean day = selectParJour.isSelected();
+		Select select = Select.PASSE;
+		if (selectParJour.isSelected()) {
+			select = Select.DAY;
+		} else if (selectFutur.isSelected()) {
+			select = Select.FUTUR;
+		}
+		
 		LocalDate date = selectDay.getValue();
 
-		selectDay.setDisable(!day);
-		super.select(all, chauf, day, date);
+		selectDay.setDisable(select != Select.DAY);
+		super.select(all, chauf, select, date);
 		setListeCourse(getCourseList());
 	}
 

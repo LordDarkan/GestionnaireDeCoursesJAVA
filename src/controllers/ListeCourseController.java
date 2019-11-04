@@ -13,13 +13,14 @@ import models.Residence;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
+import util.Select;
 
 public class ListeCourseController {
 	private Utilisateur user;
 	private Mapper mapper;
 	private Course selected;
 	private boolean all = false;
-	private boolean day = false;
+	private Select day = Select.FUTUR;
 	private LocalDate date = LocalDate.now();
 	private Long idChauffeur;
 	
@@ -120,7 +121,7 @@ public class ListeCourseController {
 		return mapper.getHopital(name);
 	}
 
-	protected void select(boolean all, ChauffeurItemList chauf, boolean day, LocalDate date) {
+	protected void select(boolean all, ChauffeurItemList chauf, Select day, LocalDate date) {
 		this.all = all;
 		if(chauf == null) {
 			idChauffeur = null;
