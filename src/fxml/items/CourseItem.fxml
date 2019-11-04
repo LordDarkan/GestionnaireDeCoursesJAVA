@@ -33,7 +33,6 @@
             </HBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <Label fx:id="cp" text="0000" />
                   <Label fx:id="localite" text="xxxxxxxxxx" />
                   <Label fx:id="adresse" text="xxxxxxxx, xx" />
                </children>

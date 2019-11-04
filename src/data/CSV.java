@@ -24,6 +24,7 @@ import util.LoggerManager;
 import util.Titre;
 import util.Trajet;
 import util.TypeCourse;
+import util.TypeIndisponibilite;
 
 public class CSV {
 	public static final Logger LOG = LoggerManager.getLogger();
@@ -208,7 +209,7 @@ public class CSV {
 					course.setHeureRDV(DateTime.toLocalTime(row[15].trim()));
 					course.setHopital(row[16].trim());
 					course.setAdresseDest(row[17].trim());
-					course.setCpDest(row[18].trim());
+					//course.setCpDest(row[18].trim());
 					course.setLocaliteDest(row[19].trim());
 					course.setHeureRetour(DateTime.toLocalTime(row[22].trim()));
 					course.setAdresseRet(row[23].trim());
@@ -263,6 +264,9 @@ public class CSV {
 					indisp.setDateEnd(DateTime.saveToLocalDate(row[3].trim()));//DATE
 					indisp.setHeureEnd(DateTime.toLocalTime(row[4].trim()));
 					indisp.setDescription(row[5].trim());
+					if (row.length>6) {
+						indisp.setType(TypeIndisponibilite.get(row[6].trim()));
+					}
 
 					indisponibilites.add(indisp);
 				}

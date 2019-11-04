@@ -45,6 +45,8 @@ public class Course implements CSVRow {
 	private LocalTime heureRDV = LocalTime.MIDNIGHT;
 	private String hopital = "";
 	private String adresseDest = "";
+	@SuppressWarnings("unused")
+	@Deprecated
 	private String cpDest = "";
 	private String localiteDest = "";
 	
@@ -200,14 +202,6 @@ public class Course implements CSVRow {
 
 	public void setAdresseDest(String adresseDest) {
 		this.adresseDest =  Gate.encoding(adresseDest);
-	}
-
-	public String getCpDest() {
-		return cpDest;
-	}
-
-	public void setCpDest(String cpDest) {
-		this.cpDest =  Gate.encoding(cpDest);
 	}
 
 	public String getLocaliteDest() {
@@ -368,7 +362,7 @@ public class Course implements CSVRow {
 		str.append(";");
 		str.append(adresseDest);
 		str.append(";");
-		str.append(cpDest);
+		//str.append(cpDest);
 		str.append(";");
 		str.append(localiteDest);
 		str.append(";");

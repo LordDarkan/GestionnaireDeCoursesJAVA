@@ -12,6 +12,7 @@ import javafx.scene.layout.VBox;
 import models.Indisponibilite;
 import util.DateTime;
 import util.Trajet;
+import util.TypeIndisponibilite;
 
 public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
 	private AnchorPane content;
@@ -53,7 +54,7 @@ public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
         	titre.setText(item.getTitre());
         	description.setText(item.getDescription());
         	
-        	if (item.isCourse()) {
+        	if (item.getType() == TypeIndisponibilite.COURSE) {
         		Trajet mode = item.getModeCourse();
         		if (mode == Trajet.ALLER) {
         			vBox.setStyle("-fx-border-color: black;-fx-background-color:#C2FF80;");
@@ -63,7 +64,10 @@ public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
 					vBox.setStyle("-fx-border-color: black;-fx-background-color:white;");
 				}
         		str+=" "+item.getModeCourse().toString();
-        	} else {
+        	} else if (item.getType() == TypeIndisponibilite.PASDERANGER) {
+        		vBox.setStyle("-fx-border-color: black;-fx-background-color:#FFAE42;");
+        		str+=" - "+DateTime.toString(item.getHeureEnd());
+			} else {
         		vBox.setStyle("-fx-border-color: black;-fx-background-color:#DD0000;");
         		str+=" - "+DateTime.toString(item.getHeureEnd());
         	}

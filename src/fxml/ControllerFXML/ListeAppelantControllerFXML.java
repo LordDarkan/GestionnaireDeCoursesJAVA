@@ -32,6 +32,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -51,6 +52,7 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import util.LoggerManager;
 import util.Security;
+import util.Titre;
 import util.UserManager;
 
 public class ListeAppelantControllerFXML extends ListeAppelantController implements Initializable,ITabController {
@@ -83,6 +85,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     private TextField prenom;
     @FXML
     private DatePicker datePNais;
+    @FXML
+    private ComboBox<Titre> titre;
     @FXML
     private TextField aide;
     @FXML
@@ -125,6 +129,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     private ListView<ChauffeurItemList> listViewRestrict;
     @FXML
     private ListView<AppelantItemList> listViewFamille;
+    @FXML
+    private CheckBox cbOldCourse;
     @FXML
     private ListView<CourseItemList> listeViewCourse;
     
@@ -177,6 +183,11 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		    	}
 		    }
 		});*/
+		
+		titre.getItems().addAll(Titre.values());
+		
+		cbOldCourse.setSelected(false);
+		cbOldCourse.selectedProperty().addListener((isOld)->setListCourse(getCourses(cbOldCourse.isSelected())));
 		
 		listeViewCourse.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
@@ -409,6 +420,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		app.setName(nom.getText().trim());
 		app.setFirstname(prenom.getText().trim());
 		app.setBirthday(datePNais.getValue());
+		app.setTitre(titre.getValue());
 		app.setResidence(residence.getSelectionModel().getSelectedItem());
 		app.setAdresse(adresse.getText().trim());
 		app.setCp(cp.getText().trim());
@@ -471,6 +483,9 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	private void editMode(boolean a) {
 		boolean b = a && isAdmin();
 		
+		cbOldCourse.setVisible(!b);
+		listeViewCourse.setVisible(!b);
+		
 		btnAdd.setVisible(!b && isAdmin());
 		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
 		btnEdit.setVisible(!a);
@@ -492,6 +507,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		
 		nom.setEditable(b);
 		prenom.setEditable(b);
+		titre.setDisable(!b);
 		
 		residence.setDisable(!b);
 		
@@ -520,6 +536,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		nom.setText(app.getName());
 		prenom.setText(app.getFirstname());
 		datePNais.setValue(app.getBirthday());
+		titre.getSelectionModel().select(app.getTitre());
 		residence.getSelectionModel().select(app.getResidence());
 		adresse.setText(app.getAdresse());
 		cp.setText(app.getCp());
@@ -537,7 +554,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		setListFamille(getFamille(app.getFamille()));
 		setListProche(getChauffeurList(app.getAffinite()));
 		setListRestrict(getChauffeurList(app.getRestriction()));
-		setListCourse(getCourses(app.getId()));
+		setListCourse(getCourses(cbOldCourse.isSelected()));
 	}
 	
 	private void setListFamille(List<AppelantItemList> list) {
@@ -567,13 +584,13 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	
 	private void setListCourse(List<CourseItemList> list) {
 		listeViewCourse.getItems().clear();
-		listeViewCourse.getItems().setAll(list);
+		if (list!=null) {
+			listeViewCourse.getItems().setAll(list);
+		}
 	}
 	
 	@Override
 	public void logout(){
-		showAppelant(new Appelant());
-		recherche.setText("");
 		clear();
 	}
 
@@ -581,6 +598,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	public void login(Utilisateur user) {
 		newLog(user);
 		editMode(false);
+		showAppelant(new Appelant());
+		recherche.setText("");
 		setListeAppelant(search(""));
 		setResidence(getResidence());
 	}

@@ -5,6 +5,7 @@ public enum TypeCourse {
 	MEDICAL,
 	ALIMENTAIRE,
 	COURTOISIE,
+	ECOLE,
 	AUTRE;
 
 	public static TypeCourse get(String str) {
@@ -17,6 +18,8 @@ public enum TypeCourse {
 			type = TypeCourse.ALIMENTAIRE;
 		} else if (str.equalsIgnoreCase("COURTOISIE")) {
 			type = TypeCourse.COURTOISIE;
+		} else if (str.equalsIgnoreCase("ECOLE")) {
+			type = TypeCourse.ECOLE;
 		}
 		return type;
 	}

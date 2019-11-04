@@ -12,19 +12,26 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import models.Indisponibilite;
 import util.DateTime;
+import util.TypeIndisponibilite;
 
 public class DialogIndisponibiliteControllerFXML implements Initializable {
 	private boolean isResult;
 	private GridPane content;
+	@FXML
+	private RadioButton selectIndis;
+	@FXML
+	private RadioButton selectPasDer;
 	@FXML
     private DatePicker dateStart;
 
@@ -64,6 +71,11 @@ public class DialogIndisponibiliteControllerFXML implements Initializable {
 		setSpinner(minuteStart,mMin,mMax);
 		setSpinner(heureEnd,hMin,hMax);
 		setSpinner(minuteEnd,mMin,mMax);
+		
+		ToggleGroup group = new ToggleGroup();
+		selectIndis.setToggleGroup(group);
+		selectIndis.setSelected(true);
+		selectPasDer.setToggleGroup(group);
 		
 		dateStart.setValue(LocalDate.now());
 		dateStart.valueProperty().addListener((ov, oldValue, newValue) -> {
@@ -126,8 +138,7 @@ public class DialogIndisponibiliteControllerFXML implements Initializable {
     	isResult = false;
     	Dialog<Indisponibilite> dialog = new Dialog<>();
 		dialog.setTitle("Indisponibilité");
-		dialog.setHeaderText("This is a custom dialog. Enter info and \n" +
-		    "press Okay (or click title bar 'X' for cancel).");
+		//dialog.setHeaderText("This is a custom dialog. Enter info and \npress Okay (or click title bar 'X' for cancel).");
 		dialog.setResizable(true);
 
 		
@@ -146,6 +157,9 @@ public class DialogIndisponibiliteControllerFXML implements Initializable {
 		        	i.setHeureStart(DateTime.getLocalTime(heureStart.getValueFactory().getValue(), minuteStart.getValueFactory().getValue()));
 		        	i.setHeureEnd(DateTime.getLocalTime(heureEnd.getValueFactory().getValue(), minuteEnd.getValueFactory().getValue()));
 		        	//i.setDescription(description);TODO
+		        	if (selectPasDer.isSelected()) {
+		        		i.setType(TypeIndisponibilite.PASDERANGER);
+					}
 		            return i;
 		        }
 

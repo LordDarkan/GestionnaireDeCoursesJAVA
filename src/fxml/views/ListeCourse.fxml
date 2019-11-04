@@ -55,6 +55,7 @@
                         <children>
                            <RadioButton fx:id="selectParJour" mnemonicParsing="false" text="Par jour" />
                            <RadioButton fx:id="selectFutur" mnemonicParsing="false" selected="true" text="Futur" />
+                           <RadioButton fx:id="selectPasse" mnemonicParsing="false" text="Passée" />
                         </children>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -278,8 +279,8 @@
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="15.0" />
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="30.0" />
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="15.0" />
-                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="10.0" />
-                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="25.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="5.0" />
+                           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="30.0" />
                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                         </columnConstraints>
                         <rowConstraints>
@@ -292,14 +293,11 @@
                            <TextField fx:id="editAdresseRDV" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="Localité" GridPane.columnIndex="2" />
                            <TextField fx:id="editLocaliteRDV" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <TextField fx:id="editCpRDV" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                            <ComboBox fx:id="editHopital" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                            <Label text="Hopital" GridPane.columnIndex="4" />
-                           <Label text="Code postal" wrapText="true" GridPane.columnIndex="3" />
                            <Label fx:id="affHeureRDV" text="xxHxx" visible="false" GridPane.rowIndex="1" />
                            <Label fx:id="affAdresseRDV" text="xxxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label fx:id="affLocaliteRDV" text="xxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <Label fx:id="affCpRDV" text="_ _ _ _" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                            <Label fx:id="affHopital" text="xxxxxxxxxxx xxxxxxxxxxxx xxxx x x xxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                            <HBox fx:id="edit2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
                               <children>

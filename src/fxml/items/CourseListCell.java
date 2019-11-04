@@ -18,8 +18,8 @@ public class CourseListCell extends ListCell<CourseItemList> {
     private Label heure;
     @FXML
     private Label date;
-    @FXML
-    private Label cp;
+    //@FXML
+    //private Label cp;
     @FXML
     private Label localite;
     @FXML
@@ -55,7 +55,7 @@ public class CourseListCell extends ListCell<CourseItemList> {
         	fullNameAppelant.setText(item.getAppelant());
         	type.setText(item.getType().toString());
         	adresse.setText(item.getAdresseDest());
-        	cp.setText(item.getCpDest());
+        	//cp.setText(item.getCpDest());
         	localite.setText(item.getLocaliteDest());
         	heure.setText(DateTime.toString(item.getHeure()));
         	date.setText(DateTime.toString(item.getDate()));

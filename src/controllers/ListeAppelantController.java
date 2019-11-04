@@ -67,7 +67,7 @@ public abstract class ListeAppelantController {
 	
 	private boolean recherche(boolean b){
 		boolean search = false;
-		if(recherche.length()>=3 || recherche.matches("\\p{Digit}+")) {
+		if(recherche.length()>=1 || recherche.matches("\\p{Digit}+")) {
 			appelants.clear();
 			for (AppelantItemList appelant : appelantsFull) {
 				if (appelant.getName().toLowerCase().startsWith(recherche)
@@ -181,8 +181,17 @@ public abstract class ListeAppelantController {
 		return mapper.getChauffeurList(list);
 	}
 
-	protected List<CourseItemList> getCourses(Long id) {
-		return mapper.getCourseApplant(id);
+	protected List<CourseItemList> getCourses(boolean isOld) {
+		List<CourseItemList> list = null;
+		if(selectedAppelant!=null) {
+			if (isOld) {
+				list = mapper.getOldCourseApplant(selectedAppelant.getId());
+			} else {
+				list = mapper.getCourseApplant(selectedAppelant.getId());
+			}
+			
+		}
+		return list;
 	}
 
 	protected boolean validIdApplant(Long id) {

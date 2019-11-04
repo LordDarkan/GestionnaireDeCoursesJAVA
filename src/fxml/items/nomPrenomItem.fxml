@@ -18,11 +18,11 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label fx:id="nom" text="Nom" GridPane.columnIndex="1" GridPane.halignment="LEFT">
+            <Label fx:id="nom" text="Nom" GridPane.halignment="LEFT">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin></Label>
-            <Label fx:id="prenom" text="Prénom" GridPane.halignment="LEFT">
+            <Label fx:id="prenom" text="Prénom" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <GridPane.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </GridPane.margin></Label>

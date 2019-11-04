@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import controllers.ListeCourseController;
 import fxml.Message;
+import fxml.items.ChauffeurListCell;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -41,6 +42,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import models.Appelant;
 import models.Course;
@@ -51,6 +53,7 @@ import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import util.DateTime;
 import util.LoggerManager;
+import util.Select;
 import util.Trajet;
 import util.TypeCourse;
 import util.UserManager;
@@ -80,6 +83,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	@FXML
 	private RadioButton selectFutur;
 	@FXML
+	private RadioButton selectPasse;
+	@FXML
 	private Label creatDate;
 	@FXML
 	private Label creatHeure;
@@ -98,7 +103,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	@FXML
 	private Label payementAppelant;
 	@FXML
-	private ComboBox<Object> editChauffeur;
+	private ComboBox<ChauffeurItemList> editChauffeur;
 	@FXML
 	private DatePicker editDateCourse;
 	@FXML
@@ -147,8 +152,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private TextField editAdresseRDV;
 	@FXML
 	private TextField editLocaliteRDV;
-	@FXML
-	private TextField editCpRDV;
+	//@FXML
+	//private TextField editCpRDV;
 	@FXML
 	private ComboBox<String> editHopital;
 	@FXML
@@ -157,8 +162,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private Label affAdresseRDV;
 	@FXML
 	private Label affLocaliteRDV;
-	@FXML
-	private Label affCpRDV;
+	//@FXML
+	//private Label affCpRDV;
 	@FXML
 	private Label affHopital;
 	@FXML
@@ -235,6 +240,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		selectFutur.setToggleGroup(group);
 		selectFutur.setSelected(true);
 		selectParJour.setToggleGroup(group);
+		selectPasse.setToggleGroup(group);
 		group.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
 			if (group.getSelectedToggle() != null) {
 				select();
@@ -272,9 +278,13 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			}
 
 		});
+		
+
+		
+		editChauffeur.setCellFactory(lc -> new ChauffeurListCell());
 
 		editCpDepart.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpDepart, newValue, oldValue));
-		editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV, newValue, oldValue));
+		//editCpRDV.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRDV, newValue, oldValue));
 		editCpRetour.textProperty().addListener((observable, oldValue, newValue) -> editCp(editCpRetour, newValue, oldValue));
 
 		editLocaliteDepart.textProperty().addListener((observable, oldValue, newValue) -> editLocalite(editLocaliteDepart, newValue, oldValue));
@@ -409,12 +419,13 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	private void setChauffeurList() {
 		Object obj = selectChauffeur.getSelectionModel().getSelectedItem();
 		selectChauffeur.getItems().clear();
-		editChauffeur.getItems().clear();
+		//editChauffeur.getItems().clear();
 
 		List<ChauffeurItemList> chauffeurItemList = getChauffeurList();
 
-		editChauffeur.getItems().add("");
-		editChauffeur.getItems().addAll(chauffeurItemList);
+		//editChauffeur.getItems().add("");
+		//editChauffeur.getItems().addAll(chauffeurItemList)
+		
 		selectChauffeur.getItems().add("Tout");
 		selectChauffeur.getItems().add("Sans Chauffeur");
 		selectChauffeur.getItems().addAll(chauffeurItemList);
@@ -436,11 +447,17 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			all = ((String) obj).equals("Tout");
 		}
 
-		boolean day = selectParJour.isSelected();
+		Select select = Select.PASSE;
+		if (selectParJour.isSelected()) {
+			select = Select.DAY;
+		} else if (selectFutur.isSelected()) {
+			select = Select.FUTUR;
+		}
+		
 		LocalDate date = selectDay.getValue();
 
-		selectDay.setDisable(!day);
-		super.select(all, chauf, day, date);
+		selectDay.setDisable(select != Select.DAY);
+		super.select(all, chauf, select, date);
 		setListeCourse(getCourseList());
 	}
 
@@ -459,14 +476,15 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 
 	private void testHopital(String value) {
 		boolean nan = value.equals("");
+		editType.getSelectionModel().select(TypeCourse.HOPITAL);
 		editAdresseRDV.setDisable(!nan);
 		editLocaliteRDV.setDisable(!nan);
-		editCpRDV.setDisable(!nan);
+		//editCpRDV.setDisable(!nan);
 		if (!nan) {
 			Hopital ho = getHopital(value);
 			editAdresseRDV.setText(ho.getAdresse());
 			editLocaliteRDV.setText(ho.getLocalite());
-			editCpRDV.setText(ho.getCp());
+			//editCpRDV.setText(ho.getCp());
 		}
 	}
 
@@ -488,7 +506,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 
 	private void timeCourse(Course course) {
 		if (course.getHeureDomicile().isAfter(course.getHeureRDV())) {
-			course.setHeureDomicile(course.getHeureRDV().minusMinutes(30));
+			//course.setHeureDomicile(course.getHeureRDV().minusMinutes(30));
+			course.setHeureRDV(course.getHeureDomicile().plusMinutes(30));
 		}
 		/*
 		 * if (course.getHeureRDV().isAfter(course.getHeureRetour().minusMinutes(10))) {
@@ -518,7 +537,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 					editMinuteRDV.getValueFactory().getValue()));
 			course.setAdresseDest(editAdresseRDV.getText().trim());
 			course.setLocaliteDest(editLocaliteRDV.getText().trim());
-			course.setCpDest(editCpRDV.getText().trim());
+			//course.setCpDest(editCpRDV.getText().trim());
 			course.setHopital(editHopital.getSelectionModel().getSelectedItem());
 			course.setHeureRetour(DateTime.getLocalTime(editHeureRetour.getValueFactory().getValue(),
 					editMinuteRetour.getValueFactory().getValue()));
@@ -617,12 +636,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		edit2.setVisible(edit);
 		editAdresseRDV.setVisible(edit);
 		editLocaliteRDV.setVisible(edit);
-		editCpRDV.setVisible(edit);
+		//editCpRDV.setVisible(edit);
 		editHopital.setVisible(edit);
 		affHeureRDV.setVisible(!edit);
 		affAdresseRDV.setVisible(!edit);
 		affLocaliteRDV.setVisible(!edit);
-		affCpRDV.setVisible(!edit);
+		//affCpRDV.setVisible(!edit);
 		affHopital.setVisible(!edit);
 		edit3.setVisible(edit);
 		editAdresseRetour.setVisible(edit);
@@ -678,7 +697,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		affHeureRDV.setText(DateTime.toString(course.getHeureRDV()));
 		affAdresseRDV.setText(course.getAdresseDest());
 		affLocaliteRDV.setText(course.getLocaliteDest());
-		affCpRDV.setText(course.getCpDest());
+		//affCpRDV.setText(course.getCpDest());
 		affHopital.setText(course.getHopital());
 		affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 		affAdresseRetour.setText(course.getAdresseRet());
@@ -691,6 +710,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	}
 
 	private void affEditCourse(Course course) {
+		colorChauffeur(course.getAppelant(),getChauffeurList());
 		if (course.getChauffeur() != null) {
 			editChauffeur.getSelectionModel().select(new ChauffeurItemList(course.getChauffeur()));
 		} else {
@@ -710,7 +730,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editMinuteRDV.getValueFactory().setValue(course.getHeureRDV().getMinute());
 		editAdresseRDV.setText(course.getAdresseDest());
 		editLocaliteRDV.setText(course.getLocaliteDest());
-		editCpRDV.setText(course.getCpDest());
+		//editCpRDV.setText(course.getCpDest());
 		editHopital.getSelectionModel().select(course.getHopital());
 		editHeureRetour.getValueFactory().setValue(course.getHeureRetour().getHour());
 		editMinuteRetour.getValueFactory().setValue(course.getHeureRetour().getMinute());
@@ -721,6 +741,26 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editNote.setText(course.getNotes());
 
 		affAllerRetour(course.getTrajet());
+	}
+
+	private void colorChauffeur(Appelant appelant, List<ChauffeurItemList> chauffeurList) {
+		editChauffeur.getItems().clear();
+		Long id;
+		List<Long> aff = appelant.getAffinite();
+		List<Long> res = appelant.getRestriction();
+		
+		for (ChauffeurItemList chauffeur : chauffeurList) {
+			id = chauffeur.getId();
+			if(res.contains(id)) {
+				chauffeur.setColor(Color.RED);
+			} else if(aff.contains(id)) {
+				chauffeur.setColor(Color.GREEN);
+			}
+		}
+		
+
+		editChauffeur.getItems().add(null);
+		editChauffeur.getItems().addAll(chauffeurList);
 	}
 
 	private void affAllerRetour(Trajet trajet) {

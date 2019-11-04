@@ -17,6 +17,7 @@ import models.itemList.AppelantItemList;
 import models.itemList.ChauffeurItemList;
 import models.itemList.CourseItemList;
 import models.itemList.PlanningChauffeur;
+import util.Select;
 
 public abstract class Mapper implements Closeable{
 	private static Mapper instance;
@@ -71,13 +72,14 @@ public abstract class Mapper implements Closeable{
 	public abstract void delete(Hopital entity);
 	public abstract void importHopitaux(List<Hopital> hopitals);
 	
-	public abstract List<CourseItemList> getCourse(boolean all, Long idChauffeur, boolean day, LocalDate date);
+	public abstract List<CourseItemList> getCourse(boolean all, Long idChauffeur, Select select, LocalDate date);
 	public abstract List<ChauffeurItemList> getChauffeurList();
 	public abstract List<AppelantItemList> getAppelantList();
 
 	public abstract List<ChauffeurItemList> getChauffeurList(List<Long> list);
 	public abstract List<AppelantItemList> getAppelantList(List<Long> list);
 	public abstract List<CourseItemList> getCourseApplant(Long id);
+	public abstract List<CourseItemList> getOldCourseApplant(Long id);
 	public abstract void deleteFamille(Long id, Long id2);
 	
 	public abstract void deleteAll();

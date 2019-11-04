@@ -15,7 +15,7 @@ public class CourseItemList {
 	private LocalTime heure;
 	private String hopital;
 	private String adresseDest;
-	private String cpDest;
+	//private String cpDest;
 	private String localiteDest;
 	
 	public CourseItemList(Course course) {
@@ -29,7 +29,7 @@ public class CourseItemList {
 		heure = course.getHeureRDV();
 		hopital = course.getHopital();
 		adresseDest = course.getAdresseDest();
-		cpDest = course.getCpDest();
+		//cpDest = course.getCpDest();
 		localiteDest = course.getLocaliteDest();
 	}
 	
@@ -50,9 +50,6 @@ public class CourseItemList {
 	}
 	public String getAdresseDest() {
 		return adresseDest;
-	}
-	public String getCpDest() {
-		return cpDest;
 	}
 	public String getLocaliteDest() {
 		return localiteDest;
@@ -86,12 +83,12 @@ public class CourseItemList {
 		}
 		
 		str.append(localiteDest);
-		if(cpDest!= null && !cpDest.isEmpty()) {
+		/*if(cpDest!= null && !cpDest.isEmpty()) {
 
 			str.append(" (");
 			str.append(cpDest);
 			str.append(")");
-		}
+		}*/
 		str.append("\n");
 		if (chauffeur!= null) {
 			str.append("Chauffeur: \t");

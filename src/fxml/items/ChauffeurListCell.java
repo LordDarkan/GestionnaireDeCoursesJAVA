@@ -8,9 +8,10 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
-import models.Chauffeur;
+import javafx.scene.paint.Color;
+import models.itemList.ChauffeurItemList;
 
-public class ChauffeurListCell extends ListCell<Chauffeur>{
+public class ChauffeurListCell extends ListCell<ChauffeurItemList>{
 	@FXML
     private AnchorPane userContent;
     @FXML
@@ -32,12 +33,19 @@ public class ChauffeurListCell extends ListCell<Chauffeur>{
     }
     
     @Override 
-    protected void updateItem(Chauffeur item, boolean empty) {
+    protected void updateItem(ChauffeurItemList item, boolean empty) {
         super.updateItem(item, empty);
         setGraphic(null); 
         setText(null); 
         setContentDisplay(ContentDisplay.LEFT); 
         if (!empty && item != null) {
+        	if (item.getColor() == Color.RED) {
+        		userContent.setStyle("-fx-background-color:#DD0000;");
+			} else if (item.getColor() == Color.GREEN) {
+				userContent.setStyle("-fx-background-color:#3BB143;");
+			} else {
+				userContent.setStyle(null);
+			}
         	nom.setText(item.getName());
         	prenom.setText(item.getFirstname());
             setText(null); 
