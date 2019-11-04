@@ -25,6 +25,7 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 	private LocalDate dateEnd = LocalDate.now();
 	private LocalTime heureEnd = LocalTime.MIDNIGHT;
 	private String description = "";
+	private TypeIndisponibilite type = TypeIndisponibilite.INDISPO;
 	
 	public Long getId() {
 		return id;
@@ -62,12 +63,18 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 	public void setHeureEnd(LocalTime heureEnd) {
 		this.heureEnd = heureEnd;
 	}
-	
+	public void setType(TypeIndisponibilite type) {
+		this.type = type;
+	}
 	public TypeIndisponibilite getType() {
-		return TypeIndisponibilite.INDISPO;
+		return type;
 	}
 	public String getTitre() {
-		return "Indisponibilité";
+		String str = "Indisponibilité";
+		if (type == TypeIndisponibilite.PASDERANGER) {
+			str = "Ne pas déranger";
+		}
+		return str;
 	}
 	public String getDescription() {
 		return description;
@@ -104,6 +111,8 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 		str.append(DateTime.toString(heureEnd));
 		str.append(";");
 		str.append(description);
+		str.append(";");
+		str.append(type.toString());
 		str.append(";END");
 		return str.toString();
 	}
@@ -113,5 +122,5 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 		return enteteCSV;
 	}
 	
-	public static final String enteteCSV = "ID_CHAUFFEUR;DATE_START;HEURE_START;DATE_END;HEURE_END;DESCRIPTION;END";
+	public static final String enteteCSV = "ID_CHAUFFEUR;DATE_START;HEURE_START;DATE_END;HEURE_END;DESCRIPTION;TYPE;END";
 }

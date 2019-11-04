@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -15,29 +16,32 @@
       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
    </columnConstraints>
    <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label text="Début" />
-      <DatePicker fx:id="dateStart" GridPane.rowIndex="1" />
-      <HBox alignment="CENTER" spacing="2.0" GridPane.rowIndex="2">
+      <Label text="Début" GridPane.rowIndex="1" />
+      <DatePicker fx:id="dateStart" GridPane.rowIndex="2" />
+      <HBox alignment="CENTER" spacing="2.0" GridPane.rowIndex="3">
          <children>
             <Spinner fx:id="heureStart" minWidth="60.0" prefWidth="60.0" />
             <Label minWidth="9.0" text="H" />
             <Spinner fx:id="minuteStart" minWidth="60.0" prefWidth="60.0" />
          </children>
       </HBox>
-      <Label text="Fin" GridPane.columnIndex="1" />
-      <DatePicker fx:id="dateEnd" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <HBox alignment="CENTER" minHeight="50.0" minWidth="100.0" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+      <Label text="Fin" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <DatePicker fx:id="dateEnd" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <HBox alignment="CENTER" minHeight="50.0" minWidth="100.0" spacing="2.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
             <Spinner fx:id="heureEnd" minWidth="60.0" prefWidth="60.0" />
             <Label minWidth="9.0" text="H" />
             <Spinner fx:id="minuteEnd" minWidth="60.0" prefWidth="60.0" />
          </children>
       </HBox>
+      <RadioButton fx:id="selectIndis" mnemonicParsing="false" selected="true" text="Indisponible" />
+      <RadioButton fx:id="selectPasDer" mnemonicParsing="false" text="Ne pas déranger" GridPane.columnIndex="1" />
    </children>
    <padding>
       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

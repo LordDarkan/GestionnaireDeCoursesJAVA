@@ -506,7 +506,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 
 	private void timeCourse(Course course) {
 		if (course.getHeureDomicile().isAfter(course.getHeureRDV())) {
-			course.setHeureDomicile(course.getHeureRDV().minusMinutes(30));
+			//course.setHeureDomicile(course.getHeureRDV().minusMinutes(30));
+			course.setHeureRDV(course.getHeureDomicile().plusMinutes(30));
 		}
 		/*
 		 * if (course.getHeureRDV().isAfter(course.getHeureRetour().minusMinutes(10))) {
@@ -756,7 +757,9 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 				chauffeur.setColor(Color.GREEN);
 			}
 		}
+		
 
+		editChauffeur.getItems().add(null);
 		editChauffeur.getItems().addAll(chauffeurList);
 	}
 

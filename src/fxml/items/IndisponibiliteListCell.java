@@ -64,7 +64,10 @@ public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
 					vBox.setStyle("-fx-border-color: black;-fx-background-color:white;");
 				}
         		str+=" "+item.getModeCourse().toString();
-        	} else {
+        	} else if (item.getType() == TypeIndisponibilite.PASDERANGER) {
+        		vBox.setStyle("-fx-border-color: black;-fx-background-color:#FFAE42;");
+        		str+=" - "+DateTime.toString(item.getHeureEnd());
+			} else {
         		vBox.setStyle("-fx-border-color: black;-fx-background-color:#DD0000;");
         		str+=" - "+DateTime.toString(item.getHeureEnd());
         	}

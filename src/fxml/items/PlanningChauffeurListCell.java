@@ -61,6 +61,7 @@ public class PlanningChauffeurListCell extends ListCell<PlanningChauffeur> imple
 		        			main.selectCourse(item.getId());
 						} else if(Message.comfirmation("Suppression Indisponibilité", "Supprimer L'indisponibilité de "+nomChauffeur.getText()+" ?\n Attention L'indisponibilité peux s'étendre sur plusieurs jours!")) {
 							Mapper.getInstance().delete(item);
+							//TODO refresh planning
 						}
 		        	}
 		        }

@@ -584,13 +584,13 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	
 	private void setListCourse(List<CourseItemList> list) {
 		listeViewCourse.getItems().clear();
-		listeViewCourse.getItems().setAll(list);
+		if (list!=null) {
+			listeViewCourse.getItems().setAll(list);
+		}
 	}
 	
 	@Override
 	public void logout(){
-		showAppelant(new Appelant());
-		recherche.setText("");
 		clear();
 	}
 
@@ -598,6 +598,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	public void login(Utilisateur user) {
 		newLog(user);
 		editMode(false);
+		showAppelant(new Appelant());
+		recherche.setText("");
 		setListeAppelant(search(""));
 		setResidence(getResidence());
 	}

@@ -24,6 +24,7 @@ import util.LoggerManager;
 import util.Titre;
 import util.Trajet;
 import util.TypeCourse;
+import util.TypeIndisponibilite;
 
 public class CSV {
 	public static final Logger LOG = LoggerManager.getLogger();
@@ -263,6 +264,9 @@ public class CSV {
 					indisp.setDateEnd(DateTime.saveToLocalDate(row[3].trim()));//DATE
 					indisp.setHeureEnd(DateTime.toLocalTime(row[4].trim()));
 					indisp.setDescription(row[5].trim());
+					if (row.length>6) {
+						indisp.setType(TypeIndisponibilite.get(row[6].trim()));
+					}
 
 					indisponibilites.add(indisp);
 				}
