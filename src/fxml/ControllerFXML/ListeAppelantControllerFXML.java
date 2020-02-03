@@ -155,6 +155,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
                 public void handle(Event event) {
                 	if (((Tab)event.getSource()).isSelected()) {
                 		setResidence(getResidence());//TODO
+                		cbOldCourse.setSelected(false);
 					}
                 }
             });
@@ -527,7 +528,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	
 	private void showAppelant(Appelant app) {
 		editMode(false);
-		
+		cbOldCourse.setSelected(false);
 		if(app.getId()!=null) {
 			code.setText(""+app.getId());
 		} else {
