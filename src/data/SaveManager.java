@@ -47,8 +47,7 @@ public class SaveManager {
 				switch (version) {
 				case -1:throw new Exception("Erreur Version");
 				case 0:version0(zf);break;
-				case 1:version1(zf);break;
-				default:break;
+				default:version1(version,zf);break;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -57,7 +56,7 @@ public class SaveManager {
 		}
 	}
 
-	private static void version1(ZipFile zf) throws IOException {
+	private static void version1(int version, ZipFile zf) throws IOException {
 		Enumeration<? extends ZipEntry> entries;
 		ZipEntry zipentry;
 		Mapper mapper = Mapper.getInstance();
