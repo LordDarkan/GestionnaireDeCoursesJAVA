@@ -1,5 +1,6 @@
 package models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,16 +14,32 @@ import util.Titre;
 public class Chauffeur implements CSVRow {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
+	@Column(name="titre")
 	private Titre titre = Titre.Aucun;
+	@Column(name="name")
 	private String name = "";
+	@Column(name="firstname")
 	private String firstname = "";
+	@Column(name="tel")
 	private String tel = "";
+	@Column(name="adresse")
 	private String adresse = "";
-
+	
+	@Column(name="cp")
 	private String cp = "";
+	@Column(name="localite")
 	private String localite = "";
+	@Column(name="infos")
 	private String infos = "";
+	
+	@Column(name="str1")
+	private String str1 = null;
+	@Column(name="str2")
+	private String str2 = null;
+	@Column(name="str3")
+	private String str3 = null;
 	
 	
 	public void setId(Long id) {

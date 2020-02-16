@@ -8,7 +8,7 @@ import java.util.List;
 import models.Appelant;
 import models.Chauffeur;
 import models.Course;
-import models.Hopital;
+import models.Destination;
 import models.Indisponibilite;
 import models.Residence;
 import models.Settings;
@@ -66,11 +66,11 @@ public abstract class Mapper implements Closeable{
 	public abstract void delete(Residence entity);
 	public abstract void importResidences(List<Residence> residences);
 	
-	public abstract List<String> getAllHopital();
-	public abstract Hopital getHopital(String name);
-	public abstract void addOrUpdate(Hopital entity);
-	public abstract void delete(Hopital entity);
-	public abstract void importHopitaux(List<Hopital> hopitals);
+	public abstract List<String> getAllDestination();
+	public abstract Destination getDestination(String name);
+	public abstract void addOrUpdate(Destination entity);
+	public abstract void delete(Destination entity);
+	public abstract void importDestination(List<Destination> hopitals);
 	
 	public abstract List<CourseItemList> getCourse(boolean all, Long idChauffeur, Select select, LocalDate date);
 	public abstract List<ChauffeurItemList> getChauffeurList();
@@ -90,7 +90,7 @@ public abstract class Mapper implements Closeable{
 	public abstract void addRestrict(Long id, Long id2);
 	public abstract void delRestrict(Long id, Long id2);
 	public abstract List<Residence> getListResidence();
-	public abstract List<Hopital> getListHopital();
+	public abstract List<Destination> getListDestination();
 	
 	public abstract Settings getSettings();
 	public abstract void setSettings(Settings settings);

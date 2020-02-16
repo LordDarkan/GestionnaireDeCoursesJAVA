@@ -137,7 +137,7 @@ public class PrintCourseControllerFXML implements Initializable {
 	    affHeureRDV.setText(DateTime.toString(course.getHeureRDV()));
 	    affAdresseRDV.setText(course.getAdresseDest());
 	    affLocaliteRDV.setText(course.getLocaliteDest());
-	    affHopital.setText(course.getHopital());
+	    affHopital.setText(course.getDestination());
 	    
 	    affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 	    affAdresseRetour.setText(course.getAdresseRet());

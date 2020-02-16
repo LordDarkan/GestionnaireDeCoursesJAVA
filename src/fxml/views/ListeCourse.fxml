@@ -293,12 +293,12 @@
                            <TextField fx:id="editAdresseRDV" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="Localité" GridPane.columnIndex="2" />
                            <TextField fx:id="editLocaliteRDV" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <ComboBox fx:id="editHopital" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                           <Label text="Hopital" GridPane.columnIndex="4" />
+                           <ComboBox fx:id="editDestination" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                           <Label text="Destination" GridPane.columnIndex="4" />
                            <Label fx:id="affHeureRDV" text="xxHxx" visible="false" GridPane.rowIndex="1" />
                            <Label fx:id="affAdresseRDV" text="xxxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label fx:id="affLocaliteRDV" text="xxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <Label fx:id="affHopital" text="xxxxxxxxxxx xxxxxxxxxxxx xxxx x x xxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                           <Label fx:id="affDestination" text="xxxxxxxxxxx xxxxxxxxxxxx xxxx x x xxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                            <HBox fx:id="edit2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
                               <children>
                                  <Spinner fx:id="editHeureRDV" minWidth="60.0" prefWidth="60.0" />

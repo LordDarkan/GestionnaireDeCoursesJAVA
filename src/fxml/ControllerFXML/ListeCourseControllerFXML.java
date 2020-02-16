@@ -46,7 +46,7 @@ import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import models.Appelant;
 import models.Course;
-import models.Hopital;
+import models.Destination;
 import models.Residence;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
@@ -155,7 +155,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	//@FXML
 	//private TextField editCpRDV;
 	@FXML
-	private ComboBox<String> editHopital;
+	private ComboBox<String> editDestination;
 	@FXML
 	private Label affHeureRDV;
 	@FXML
@@ -165,7 +165,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	//@FXML
 	//private Label affCpRDV;
 	@FXML
-	private Label affHopital;
+	private Label affDestination;
 	@FXML
 	private HBox edit3;
 	@FXML
@@ -307,12 +307,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 				testResidence(newValue);
 			}
 		});
-		editHopital.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+		editDestination.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
 			if (newValue != null) {
-				testHopital(newValue);
+				testDestination(newValue);
 			}
 		});
-		setHopital();
+		setDestination();
 
 		Integer hMin = 0, hMax = 23, mMin = 0, mMax = 59;
 		setSpinner(editHeureDepart, hMin, hMax);
@@ -474,17 +474,15 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		}
 	}
 
-	private void testHopital(String value) {
+	private void testDestination(String value) {
 		boolean nan = value.equals("");
-		editType.getSelectionModel().select(TypeCourse.HOPITAL);
 		editAdresseRDV.setDisable(!nan);
 		editLocaliteRDV.setDisable(!nan);
-		//editCpRDV.setDisable(!nan);
 		if (!nan) {
-			Hopital ho = getHopital(value);
-			editAdresseRDV.setText(ho.getAdresse());
-			editLocaliteRDV.setText(ho.getLocalite());
-			//editCpRDV.setText(ho.getCp());
+			Destination dest = getDestination(value);
+			editAdresseRDV.setText(dest.getAdresse());
+			editLocaliteRDV.setText(dest.getLocalite());
+			editType.getSelectionModel().select(dest.getTypeCourse());
 		}
 	}
 
@@ -538,7 +536,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			course.setAdresseDest(editAdresseRDV.getText().trim());
 			course.setLocaliteDest(editLocaliteRDV.getText().trim());
 			//course.setCpDest(editCpRDV.getText().trim());
-			course.setHopital(editHopital.getSelectionModel().getSelectedItem());
+			course.setDestination(editDestination.getSelectionModel().getSelectedItem());
 			course.setHeureRetour(DateTime.getLocalTime(editHeureRetour.getValueFactory().getValue(),
 					editMinuteRetour.getValueFactory().getValue()));
 			course.setAdresseRet(editAdresseRetour.getText().trim());
@@ -583,7 +581,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editMode(false);
 		setListeCourse(getCourseList());
 		setChauffeurList();
-		setHopital();
+		setDestination();
 		setResidence();
 	}
 
@@ -637,12 +635,12 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editAdresseRDV.setVisible(edit);
 		editLocaliteRDV.setVisible(edit);
 		//editCpRDV.setVisible(edit);
-		editHopital.setVisible(edit);
+		editDestination.setVisible(edit);
 		affHeureRDV.setVisible(!edit);
 		affAdresseRDV.setVisible(!edit);
 		affLocaliteRDV.setVisible(!edit);
 		//affCpRDV.setVisible(!edit);
-		affHopital.setVisible(!edit);
+		affDestination.setVisible(!edit);
 		edit3.setVisible(edit);
 		editAdresseRetour.setVisible(edit);
 		editLocaliteRetour.setVisible(edit);
@@ -698,7 +696,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		affAdresseRDV.setText(course.getAdresseDest());
 		affLocaliteRDV.setText(course.getLocaliteDest());
 		//affCpRDV.setText(course.getCpDest());
-		affHopital.setText(course.getHopital());
+		affDestination.setText(course.getDestination());
 		affHeureRetour.setText(DateTime.toString(course.getHeureRetour()));
 		affAdresseRetour.setText(course.getAdresseRet());
 		affLocaliteRetour.setText(course.getLocaliteRet());
@@ -731,7 +729,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editAdresseRDV.setText(course.getAdresseDest());
 		editLocaliteRDV.setText(course.getLocaliteDest());
 		//editCpRDV.setText(course.getCpDest());
-		editHopital.getSelectionModel().select(course.getHopital());
+		editDestination.getSelectionModel().select(course.getDestination());
 		editHeureRetour.getValueFactory().setValue(course.getHeureRetour().getHour());
 		editMinuteRetour.getValueFactory().setValue(course.getHeureRetour().getMinute());
 		editAdresseRetour.setText(course.getAdresseRet());
@@ -784,9 +782,9 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		editResidence.getItems().addAll(getResidence());
 	}
 
-	private void setHopital() {
-		editHopital.getItems().clear();
-		editHopital.getItems().addAll(getHopital());
+	private void setDestination() {
+		editDestination.getItems().clear();
+		editDestination.getItems().addAll(getDestination());
 	}
 
 	private void setListeCourse(List<CourseItemList> list) {

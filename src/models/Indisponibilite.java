@@ -3,6 +3,7 @@ package models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,14 +19,29 @@ import util.TypeIndisponibilite;
 public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
+	@Column(name="idChauffeur")
 	private Long idChauffeur;
+	@Column(name="dateStart")
 	private LocalDate dateStart = LocalDate.now();
+	@Column(name="heureStart")
 	private LocalTime heureStart = LocalTime.MIDNIGHT;
+	@Column(name="dateEnd")
 	private LocalDate dateEnd = LocalDate.now();
+	@Column(name="heureEnd")
 	private LocalTime heureEnd = LocalTime.MIDNIGHT;
+	@Column(name="description")
 	private String description = "";
+	@Column(name="type")
 	private TypeIndisponibilite type = TypeIndisponibilite.INDISPO;
+	
+	@Column(name="str1")
+	private String str1 = null;
+	@Column(name="str2")
+	private String str2 = null;
+	@Column(name="str3")
+	private String str3 = null;
 	
 	public Long getId() {
 		return id;

@@ -27,7 +27,7 @@ public class CourseItemList {
 		type = course .getTypeCourse();
 		date = course.getDate();
 		heure = course.getHeureRDV();
-		hopital = course.getHopital();
+		hopital = course.getDestination();
 		adresseDest = course.getAdresseDest();
 		//cpDest = course.getCpDest();
 		localiteDest = course.getLocaliteDest();

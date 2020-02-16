@@ -8,7 +8,7 @@ import data.Mapper;
 import models.Appelant;
 import models.Chauffeur;
 import models.Course;
-import models.Hopital;
+import models.Destination;
 import models.Residence;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
@@ -106,10 +106,10 @@ public class ListeCourseController {
 		return l;
 	}
 	
-	protected List<String> getHopital() {
+	protected List<String> getDestination() {
 		List<String> list = new ArrayList<>();
 		list.add("");
-		list.addAll(mapper.getAllHopital());
+		list.addAll(mapper.getAllDestination());
 		return list;
 	}
 	
@@ -117,8 +117,8 @@ public class ListeCourseController {
 		return mapper.getResidence(name);
 	}
 	
-	protected Hopital getHopital(String name) {
-		return mapper.getHopital(name);
+	protected Destination getDestination(String name) {
+		return mapper.getDestination(name);
 	}
 
 	protected void select(boolean all, ChauffeurItemList chauf, Select day, LocalDate date) {

@@ -74,7 +74,7 @@ public class Residence implements CSVRow {
 	
 	public static final String enteteCSV = "Nom;Adresse;CP;Localité;Téléphone;END";
 	
-	public static void valdation(Hopital obj) throws IllegalArgumentException {//TODO
+	public static void valdation(Destination obj) throws IllegalArgumentException {//TODO
 		
 	}
 }
