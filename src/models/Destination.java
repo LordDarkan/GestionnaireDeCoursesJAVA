@@ -70,7 +70,20 @@ public class Destination implements CSVRow {
 	}
 	@Override
 	public String toString() {
-		return String.format("%s\t|\t%s\t%s (%s)\t|\tN° Tel: %s", name,adresse,localite,cp,tel);
+		StringBuilder sb = new StringBuilder(name);
+		sb.append("\t|\t");
+		sb.append(adresse);
+		if (!localite.isEmpty()||!cp.isEmpty()) {
+			sb.append(String.format("\t%s (%s)",localite,cp));
+		}
+		if (!tel.isEmpty()) {
+			sb.append(String.format("\t|\tN° Tel: %s",tel));
+		}
+
+		sb.append("\t|\t");
+		sb.append(typeCourse.toString());
+		
+		return sb.toString();
 	}
 	
 
