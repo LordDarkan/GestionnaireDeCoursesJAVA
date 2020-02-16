@@ -33,6 +33,8 @@ public class Chauffeur implements CSVRow {
 	private String localite = "";
 	@Column(name="infos")
 	private String infos = "";
+	@Column(name="display")
+	private boolean display = true;
 	
 	@Column(name="str1")
 	private String str1 = null;
@@ -101,6 +103,12 @@ public class Chauffeur implements CSVRow {
 		this.titre = titre;
 	}
 
+	public boolean isDisplay() {
+		return display;
+	}
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
 	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
@@ -121,6 +129,8 @@ public class Chauffeur implements CSVRow {
 		str.append(localite);
 		str.append(";");
 		str.append(infos);
+		str.append(";");
+		str.append(display?"OUI":"NON");
 		str.append(";END");
 		return str.toString();
 	}
@@ -130,7 +140,7 @@ public class Chauffeur implements CSVRow {
 		return enteteCSV;
 	}
 	
-	public static final String enteteCSV = "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;END";
+	public static final String enteteCSV = "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;Display;END";
 	
 	public static void valdation(Chauffeur obj) throws IllegalArgumentException {//TODO
 		if(obj.getFirstname().length()<2) throw new IllegalArgumentException("Le prénom est invalide");

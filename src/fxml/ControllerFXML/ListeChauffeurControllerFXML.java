@@ -17,6 +17,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -58,6 +59,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
     private TextField prenom;
     @FXML
     private TextField tel;
+    @FXML
+    private CheckBox cbDisplay;
     @FXML
     private ListView<PlanningChauffeur> listeViewPlanning;//TODO
     @FXML
@@ -167,8 +170,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		app.setCp(cp.getText().trim());
 		app.setLocalite(localite.getText().trim());
 		app.setTel(tel.getText().trim());
-		
 		app.setInfos(infos.getText().trim());
+		app.setDisplay(cbDisplay.isSelected());
 		return app;
 	}
 
@@ -200,7 +203,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
 		btnAnnuler.setVisible(b);
 		btnSave.setVisible(b);
-		
+		cbDisplay.setDisable(!b);
 		listViewChauffeur.setDisable(b);
 		
 		nom.setEditable(b);
@@ -224,8 +227,8 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 			localite.setText("");
 			tel.setText("");
 			infos.setText("");
+			cbDisplay.setSelected(true);
 		} else {
-
 			id = app.getId();
 			nom.setText(app.getName());
 			prenom.setText(app.getFirstname());
@@ -234,6 +237,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 			localite.setText(app.getLocalite());
 			tel.setText(app.getTel());
 			infos.setText(app.getInfos());
+			cbDisplay.setSelected(app.isDisplay());
 		}
 	}
 	

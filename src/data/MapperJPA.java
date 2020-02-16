@@ -948,7 +948,7 @@ public class MapperJPA extends Mapper {
 		Map<Long, PlanningChauffeur> result = new HashMap<Long, PlanningChauffeur>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t", Chauffeur.class);//TODO actif
+			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t WHERE t.display = TRUE", Chauffeur.class);
 			for (Chauffeur tuple : q1.getResultList()) {
 				result.put(tuple.getId(), new PlanningChauffeur(tuple.getFullName()));
 			}
@@ -964,7 +964,7 @@ public class MapperJPA extends Mapper {
 
 			for (Course course : q.getResultList()) {
 				c = course.getChauffeur();
-				if (c != null) {
+				if (c != null && result.containsKey(c.getId())) {
 					i = new IndisponibiliteCourse(course.getAppelant().getFullName());
 					i.setId(course.getId());
 					i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());

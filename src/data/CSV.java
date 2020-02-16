@@ -105,7 +105,7 @@ public class CSV {
 		return appelants;
 	}
 
-	public static List<Chauffeur> readChauffeur(InputStreamReader inputStreamReader) {
+	public static List<Chauffeur> readChauffeur(int version, InputStreamReader inputStreamReader) {
 		List<Chauffeur> chauffeurs = new LinkedList<Chauffeur>();
 		Chauffeur chauffeur;
 		BufferedReader br = null;
@@ -142,6 +142,9 @@ public class CSV {
 						chauffeur.setCp(row[6].trim());
 						chauffeur.setLocalite(row[7].trim());
 						chauffeur.setInfos(row[8].trim());
+						if(version >= 2) {
+							chauffeur.setDisplay(row[9].trim().equalsIgnoreCase("oui"));
+						}
 						chauffeurs.add(chauffeur);
 					}
 				}

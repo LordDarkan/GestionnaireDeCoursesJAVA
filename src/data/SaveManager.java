@@ -85,7 +85,7 @@ public class SaveManager {
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					dest = true;
 				} else if (!chauf && entryName.equals("Chauffeur.csv")) {
-					mapper.importChauffeurs(CSV.readChauffeur(
+					mapper.importChauffeurs(CSV.readChauffeur(version,
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					chauf = true;
 				} else if (!app && chauf && entryName.equals("Appelant.csv")) {
