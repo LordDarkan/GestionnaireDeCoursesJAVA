@@ -12,14 +12,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import models.Hopital;
+import models.Destination;
 import models.Residence;
 import models.Utilisateur;
+import util.TypeCourse;
 
 public class SettingsControllerFXML extends SettingsContreller implements Initializable,ITabController {
 	@FXML
@@ -46,8 +48,10 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
     private TextField adresseHop;
     @FXML
     private TextField nameHop;
+	@FXML
+	private ComboBox<TypeCourse> editType;
     @FXML
-    private ListView<Hopital> listViewHop;
+    private ListView<Destination> listViewHop;
     @FXML
     private Button addRes;
     @FXML
@@ -97,17 +101,19 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 	public void initialize(URL location, ResourceBundle resources) {
 		listViewUser.setCellFactory(lc -> new UserListCell());
 		addUser.setOnAction((ActionEvent e) -> addUser());
-		addHop.setOnAction((ActionEvent e) -> addHop());
+		addHop.setOnAction((ActionEvent e) -> addDest());
 		addRes.setOnAction((ActionEvent e) -> addRes());
 		delUser.setOnAction((ActionEvent e) -> delUser());
-		delHop.setOnAction((ActionEvent e) -> delHop());
+		delHop.setOnAction((ActionEvent e) -> delDest());
 		delRes.setOnAction((ActionEvent e) -> delRes());
 		
 		
 		
 		if (isAdmin()) {
 			setListUser(getListUser());
-			setListHopital(getListHopital());
+			editType.getItems().addAll(TypeCourse.values());
+			editType.getSelectionModel().select(TypeCourse.AUTRE);
+			setListDestination(getListDestination());
 			setListResidence(getListResidence());
 		}
 	}
@@ -122,23 +128,25 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 		setListUser(getListUser());
 	}
 	
-	private void addHop() {
-		Hopital hop = new Hopital();
-		hop.setName(nameHop.getText().trim());
-		hop.setAdresse(adresseHop.getText().trim());
-		hop.setLocalite(localiteHop.getText().trim());
-		hop.setCp(cpHop.getText().trim());
-		hop.setTel(telHop.getText().trim());
+	private void addDest() {
+		Destination dest = new Destination();
+		dest.setName(nameHop.getText().trim());
+		dest.setAdresse(adresseHop.getText().trim());
+		dest.setLocalite(localiteHop.getText().trim());
+		dest.setCp(cpHop.getText().trim());
+		dest.setTel(telHop.getText().trim());
+		dest.setTypeCourse(editType.getSelectionModel().getSelectedItem());
 		
 		nameHop.setText("");
 		adresseHop.setText("");
 		localiteHop.setText("");
 		cpHop.setText("");
 		telHop.setText("");
+		editType.getSelectionModel().select(TypeCourse.AUTRE);
 		
 		try {
-			super.addHopital(hop);
-			setListHopital(getListHopital());
+			super.addDestination(dest);
+			setListDestination(getListDestination());
 		} catch (Exception e) {
 		}
 	}
@@ -173,11 +181,11 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 		}
 	}
 	
-	private void delHop() {
-		Hopital selected = listViewHop.getSelectionModel().getSelectedItem();
+	private void delDest() {
+		Destination selected = listViewHop.getSelectionModel().getSelectedItem();
 		if (selected != null) {
-			super.removeHopital(selected);
-			setListHopital(getListHopital());
+			super.removeDestination(selected);
+			setListDestination(getListDestination());
 		}
 	}
 	
@@ -194,9 +202,9 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 		listViewUser.getItems().setAll(users);
 	}
 	
-	private void setListHopital(List<Hopital> hopitaux) {
+	private void setListDestination(List<Destination> destinations) {
 		listViewHop.getItems().clear();
-		listViewHop.getItems().setAll(hopitaux);
+		listViewHop.getItems().setAll(destinations);
 	}
 	
 	private void setListResidence(List<Residence> residences) {
@@ -218,7 +226,7 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 		tab.setDisable(!isAdmin());
 		if (isAdmin()) {
 			setListUser(getListUser());
-			setListHopital(getListHopital());
+			setListDestination(getListDestination());
 			setListResidence(getListResidence());
 		}
 	}

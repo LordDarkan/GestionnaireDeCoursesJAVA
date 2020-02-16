@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
 import models.Appelant;
 import models.Chauffeur;
 import models.Course;
-import models.Hopital;
+import models.Destination;
 import models.Indisponibilite;
 import models.IndisponibiliteCourse;
 import models.Residence;
@@ -252,6 +252,24 @@ public class MapperJPA extends Mapper {
 		}
 		return result;
 	}
+	
+
+
+	@Override
+	public List<Course> getIntervalCourse(LocalDate start, LocalDate end) {
+		List<Course> result = new LinkedList<Course>();
+		try {
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Course> q = em.createQuery("SELECT t FROM Course t WHERE t.date>=:start AND t.date<=:end ORDER BY t.id", Course.class);
+			q.setParameter("start", start);
+			q.setParameter("end", end);
+			result = new LinkedList<Course>(q.getResultList());
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	@Override
 	public Course getCourse(Long id) {
@@ -408,11 +426,11 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
-	public List<String> getAllHopital() {
+	public List<String> getAllDestination() {
 		List<String> result = new ArrayList<>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<String> q = em.createQuery("SELECT t.name FROM Hopital t ORDER BY t.name", String.class);
+			TypedQuery<String> q = em.createQuery("SELECT t.name FROM Destination t ORDER BY t.name", String.class);
 			result = q.getResultList();
 			em.close();
 		} catch (Exception e) {
@@ -422,22 +440,22 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
-	public Hopital getHopital(String name) {
-		Hopital result = null;
+	public Destination getDestination(String name) {
+		Destination result = null;
 		try {
 			EntityManager em = factory.createEntityManager();
-			result = em.find(Hopital.class, name);
+			result = em.find(Destination.class, name);
 			em.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (result == null)
-			result = new Hopital();
+			result = new Destination();
 		return result;
 	}
 
 	@Override
-	public void addOrUpdate(Hopital entity) {
+	public void addOrUpdate(Destination entity) {
 		EntityManager em = factory.createEntityManager();
 		em.getTransaction().begin();
 		em.merge(entity);
@@ -446,9 +464,9 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
-	public void delete(Hopital entity) {
+	public void delete(Destination entity) {
 		EntityManager em = factory.createEntityManager();
-		entity = em.find(Hopital.class, entity.getName());
+		entity = em.find(Destination.class, entity.getName());
 		em.getTransaction().begin();
 		em.remove(entity);
 		em.getTransaction().commit();
@@ -458,7 +476,7 @@ public class MapperJPA extends Mapper {
 	@Override//TODO sup chauf sec
 	public List<CourseItemList> getCourse(boolean all, Long idChauffeur, Select select, LocalDate date) {
 		StringBuilder query = new StringBuilder("SELECT t FROM Course t");
-		query.append(" WHERE t.annulation = false AND t.date");
+		query.append(" WHERE t.date");
 		switch (select) {
 		case DAY:
 			query.append("=:locdate");
@@ -554,7 +572,7 @@ public class MapperJPA extends Mapper {
 			em.createQuery("DELETE FROM Appelant").executeUpdate();
 			em.createQuery("DELETE FROM Chauffeur").executeUpdate();
 			em.createQuery("DELETE FROM Residence").executeUpdate();
-			em.createQuery("DELETE FROM Hopital").executeUpdate();
+			em.createQuery("DELETE FROM Destination").executeUpdate();
 			em.createQuery("DELETE FROM Indisponibilite").executeUpdate();
 			em.getTransaction().commit();
 			em.close();
@@ -565,7 +583,7 @@ public class MapperJPA extends Mapper {
 
 	@Deprecated
 	public void importSave(List<Course> courses, List<Appelant> appelants, List<Chauffeur> chauffeurs,
-			List<Residence> residences, List<Hopital> hopitals) {
+			List<Residence> residences, List<Destination> destinations) {
 		try {
 			EntityManager em = factory.createEntityManager();
 			em.getTransaction().begin();
@@ -573,12 +591,12 @@ public class MapperJPA extends Mapper {
 			em.createQuery("DELETE FROM Appelant").executeUpdate();
 			em.createQuery("DELETE FROM Chauffeur").executeUpdate();
 			em.createQuery("DELETE FROM Residence").executeUpdate();
-			em.createQuery("DELETE FROM Hopital").executeUpdate();
+			em.createQuery("DELETE FROM Destination").executeUpdate();
 			em.createQuery("DELETE FROM Indisponibilite").executeUpdate();
 			/**
 			 * / em.getTransaction().commit(); em.getTransaction().begin(); /
 			 **/
-			for (Hopital entity : hopitals) {
+			for (Destination entity : destinations) {
 				em.persist(entity);
 				em.flush();
 				em.clear();
@@ -741,7 +759,7 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Course> q = em.createQuery(
-					"SELECT c FROM Course c WHERE c.annulation = false AND c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureRDV", Course.class);
+					"SELECT c FROM Course c WHERE c.appelant.id=:arg1 AND c.date>=CURRENT_DATE ORDER BY c.date, c.heureRDV", Course.class);
 			q.setParameter("arg1", id);
 			for (Course tuple : q.getResultList()) {
 				result.add(new CourseItemList(tuple));
@@ -759,7 +777,7 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Course> q = em.createQuery(
-					"SELECT c FROM Course c WHERE c.annulation = false AND c.appelant.id=:arg1 AND c.date<CURRENT_DATE ORDER BY c.date DESC, c.heureRDV DESC", Course.class);
+					"SELECT c FROM Course c WHERE c.appelant.id=:arg1 AND c.date<CURRENT_DATE ORDER BY c.date DESC, c.heureRDV DESC", Course.class);
 			q.setParameter("arg1", id);
 			for (Course tuple : q.getResultList()) {
 				result.add(new CourseItemList(tuple));
@@ -786,11 +804,11 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
-	public List<Hopital> getListHopital() {
-		List<Hopital> result = new ArrayList<>();
+	public List<Destination> getListDestination() {
+		List<Destination> result = new ArrayList<>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Hopital> q = em.createQuery("SELECT t FROM Hopital t ORDER BY t.name", Hopital.class);
+			TypedQuery<Destination> q = em.createQuery("SELECT t FROM Destination t ORDER BY t.name", Destination.class);
 			result = q.getResultList();
 			em.close();
 		} catch (Exception e) {
@@ -924,13 +942,13 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
-	public void importHopitaux(List<Hopital> hopitals) {
+	public void importDestination(List<Destination> destinations) {
 		try {
 			EntityManager em = factory.createEntityManager();
 			em.getTransaction().begin();
 			// em.createQuery("DELETE FROM Course").executeUpdate();
 
-			for (Hopital entity : hopitals) {
+			for (Destination entity : destinations) {
 				em.persist(entity);
 				em.flush();
 				em.clear();
@@ -948,13 +966,13 @@ public class MapperJPA extends Mapper {
 		Map<Long, PlanningChauffeur> result = new HashMap<Long, PlanningChauffeur>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t", Chauffeur.class);//TODO actif
+			TypedQuery<Chauffeur> q1 = em.createQuery("SELECT t FROM Chauffeur t WHERE t.display = TRUE", Chauffeur.class);
 			for (Chauffeur tuple : q1.getResultList()) {
 				result.put(tuple.getId(), new PlanningChauffeur(tuple.getFullName()));
 			}
 
 			TypedQuery<Course> q = em.createQuery(
-					//TODO MODECOURSE "SELECT t FROM Course t WHERE t.annulation = FALSE AND t.date=:locdate AND (t.chauffeur IS NOT NULL OR t.chauffeurSec IS NOT NULL) ORDER BY t.date, t.heureDomicile",
+					//TODO MODECOURSE "SELECT t FROM Course t WHERE t.date=:locdate AND (t.chauffeur IS NOT NULL OR t.chauffeurSec IS NOT NULL) ORDER BY t.date, t.heureDomicile",
 					"SELECT t FROM Course t WHERE t.date=:locdate AND t.chauffeur IS NOT NULL ORDER BY t.date, t.heureDomicile",
 					Course.class);
 			q.setParameter("locdate", date);
@@ -964,7 +982,7 @@ public class MapperJPA extends Mapper {
 
 			for (Course course : q.getResultList()) {
 				c = course.getChauffeur();
-				if (c != null) {
+				if (c != null && result.containsKey(c.getId())) {
 					i = new IndisponibiliteCourse(course.getAppelant().getFullName());
 					i.setId(course.getId());
 					i.setDescription(course.getTypeCourse() + ": " + course.getAdresseDest());
@@ -1029,6 +1047,23 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Indisponibilite> q = em.createQuery("SELECT t FROM Indisponibilite t ORDER BY t.idChauffeur", Indisponibilite.class);
+			result = new LinkedList<Indisponibilite>(q.getResultList());
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public List<Indisponibilite> getIntervalIndisponibilite(LocalDate start, LocalDate end) {
+		List<Indisponibilite> result = new LinkedList<Indisponibilite>();
+		try {
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Indisponibilite> q = em.createQuery("SELECT t FROM Indisponibilite t WHERE t.dateEnd>=:end AND t.dateStart<=:start ORDER BY t.idChauffeur", Indisponibilite.class);
+			q.setParameter("start", start);
+			q.setParameter("end", end);
 			result = new LinkedList<Indisponibilite>(q.getResultList());
 			em.close();
 		} catch (Exception e) {

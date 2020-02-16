@@ -20,7 +20,7 @@ import util.DateTime;
 import util.UserManager;
 
 public class SaveManager {
-	private static final int CURRENT_VERSION = 1;
+	private static final int CURRENT_VERSION = 2;
 	private static final String extention = ".gdc.zip";
 
 	public static String getExtention() {
@@ -44,11 +44,11 @@ public class SaveManager {
 						}
 					}
 				}
-				switch (version) {
-				case -1:throw new Exception("Erreur Version");
-				case 0:version0(zf);break;
-				case 1:version1(zf);break;
-				default:break;
+				
+				if (version == -1 ) {
+					throw new Exception("Erreur Version");
+				} else {
+					version1(version,zf);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -57,14 +57,14 @@ public class SaveManager {
 		}
 	}
 
-	private static void version1(ZipFile zf) throws IOException {
+	private static void version1(int version, ZipFile zf) throws IOException {
 		Enumeration<? extends ZipEntry> entries;
 		ZipEntry zipentry;
 		Mapper mapper = Mapper.getInstance();
 		mapper.deleteAll();
-		boolean res = false, hop = false, chauf = false, app = false, course = false, indisp = false, user = false;
+		boolean res = false, dest = false, chauf = false, app = false, course = false, indisp = false, user = false;
 		int limite = 4;
-		while (!(user && res && hop && chauf && app && course && indisp) && limite > 0) {
+		while (!(user && res && dest && chauf && app && course && indisp) && limite > 0) {
 			limite--;
 			entries = zf.entries();
 			while (entries.hasMoreElements()) {
@@ -80,12 +80,12 @@ public class SaveManager {
 					mapper.importResidences(CSV.readResidence(
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					res = true;
-				} else if (!hop && entryName.equals("Hopital.csv")) {
-					mapper.importHopitaux(CSV.readHopital(
+				} else if (!dest && entryName.equals("Hopital.csv")) {
+					mapper.importDestination(CSV.readDestination(version,
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
-					hop = true;
+					dest = true;
 				} else if (!chauf && entryName.equals("Chauffeur.csv")) {
-					mapper.importChauffeurs(CSV.readChauffeur(
+					mapper.importChauffeurs(CSV.readChauffeur(version,
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					chauf = true;
 				} else if (!app && chauf && entryName.equals("Appelant.csv")) {
@@ -102,16 +102,16 @@ public class SaveManager {
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
 							mapper));
 					indisp = true;
-				} else if (!hop && entryName.equals("Hopital.csv")) {
-					mapper.importHopitaux(CSV.readHopital(
+				} /*else if (!hop && entryName.equals("Hopital.csv")) {
+					mapper.importDestination(CSV.readHopital(
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					hop = true;
-				}
+				}*/
 			}
 		}
 	}
 	
-	private static void version0(ZipFile zf) throws IOException {
+	/*private static void version0(ZipFile zf) throws IOException {
 		Enumeration<? extends ZipEntry> entries;
 		ZipEntry zipentry;
 		Mapper mapper = Mapper.getInstance();
@@ -135,7 +135,7 @@ public class SaveManager {
 							new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)));
 					res = true;
 				} else if (!hop && entryName.equals("Hopital.csv")) {
-					mapper.importHopitaux(CSV.readHopital(
+					mapper.importDestination(CSV.readHopital(
 							new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)));
 					hop = true;
 				} else if (!chauf && entryName.equals("Chauffeur.csv")) {
@@ -157,13 +157,13 @@ public class SaveManager {
 							mapper));
 					indisp = true;
 				} else if (!hop && entryName.equals("Hopital.csv")) {
-					mapper.importHopitaux(CSV.readHopital(
+					mapper.importDestination(CSV.readHopital(
 							new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)));
 					hop = true;
 				}
 			}
 		}
-	}
+	}*/
 
 	public static void autoSave() {
 		Mapper mapper = Mapper.getInstance();
@@ -186,6 +186,15 @@ public class SaveManager {
 		boolean result = creatExport(pathExport,mapper);
 		return result;
 	}
+	
+	public static boolean saveInterval(LocalDate start, LocalDate end) {
+		Mapper mapper = Mapper.getInstance();
+		Settings settings = mapper.getSettings();
+		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
+				+ String.format("Sauvegarde du %s au %s", DateTime.toString(start),DateTime.toString(end));
+		boolean result = creatIntervalSave(start, end, pathName, mapper);
+		return result;
+	}
 
 	public static boolean save() {
 		Mapper mapper = Mapper.getInstance();
@@ -204,6 +213,46 @@ public class SaveManager {
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time)+" "+UserManager.getFullName();
 		creatSave(pathName, mapper);
+	}
+	
+	private static boolean creatIntervalSave(LocalDate start, LocalDate end, String pathName, Mapper mapper) {
+		boolean saveOk = true;
+		String separator = System.getProperty("file.separator");
+		File save = new File(pathName);
+		if (save.exists()) {
+			FileManager.deleteContent(save);
+		} else {
+			save.mkdirs();
+		}
+		
+		File write = new File(save.getAbsolutePath() + separator + "VERSION");
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(write), StandardCharsets.UTF_8))) {
+			writer.write(""+CURRENT_VERSION);
+			writer.newLine();
+			writer.close();
+		} catch (Exception e) {
+			write.delete();
+		}
+		
+		write = new File(save.getAbsolutePath() + separator + "Appelant.csv");
+		saveOk &= CSV.wirte(mapper.getAllAppelant(), write);
+		write = new File(save.getAbsolutePath() + separator + "Chauffeur.csv");
+		saveOk &=CSV.wirte(mapper.getAllChauffeur(), write);
+		write = new File(save.getAbsolutePath() + separator + "Course.csv");
+		saveOk &=CSV.wirte(mapper.getIntervalCourse(start,end), write);
+		write = new File(save.getAbsolutePath() + separator + "Indisponibilite.csv");
+		saveOk &=CSV.wirte(mapper.getIntervalIndisponibilite(start,end), write);
+		write = new File(save.getAbsolutePath() + separator + "Hopital.csv");
+		saveOk &=CSV.wirte(mapper.getListDestination(), write);
+		write = new File(save.getAbsolutePath() + separator + "Residence.csv");
+		saveOk &=CSV.wirte(mapper.getListResidence(), write);
+		write = new File(save.getAbsolutePath() + separator + "Utilisateur.csv");
+		saveOk &=CSV.wirte(mapper.getAllUser(), write);
+
+		FileManager.compress(save.getAbsolutePath(),extention);
+		FileManager.delete(save);
+		return saveOk;
 	}
 
 	private static boolean creatSave(String pathName, Mapper mapper) {
@@ -235,7 +284,7 @@ public class SaveManager {
 		write = new File(save.getAbsolutePath() + separator + "Indisponibilite.csv");
 		saveOk &=CSV.wirte(mapper.getAllIndisponibilite(), write);
 		write = new File(save.getAbsolutePath() + separator + "Hopital.csv");
-		saveOk &=CSV.wirte(mapper.getListHopital(), write);
+		saveOk &=CSV.wirte(mapper.getListDestination(), write);
 		write = new File(save.getAbsolutePath() + separator + "Residence.csv");
 		saveOk &=CSV.wirte(mapper.getListResidence(), write);
 		write = new File(save.getAbsolutePath() + separator + "Utilisateur.csv");
@@ -265,7 +314,7 @@ public class SaveManager {
 		write = new File(export.getAbsolutePath() + separator + "Indisponibilite.csv");
 		exportOk &=CSV.export(mapper.getAllIndisponibilite(), write);
 		write = new File(export.getAbsolutePath() + separator + "Hopital.csv");
-		exportOk &=CSV.export(mapper.getListHopital(), write);
+		exportOk &=CSV.export(mapper.getListDestination(), write);
 		write = new File(export.getAbsolutePath() + separator + "Residence.csv");
 		exportOk &=CSV.export(mapper.getListResidence(), write);
 		write = new File(export.getAbsolutePath() + separator + "Utilisateur.csv");

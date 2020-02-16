@@ -1,5 +1,6 @@
 package models;
 
+@Deprecated
 public class Adresse {
 	private String adresse = "";
 	private String cp = "";

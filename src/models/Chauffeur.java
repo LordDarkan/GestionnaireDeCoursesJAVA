@@ -1,5 +1,6 @@
 package models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,16 +14,34 @@ import util.Titre;
 public class Chauffeur implements CSVRow {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
+	@Column(name="titre")
 	private Titre titre = Titre.Aucun;
+	@Column(name="name")
 	private String name = "";
+	@Column(name="firstname")
 	private String firstname = "";
+	@Column(name="tel")
 	private String tel = "";
+	@Column(name="adresse")
 	private String adresse = "";
-
+	
+	@Column(name="cp")
 	private String cp = "";
+	@Column(name="localite")
 	private String localite = "";
+	@Column(name="infos")
 	private String infos = "";
+	@Column(name="display")
+	private boolean display = true;
+	
+	@Column(name="str1")
+	private String str1 = null;
+	@Column(name="str2")
+	private String str2 = null;
+	@Column(name="str3")
+	private String str3 = null;
 	
 	
 	public void setId(Long id) {
@@ -84,6 +103,12 @@ public class Chauffeur implements CSVRow {
 		this.titre = titre;
 	}
 
+	public boolean isDisplay() {
+		return display;
+	}
+	public void setDisplay(boolean display) {
+		this.display = display;
+	}
 	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
@@ -104,6 +129,8 @@ public class Chauffeur implements CSVRow {
 		str.append(localite);
 		str.append(";");
 		str.append(infos);
+		str.append(";");
+		str.append(display?"OUI":"NON");
 		str.append(";END");
 		return str.toString();
 	}
@@ -113,7 +140,7 @@ public class Chauffeur implements CSVRow {
 		return enteteCSV;
 	}
 	
-	public static final String enteteCSV = "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;END";
+	public static final String enteteCSV = "ID;Titre;Nom;Prénom;Téléphone, gsm;Adresse;CP;Localité;Infos;Display;END";
 	
 	public static void valdation(Chauffeur obj) throws IllegalArgumentException {//TODO
 		if(obj.getFirstname().length()<2) throw new IllegalArgumentException("Le prénom est invalide");

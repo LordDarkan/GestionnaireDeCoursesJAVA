@@ -9,7 +9,7 @@ public enum Titre {
 	public static Titre get(String string) {
 		Titre titre = Titre.Aucun;
 		string = string.toUpperCase();
-		if (string.equals("H")) {
+		if (string.equals("M")) {
 			titre = Titre.Mr;
 		} else if (string.equals("F")) {
 			titre = Titre.Mme;

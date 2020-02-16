@@ -3,10 +3,12 @@ package models;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 
 import data.CSVRow;
 import util.DateTime;
@@ -18,66 +20,70 @@ import util.TypeCourse;
 public class Course implements CSVRow {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private Long id;
-	
+
+	@Column(name="nameCreation")
 	private String nameCreation = "";
+	@Column(name="dateCreation")
 	private LocalDate dateCreation = LocalDate.now();
+	@Column(name="heureCreation")
 	private LocalTime  heureCreation = LocalTime.now();
-	
+
+	@JoinColumn(name="appelant")
 	private Appelant appelant;
+	@Column(name="date")
 	private LocalDate date = LocalDate.now();
+	@JoinColumn(name="chauffeur")
 	private Chauffeur chauffeur = null;
+	@Column(name="nameAttribution")
 	private String nameAttribution = "";//TODO RENAME MODIF + séparé chauffeur 
+	@Column(name="dateAttribution")
 	private LocalDate dateAttribution = null;//RENAME MODIF + séparé chauffeur 
-	
+
+	@Column(name="heureDomicile")
 	private LocalTime heureDomicile = LocalTime.MIDNIGHT;
+	@Column(name="residence")
 	private String residence;
+	@Column(name="adresseDep")
 	private String adresseDep;
+	@Column(name="cpDep")
 	private String cpDep;
+	@Column(name="localiteDep")
 	private String localiteDep;
-	//private Trajet mode = Trajet.ALLER_RETOUR;//TODO ADD mode course
+	@Column(name="trajet")
+	private Trajet trajet = Trajet.ALLER_RETOUR;//TODO ADD mode course
+	@Column(name="typeCourse")
 	private TypeCourse typeCourse = TypeCourse.AUTRE;
-	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private boolean mutuelle = false;
-	
+
+	@Column(name="heureRDV")
 	private LocalTime heureRDV = LocalTime.MIDNIGHT;
-	private String hopital = "";
+	@Column(name="destination")
+	private String destination = "";
+	@Column(name="adresseDest")
 	private String adresseDest = "";
-	@SuppressWarnings("unused")
-	@Deprecated
-	private String cpDest = "";
+	@Column(name="localiteDest")
 	private String localiteDest = "";
-	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private boolean attente = true;
-	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private Chauffeur chauffeurSec = null;
-	
+
+	@Column(name="heureRetour")
 	private LocalTime heureRetour = LocalTime.MIDNIGHT;
+	@Column(name="adresseRet")
 	private String adresseRet;
+	@Column(name="cpRet")
 	private String cpRet;
+	@Column(name="localiteRet")
 	private String localiteRet;
-	
+
+	@Column(name="notes")
 	private String notes = "";
 	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private boolean annulation = false;
-	
-	@Deprecated//Trajet
-	private String raisonAnnulation = "";
-	
-	@SuppressWarnings("unused")
-	@Deprecated
-	private String nameAnnulation = "";
-	@SuppressWarnings("unused")
-	@Deprecated
-	private LocalDate dateAnnulation = null;
+
+	@Column(name="str1")
+	private String str1 = null;
+	@Column(name="str2")
+	private String str2 = null;
+	@Column(name="str3")
+	private String str3 = null;
 	
 	public Course() {
 	}
@@ -96,9 +102,9 @@ public class Course implements CSVRow {
 		localiteRet = localiteDep;
 	}
 	
-	public Course(Course course) {
-		//TODO
-	}
+//	public Course(Course course) {
+//		//TODO
+//	}
 
 	public Long getId() {
 		return id;
@@ -188,12 +194,12 @@ public class Course implements CSVRow {
 		this.heureRDV = heureRDV;
 	}
 
-	public String getHopital() {
-		return hopital;
+	public String getDestination() {
+		return destination;
 	}
 
-	public void setHopital(String hopital) {
-		this.hopital =  Gate.encoding(hopital);
+	public void setDestination(String hopital) {
+		this.destination =  Gate.encoding(hopital);
 	}
 
 	public String getAdresseDest() {
@@ -301,20 +307,14 @@ public class Course implements CSVRow {
 	}
 	
 	public Trajet getTrajet() {
-		return Trajet.get(raisonAnnulation);
+		return trajet;
 	}
 	
 	public void setTrajet(Trajet mode) {
-		if (mode == Trajet.ALLER) {
-			raisonAnnulation = "ALLER";
-		} else if (mode == Trajet.RETOUR) {
-			raisonAnnulation = "RETOUR";
-		} else {
-			raisonAnnulation = "ALLER-RETOUR";
-		}
+		this.trajet = mode;
 	}
 	
-	public static final String enteteCSV = "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;TRAJET;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;VIDE;VIDE;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;ID(PEUT CHANGER);VIDE;VIDE;VIDE;END";
+	public static final String enteteCSV = "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;TRAJET;HEURERDV;DESTINATION;ADRESSEDEST;VIDE;LOCALITEDEST;VIDE;VIDE;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;ID(PEUT CHANGER);VIDE;VIDE;VIDE;END";
 
 	@Override
 	public String getEnTeteCsv() {
@@ -354,21 +354,21 @@ public class Course implements CSVRow {
 		str.append(";");
 		str.append(typeCourse.toString());
 		str.append(";");
-		str.append(raisonAnnulation);//Trajet
+		str.append(trajet.toString());
 		str.append(";");
 		str.append(DateTime.toString(heureRDV));
 		str.append(";");
-		str.append(hopital);
+		str.append(destination);
 		str.append(";");
 		str.append(adresseDest);
 		str.append(";");
-		//str.append(cpDest);
+		//18
 		str.append(";");
 		str.append(localiteDest);
 		str.append(";");
-		
+		//20
 		str.append(";");
-		
+		//21
 		str.append(";");
 		str.append(DateTime.toString(heureRetour));
 		str.append(";");
@@ -390,67 +390,6 @@ public class Course implements CSVRow {
 		str.append(";END");
 		return str.toString();
 	}
-	/*
-	public static String getEnTeteCsvNew() { 
-		return "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;MODECOURSE;TYPECOURSE;HEURERDV;HOPITAL;ADRESSEDEST;CPDEST;LOCALITEDEST;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;END"; 
-	} 
-	 
-	public String getRowCsvNew() { 
-		StringBuilder str = new StringBuilder(); 
-		str.append(nameCreation); 
-		str.append(";"); 
-		str.append(DateTime.saveToString(dateCreation));//date 
-		str.append(";"); 
-		str.append(DateTime.toString(heureCreation)); 
-		str.append(";"); 
-		str.append(appelant.getId()); 
-		str.append(";"); 
-		str.append(DateTime.saveToString(date));//date 
-		str.append(";"); 
-		if (chauffeur!=null) 
-			str.append(chauffeur.getId()); 
-		str.append(";"); 
-		str.append(nameAttribution); 
-		str.append(";"); 
-		if (dateAttribution!=null) 
-			str.append(DateTime.saveToString(dateAttribution));//date 
-		str.append(";"); 
-		str.append(DateTime.toString(heureDomicile)); 
-		str.append(";"); 
-		str.append(residence); 
-		str.append(";"); 
-		str.append(adresseDep); 
-		str.append(";"); 
-		str.append(cpDep); 
-		str.append(";"); 
-		str.append(localiteDep); 
-		str.append(";"); 
-		//str.append(mode.toString()); 
-		str.append(";"); 
-		str.append(typeCourse.toString()); 
-		str.append(";"); 
-		str.append(DateTime.toString(heureRDV)); 
-		str.append(";"); 
-		str.append(hopital); 
-		str.append(";"); 
-		str.append(adresseDest); 
-		str.append(";"); 
-		str.append(cpDest); 
-		str.append(";"); 
-		str.append(localiteDest); 
-		str.append(";"); 
-		str.append(DateTime.toString(heureRetour)); 
-		str.append(";"); 
-		str.append(adresseRet); 
-		str.append(";"); 
-		str.append(cpRet); 
-		str.append(";"); 
-		str.append(localiteRet); 
-		str.append(";"); 
-		str.append(notes); 
-		str.append(";END"); 
-		return str.toString(); 
-	} */
 
 	public static void valdation(Course obj) throws IllegalArgumentException {//TODO
 		if (obj.appelant == null) throw new IllegalArgumentException("La course n'est pas lié à un appelant");

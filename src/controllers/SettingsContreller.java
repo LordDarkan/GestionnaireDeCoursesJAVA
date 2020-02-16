@@ -3,7 +3,7 @@ package controllers;
 import java.util.List;
 
 import data.Mapper;
-import models.Hopital;
+import models.Destination;
 import models.Residence;
 import models.Utilisateur;
 
@@ -33,8 +33,8 @@ public abstract class SettingsContreller {
 		return mapper.getAllUser();
 	}
 	
-	protected List<Hopital> getListHopital() {
-		return mapper.getListHopital();
+	protected List<Destination> getListDestination() {
+		return mapper.getListDestination();
 	}
 	
 	protected List<Residence> getListResidence() {
@@ -45,7 +45,7 @@ public abstract class SettingsContreller {
 		mapper.addOrUpdateUser(u);
 	}
 	
-	protected void addHopital(Hopital h) {
+	protected void addDestination(Destination h) {
 		mapper.addOrUpdate(h);
 	}
 	
@@ -57,7 +57,7 @@ public abstract class SettingsContreller {
 		mapper.delete(u);
 	}
 	
-	protected void removeHopital(Hopital h) {
+	protected void removeDestination(Destination h) {
 		mapper.delete(h);
 	}
 	

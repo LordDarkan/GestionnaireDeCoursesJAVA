@@ -1,19 +1,35 @@
 package models;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import data.CSVRow;
 import util.Gate;
+import util.TypeCourse;
 
 @Entity
-public class Hopital implements CSVRow {
+public class Destination implements CSVRow {
 	@Id
+	@Column(name="name")
 	private String name = "";
+	@Column(name="adresse")
 	private String adresse = "";
+	@Column(name="cp")
 	private String cp = "";
+	@Column(name="localite")
 	private String localite = "";
+	@Column(name="tel")
 	private String tel = "";
+	@Column(name="typeCourse")
+	private TypeCourse typeCourse = TypeCourse.AUTRE;
+	
+	@Column(name="str1")
+	private String str1 = null;
+	@Column(name="str2")
+	private String str2 = null;
+	@Column(name="str3")
+	private String str3 = null;
 	
 	public String getName() {
 		return name;
@@ -46,9 +62,28 @@ public class Hopital implements CSVRow {
 		this.tel =  Gate.encoding(tel);
 	}
 	
+	public TypeCourse getTypeCourse() {
+		return typeCourse;
+	}
+	public void setTypeCourse(TypeCourse typeCourse) {
+		this.typeCourse = typeCourse;
+	}
 	@Override
 	public String toString() {
-		return String.format("%s\t|\t%s\t%s (%s)\t|\tN° Tel: %s", name,adresse,localite,cp,tel);
+		StringBuilder sb = new StringBuilder(name);
+		sb.append("\t|\t");
+		sb.append(adresse);
+		if (!localite.isEmpty()||!cp.isEmpty()) {
+			sb.append(String.format("\t%s (%s)",localite,cp));
+		}
+		if (!tel.isEmpty()) {
+			sb.append(String.format("\t|\tN° Tel: %s",tel));
+		}
+
+		sb.append("\t|\t");
+		sb.append(typeCourse.toString());
+		
+		return sb.toString();
 	}
 	
 
@@ -64,6 +99,8 @@ public class Hopital implements CSVRow {
 		str.append(localite);
 		str.append(";");
 		str.append(tel);
+		str.append(";");
+		str.append(typeCourse.toString());
 		str.append(";END");
 		return str.toString();
 	}
@@ -73,9 +110,9 @@ public class Hopital implements CSVRow {
 		return enteteCSV;
 	}
 	
-	public static final String enteteCSV = "Nom;Adresse;CP;Localité;Téléphone;END";
+	public static final String enteteCSV = "Nom;Adresse;CP;Localité;Téléphone;TypeCourse;END";
 
-	public static void valdation(Hopital obj) throws IllegalArgumentException {//TODO
+	public static void valdation(Destination obj) throws IllegalArgumentException {//TODO
 		
 	}
 }

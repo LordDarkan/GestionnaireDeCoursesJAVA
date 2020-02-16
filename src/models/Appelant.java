@@ -2,6 +2,8 @@ package models;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -18,31 +20,59 @@ public class Appelant implements CSVRow {
 	@Id
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
 	private Long id;
+	@Column(name="titre")
 	private Titre titre = Titre.Aucun;
+	@Column(name="name")
 	private String name = "";
+	@Column(name="firstname")
 	private String firstname = "";
+	@Column(name="birthday")
 	private LocalDate birthday = null;
+	@Column(name="tel")
 	private String tel = "";
-	
+
+	@Column(name="residence")
 	private String residence = "";
+	@Column(name="adresse")
 	private String adresse = "";
+	@Column(name="cp")
 	private String cp = "";
+	@Column(name="localite")
 	private String localite = "";
+	@Column(name="quartier")
 	private String quartier = "";
 
+	@Column(name="famille")
 	private String famille = "";
+	@Column(name="affinite")
 	private String affinite = "";
+	@Column(name="restriction")
 	private String restriction = "";
-	
+
+	@Column(name="mutualite")
 	private String mutualite = "";
+	@Column(name="payement")
 	private String payement = "";
+	@Column(name="cotisation")
 	private int cotisation = 0;
-	
+
+	@Column(name="mobilite")
 	private String mobilite = "RAS";
+	@Column(name="aideParticuliere")
 	private String aideParticuliere = "RAS";
+	@Column(name="infos")
 	private String infos = "";
+	@Column(name="remarques")
 	private String remarques = "";
+	
+	@Column(name="str1")
+	private String str1 = null;
+	@Column(name="str2")
+	private String str2 = null;
+	@Column(name="str3")
+	private String str3 = null;
 	
 	
 	public Long getId() {
