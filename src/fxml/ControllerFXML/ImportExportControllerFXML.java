@@ -3,12 +3,14 @@ package fxml.ControllerFXML;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import controllers.ImportExportController;
 import controllers.MainController;
 import data.SaveManager;
 import fxml.Message;
+import fxml.dialog.DialogSelectIntervalControllerFXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import models.Indisponibilite;
 import models.Utilisateur;
 
 public class ImportExportControllerFXML extends ImportExportController implements Initializable,ITabController {
@@ -28,6 +31,8 @@ public class ImportExportControllerFXML extends ImportExportController implement
     private Button importer;
     @FXML
     private Button exporter;
+    @FXML
+    private Button exporterInterval;
     @FXML
     private Button changeD;
     @FXML
@@ -69,6 +74,7 @@ public class ImportExportControllerFXML extends ImportExportController implement
 		exporter.setOnAction((ActionEvent e) -> saveF());
 		changeD.setOnAction((ActionEvent e) -> changeSaveDirectoryF());
 		export.setOnAction((ActionEvent e) -> exportF());
+		exporterInterval.setOnAction((ActionEvent e) -> saveIntervalF());
 	}
 	
 	private void exportF() {
@@ -92,6 +98,24 @@ public class ImportExportControllerFXML extends ImportExportController implement
 			}
 		} catch (Exception e) {
 			Message.alert("Erreur lors de la sauvagarde");
+		}
+	}
+	
+	private void saveIntervalF() {
+		DialogSelectIntervalControllerFXML dialog = new DialogSelectIntervalControllerFXML();
+		Indisponibilite i = dialog.showAndWait();
+		if (dialog.isResult()) {
+			LocalDate start = i.getDateStart();
+			LocalDate end = i.getDateEnd();
+			try {
+				if (super.saveInterval(start, end)) {
+					Message.msg("Sauvegarde effectuée");
+				} else {
+					Message.alert("Sauvegarde effectuée\nMais une erreur s'est produite!");
+				}
+			} catch (Exception e) {
+				Message.alert("Erreur lors de la sauvagarde");
+			}
 		}
 	}
 

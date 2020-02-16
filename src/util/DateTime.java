@@ -7,8 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 public class DateTime {
 
-	private static final DateTimeFormatter formatIdAutoSave = DateTimeFormatter.ofPattern("yyMM 'Auto Save' dd MMM yyyy");
-	private static final DateTimeFormatter formatIdSave = DateTimeFormatter.ofPattern("yyMM-dd MMM yyyy HH'H'mm");
+	private static final DateTimeFormatter formatIdAutoSave = DateTimeFormatter.ofPattern("yy-MM 'Auto Save' dd MMM yyyy");
+	private static final DateTimeFormatter formatIdSave = DateTimeFormatter.ofPattern("yy-MM-dd MMM yyyy HH'H'mm");
 	
 	private static final DateTimeFormatter formatHeure = DateTimeFormatter.ofPattern("HH'H'mm");
 	private static final DateTimeFormatter formatDate = DateTimeFormatter.ofPattern("dd MMMM yyyy");

@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.File;
+import java.time.LocalDate;
 
 import data.Mapper;
 import data.SaveManager;
@@ -42,6 +43,10 @@ public abstract class ImportExportController {
 	
 	protected boolean save(){
 		return SaveManager.save();
+	}
+	
+	protected boolean saveInterval(LocalDate start, LocalDate end){
+		return SaveManager.saveInterval(start, end);
 	}
 
 	protected void importer(File file) {

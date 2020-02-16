@@ -5,6 +5,7 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <GridPane alignment="CENTER" hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" vgap="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
@@ -17,9 +18,14 @@
   </rowConstraints>
    <children>
       <Button fx:id="importer" mnemonicParsing="false" text="Importer une Sauvegarde" />
-      <Button fx:id="exporter" mnemonicParsing="false" text="Créer une Sauvegarde" GridPane.columnIndex="1" />
       <Button fx:id="changeD" mnemonicParsing="false" text="Modifier dossier de sauvegarde" GridPane.rowIndex="1" />
       <Button fx:id="export" mnemonicParsing="false" text="Exporter les données" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1">
+         <children>
+            <Button fx:id="exporter" mnemonicParsing="false" text="Créer une Sauvegarde" />
+            <Button fx:id="exporterInterval" mnemonicParsing="false" text="Créer une Sauvegarde du ... au .." />
+         </children>
+      </VBox>
       <!--Label prefWidth="121.0" text="Import le csv : PourDenis Requête.csv" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" /-->
    </children>
    <padding>

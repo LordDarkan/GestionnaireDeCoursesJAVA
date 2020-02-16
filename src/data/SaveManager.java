@@ -186,6 +186,15 @@ public class SaveManager {
 		boolean result = creatExport(pathExport,mapper);
 		return result;
 	}
+	
+	public static boolean saveInterval(LocalDate start, LocalDate end) {
+		Mapper mapper = Mapper.getInstance();
+		Settings settings = mapper.getSettings();
+		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
+				+ String.format("Sauvegarde du %s au %s", DateTime.toString(start),DateTime.toString(end));
+		boolean result = creatIntervalSave(start, end, pathName, mapper);
+		return result;
+	}
 
 	public static boolean save() {
 		Mapper mapper = Mapper.getInstance();
@@ -204,6 +213,46 @@ public class SaveManager {
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time)+" "+UserManager.getFullName();
 		creatSave(pathName, mapper);
+	}
+	
+	private static boolean creatIntervalSave(LocalDate start, LocalDate end, String pathName, Mapper mapper) {
+		boolean saveOk = true;
+		String separator = System.getProperty("file.separator");
+		File save = new File(pathName);
+		if (save.exists()) {
+			FileManager.deleteContent(save);
+		} else {
+			save.mkdirs();
+		}
+		
+		File write = new File(save.getAbsolutePath() + separator + "VERSION");
+		try (BufferedWriter writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream(write), StandardCharsets.UTF_8))) {
+			writer.write(""+CURRENT_VERSION);
+			writer.newLine();
+			writer.close();
+		} catch (Exception e) {
+			write.delete();
+		}
+		
+		write = new File(save.getAbsolutePath() + separator + "Appelant.csv");
+		saveOk &= CSV.wirte(mapper.getAllAppelant(), write);
+		write = new File(save.getAbsolutePath() + separator + "Chauffeur.csv");
+		saveOk &=CSV.wirte(mapper.getAllChauffeur(), write);
+		write = new File(save.getAbsolutePath() + separator + "Course.csv");
+		saveOk &=CSV.wirte(mapper.getIntervalCourse(start,end), write);
+		write = new File(save.getAbsolutePath() + separator + "Indisponibilite.csv");
+		saveOk &=CSV.wirte(mapper.getIntervalIndisponibilite(start,end), write);
+		write = new File(save.getAbsolutePath() + separator + "Hopital.csv");
+		saveOk &=CSV.wirte(mapper.getListDestination(), write);
+		write = new File(save.getAbsolutePath() + separator + "Residence.csv");
+		saveOk &=CSV.wirte(mapper.getListResidence(), write);
+		write = new File(save.getAbsolutePath() + separator + "Utilisateur.csv");
+		saveOk &=CSV.wirte(mapper.getAllUser(), write);
+
+		FileManager.compress(save.getAbsolutePath(),extention);
+		FileManager.delete(save);
+		return saveOk;
 	}
 
 	private static boolean creatSave(String pathName, Mapper mapper) {

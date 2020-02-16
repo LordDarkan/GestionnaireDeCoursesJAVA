@@ -49,6 +49,7 @@ public abstract class Mapper implements Closeable{
 	public abstract void importApplants(List<Appelant> appelants);
 	
 	public abstract List<Course> getAllCourse();
+	public abstract List<Course> getIntervalCourse(LocalDate start, LocalDate end);
 	public abstract Course getCourse(Long id);
 	public abstract Long addOrUpdate(Course entity);
 	public abstract void delete(Course entity);
@@ -101,6 +102,7 @@ public abstract class Mapper implements Closeable{
 	public abstract void addOrUpdateIndisponibilite(Indisponibilite indisponibilite);
 	public abstract void delete(Indisponibilite entity);
 	public abstract List<Indisponibilite> getAllIndisponibilite();
+	public abstract List<Indisponibilite> getIntervalIndisponibilite(LocalDate start, LocalDate end);
 	public abstract void importIndisponibilite(List<Indisponibilite> readIndisponibilite);
 	public abstract void importUtilisateur(List<Utilisateur> readUtilisateur);
 	public abstract Long addNew(Appelant entity);

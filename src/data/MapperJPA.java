@@ -252,6 +252,24 @@ public class MapperJPA extends Mapper {
 		}
 		return result;
 	}
+	
+
+
+	@Override
+	public List<Course> getIntervalCourse(LocalDate start, LocalDate end) {
+		List<Course> result = new LinkedList<Course>();
+		try {
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Course> q = em.createQuery("SELECT t FROM Course t WHERE t.date>=:start AND t.date<=:end ORDER BY t.id", Course.class);
+			q.setParameter("start", start);
+			q.setParameter("end", end);
+			result = new LinkedList<Course>(q.getResultList());
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	@Override
 	public Course getCourse(Long id) {
@@ -1029,6 +1047,23 @@ public class MapperJPA extends Mapper {
 		try {
 			EntityManager em = factory.createEntityManager();
 			TypedQuery<Indisponibilite> q = em.createQuery("SELECT t FROM Indisponibilite t ORDER BY t.idChauffeur", Indisponibilite.class);
+			result = new LinkedList<Indisponibilite>(q.getResultList());
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	@Override
+	public List<Indisponibilite> getIntervalIndisponibilite(LocalDate start, LocalDate end) {
+		List<Indisponibilite> result = new LinkedList<Indisponibilite>();
+		try {
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Indisponibilite> q = em.createQuery("SELECT t FROM Indisponibilite t WHERE t.dateEnd>=:end AND t.dateStart<=:start ORDER BY t.idChauffeur", Indisponibilite.class);
+			q.setParameter("start", start);
+			q.setParameter("end", end);
 			result = new LinkedList<Indisponibilite>(q.getResultList());
 			em.close();
 		} catch (Exception e) {
