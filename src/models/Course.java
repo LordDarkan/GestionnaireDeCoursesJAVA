@@ -143,7 +143,8 @@ public class Course implements CSVRow {
 	}
 
 	public void setDate(LocalDate date) {
-		this.date = date;
+		if(date!=null)
+			this.date = date;
 	}
 
 	public LocalTime getHeureDomicile() {

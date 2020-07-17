@@ -438,10 +438,10 @@ public class CSV {
 				if (first) {
 					writer.write(row.getEnTeteCsv());
 					writer.newLine();
-					first = false;
+				} catch (Exception e) {
+					LOG.log(Level.SEVERE, "CVS wirte\n"+info+"\nligne : "+ligne, e);
+					save = false;
 				}
-				writer.write(row.getRowCsv());
-				writer.newLine();
 			}
 			writer.close();
 		} catch (Exception e) {
@@ -471,7 +471,7 @@ public class CSV {
 			}
 			writer.close();
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			LOG.log(Level.SEVERE, "CVS export", e);
 			save = false ;
 		}
 		return save;

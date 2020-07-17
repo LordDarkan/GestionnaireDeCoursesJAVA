@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import application.MyApp;
+import application.Variable;
 import controllers.MainController;
 import data.SaveManager;
 import fxml.Message;
@@ -51,10 +52,10 @@ public class MainControllerFXML extends MainController implements Initializable 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		mainBtnLogout.setOnAction((ActionEvent e) -> logout());
-		login();
+		loginPage();
 	}
 	
-	private void login() {
+	private void loginPage() {
 		try {
 			tabsController.forEach(c->c.logout());
 			mainContainer.getChildren().clear();
@@ -116,18 +117,19 @@ public class MainControllerFXML extends MainController implements Initializable 
 	public void logout() {
 		LOG.info("LOGOUT "+UserManager.getFullName());
 		try {
-			SaveManager.saveDeco();
+			if (!SaveManager.saveDeco())
+				Message.alert(Variable.MSG_ERROR_SAVE);
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "SAVE LOGOUT "+ UserManager.getFullName(), e);
 			Message.alert(e.getMessage());
 		}
-		login();
+		loginPage();
 	}
 
 	@Override
 	public void logoutAuto() {
 		LOG.info("LOGOUT AUTO "+UserManager.getFullName());
-		login();
+		loginPage();
 	}
 
 	

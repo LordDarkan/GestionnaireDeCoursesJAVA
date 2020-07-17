@@ -20,6 +20,13 @@ import util.DateTime;
 import util.UserManager;
 
 public class SaveManager {
+	public enum TypeSave {
+		AUTO,
+		DECO,
+		CLOSE,
+		CLOUD;
+	}
+
 	private static final int CURRENT_VERSION = 2;
 	private static final String extention = ".gdc.zip";
 
@@ -27,89 +34,7 @@ public class SaveManager {
 		return extention;
 	}
 
-	public static void importSave(File file) {
-		if (file.isFile() && file.getName().endsWith(extention)) {
-			try (ZipFile zf = new ZipFile(file)) {
-				Enumeration<? extends ZipEntry> entries = zf.entries();
-				ZipEntry zipentry;
-				int version = 0;
-				while (entries.hasMoreElements()) {
-					zipentry = entries.nextElement();
-					String entryName = zipentry.getName();
-					if (entryName.equals("VERSION")) {
-						try {
-							version = Integer.parseInt(new BufferedReader(new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)).readLine().trim());
-						} catch (Exception e) {
-							version = -1;
-						}
-					}
-				}
-				
-				if (version == -1 ) {
-					throw new Exception("Erreur Version");
-				} else {
-					version1(version,zf);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-	}
-
-	private static void version1(int version, ZipFile zf) throws IOException {
-		Enumeration<? extends ZipEntry> entries;
-		ZipEntry zipentry;
-		Mapper mapper = Mapper.getInstance();
-		mapper.deleteAll();
-		boolean res = false, dest = false, chauf = false, app = false, course = false, indisp = false, user = false;
-		int limite = 4;
-		while (!(user && res && dest && chauf && app && course && indisp) && limite > 0) {
-			limite--;
-			entries = zf.entries();
-			while (entries.hasMoreElements()) {
-				zipentry = entries.nextElement();
-				String entryName = zipentry.getName();
-
-				if (!user && entryName.equals("Utilisateur.csv")) {
-					mapper.importUtilisateur(CSV.readUtilisateur(
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
-							mapper));
-					user = true;
-				} else if (!res && entryName.equals("Residence.csv")) {
-					mapper.importResidences(CSV.readResidence(
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
-					res = true;
-				} else if (!dest && entryName.equals("Hopital.csv")) {
-					mapper.importDestination(CSV.readDestination(version,
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
-					dest = true;
-				} else if (!chauf && entryName.equals("Chauffeur.csv")) {
-					mapper.importChauffeurs(CSV.readChauffeur(version,
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
-					chauf = true;
-				} else if (!app && chauf && entryName.equals("Appelant.csv")) {
-					mapper.importApplants(CSV.readAppelant(
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
-					app = true;
-				} else if (!course && chauf && app && entryName.equals("Course.csv")) {
-					mapper.importCourses(CSV.readCourse(
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
-							mapper));
-					course = true;
-				} else if (!indisp && chauf && entryName.equals("Indisponibilite.csv")) {
-					mapper.importIndisponibilite(CSV.readIndisponibilite(
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
-							mapper));
-					indisp = true;
-				} /*else if (!hop && entryName.equals("Hopital.csv")) {
-					mapper.importDestination(CSV.readHopital(
-							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
-					hop = true;
-				}*/
-			}
-		}
-	}
+	
 	
 	/*private static void version0(ZipFile zf) throws IOException {
 		Enumeration<? extends ZipEntry> entries;
@@ -165,7 +90,8 @@ public class SaveManager {
 		}
 	}*/
 
-	public static void autoSave() {
+	public static boolean autoSave() {
+		boolean save = true;
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
 		LocalDate lastSave = settings.getLastSave();
@@ -173,9 +99,10 @@ public class SaveManager {
 		if (lastSave.isEqual(time) || lastSave.plusDays(1+Variable.SAVE_FREQUENCE_JOUR/*settings.getSaveFrequency()*/).isBefore(time)) {
 			String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 					+ DateTime.getNameSave(time);
-			creatSave(pathName, mapper);
+			save = creatSave(pathName, mapper);
 			settings.save();
 		}
+		return save;
 	}
 	
 	public static boolean export() {
@@ -195,6 +122,20 @@ public class SaveManager {
 		boolean result = creatIntervalSave(start, end, pathName, mapper);
 		return result;
 	}
+	
+	public static boolean save(TypeSave type) {
+		Mapper mapper = Mapper.getInstance();
+		Settings settings = mapper.getSettings();
+		LocalDateTime time = LocalDateTime.now();
+		
+		
+		
+		
+		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
+				+ DateTime.getNameSave(time);
+		boolean result = creatSave(pathName, mapper);
+		return result;
+	}
 
 	public static boolean save() {
 		Mapper mapper = Mapper.getInstance();
@@ -206,13 +147,14 @@ public class SaveManager {
 		return result;
 	}
 	
-	public static void saveDeco() {
+	public static boolean saveDeco() {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
 		LocalDateTime time = LocalDateTime.now();
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time)+" "+UserManager.getFullName();
-		creatSave(pathName, mapper);
+		boolean result = creatSave(pathName, mapper);
+		return result;
 	}
 	
 	private static boolean creatIntervalSave(LocalDate start, LocalDate end, String pathName, Mapper mapper) {
@@ -321,5 +263,89 @@ public class SaveManager {
 		exportOk &=CSV.export(mapper.getAllUser(), write);
 		
 		return exportOk;
+	}
+	
+	public static void importSave(File file) {
+		if (file.isFile() && file.getName().endsWith(extention)) {
+			try (ZipFile zf = new ZipFile(file)) {
+				Enumeration<? extends ZipEntry> entries = zf.entries();
+				ZipEntry zipentry;
+				int version = 0;
+				while (entries.hasMoreElements()) {
+					zipentry = entries.nextElement();
+					String entryName = zipentry.getName();
+					if (entryName.equals("VERSION")) {
+						try {
+							version = Integer.parseInt(new BufferedReader(new InputStreamReader(zf.getInputStream(zipentry), StandardCharsets.UTF_8)).readLine().trim());
+						} catch (Exception e) {
+							version = -1;
+						}
+					}
+				}
+				if (version == -1 ) {
+					throw new Exception("Erreur Version");
+				}
+				
+				importWithVersion(version,zf);
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	private static void importWithVersion(int version, ZipFile zf) throws IOException {
+		Enumeration<? extends ZipEntry> entries;
+		ZipEntry zipentry;
+		Mapper mapper = Mapper.getInstance();
+		mapper.deleteAll();
+		boolean res = false, dest = false, chauf = false, app = false, course = false, indisp = false, user = false;
+		int limite = 4;
+		while (!(user && res && dest && chauf && app && course && indisp) && limite > 0) {
+			limite--;
+			entries = zf.entries();
+			while (entries.hasMoreElements()) {
+				zipentry = entries.nextElement();
+				String entryName = zipentry.getName();
+
+				if (!user && entryName.equals("Utilisateur.csv")) {
+					mapper.importUtilisateur(CSV.readUtilisateur(
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
+							mapper));
+					user = true;
+				} else if (!res && entryName.equals("Residence.csv")) {
+					mapper.importResidences(CSV.readResidence(
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
+					res = true;
+				} else if (!dest && entryName.equals("Hopital.csv")) {
+					mapper.importDestination(CSV.readDestination(version,
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
+					dest = true;
+				} else if (!chauf && entryName.equals("Chauffeur.csv")) {
+					mapper.importChauffeurs(CSV.readChauffeur(version,
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
+					chauf = true;
+				} else if (!app && chauf && entryName.equals("Appelant.csv")) {
+					mapper.importApplants(CSV.readAppelant(
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
+					app = true;
+				} else if (!course && chauf && app && entryName.equals("Course.csv")) {
+					mapper.importCourses(CSV.readCourse(
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
+							mapper));
+					course = true;
+				} else if (!indisp && chauf && entryName.equals("Indisponibilite.csv")) {
+					mapper.importIndisponibilite(CSV.readIndisponibilite(
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252"),
+							mapper));
+					indisp = true;
+				} /*else if (!hop && entryName.equals("Hopital.csv")) {
+					mapper.importDestination(CSV.readHopital(
+							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
+					hop = true;
+				}*/
+			}
+		}
 	}
 }

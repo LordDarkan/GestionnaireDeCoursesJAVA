@@ -500,7 +500,7 @@ public class MapperJPA extends Mapper {
 				query.append("t.chauffeur IS NULL");
 			} else {
 				query.append(
-						"((t.chauffeur IS NOT NULL AND t.chauffeur.id=:idchauf) OR (t.chauffeurSec IS NOT NULL AND t.chauffeurSec.id=:idchauf2))");
+						"(t.chauffeur IS NOT NULL AND t.chauffeur.id=:idchauf)");
 			}
 		}
 		if (select == Select.PASSE) {
@@ -517,7 +517,6 @@ public class MapperJPA extends Mapper {
 			}
 			if (!all && idChauffeur != null) {
 				q.setParameter("idchauf", idChauffeur);
-				q.setParameter("idchauf2", idChauffeur);
 			}
 			;
 			for (Course course : q.getResultList()) {
@@ -1002,7 +1001,9 @@ public class MapperJPA extends Mapper {
 			q2.setParameter("locdate", date);
 
 			for (Indisponibilite indisponibilite : q2.getResultList()) {
-				result.get(indisponibilite.getIdChauffeur()).add(indisponibilite);
+				if(result.containsKey(indisponibilite.getIdChauffeur())) {
+					result.get(indisponibilite.getIdChauffeur()).add(indisponibilite);
+				}
 			}
 
 			em.close();
