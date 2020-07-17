@@ -438,10 +438,10 @@ public class CSV {
 				if (first) {
 					writer.write(row.getEnTeteCsv());
 					writer.newLine();
-				} catch (Exception e) {
-					LOG.log(Level.SEVERE, "CVS wirte\n"+info+"\nligne : "+ligne, e);
-					save = false;
+					first = false;
 				}
+				writer.write(row.getRowCsv());
+				writer.newLine();
 			}
 			writer.close();
 		} catch (Exception e) {
