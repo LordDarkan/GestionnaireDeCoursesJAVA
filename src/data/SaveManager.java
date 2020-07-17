@@ -89,11 +89,20 @@ public class SaveManager {
 			}
 		}
 	}*/
+	
+	public static void checkPathPathSaveDirectory(Mapper mapper, Settings settings) {
+		String newPath = FileManager.checkPathPathSaveDirectory(settings.getPathSaveDirectory());
+		if (newPath != null) {
+			settings.setPathSaveDirectory(newPath);
+			mapper.setSettings(settings);
+		}
+	}
 
 	public static boolean autoSave() {
 		boolean save = true;
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
+		checkPathPathSaveDirectory(mapper,settings);
 		LocalDate lastSave = settings.getLastSave();
 		LocalDate time = LocalDate.now();
 		if (lastSave.isEqual(time) || lastSave.plusDays(1+Variable.SAVE_FREQUENCE_JOUR/*settings.getSaveFrequency()*/).isBefore(time)) {
@@ -108,6 +117,7 @@ public class SaveManager {
 	public static boolean export() {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
+		checkPathPathSaveDirectory(mapper,settings);
 		String pathExport = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 		+ "export";
 		boolean result = creatExport(pathExport,mapper);
@@ -117,6 +127,7 @@ public class SaveManager {
 	public static boolean saveInterval(LocalDate start, LocalDate end) {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
+		checkPathPathSaveDirectory(mapper,settings);
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ String.format("Sauvegarde du %s au %s", DateTime.toString(start),DateTime.toString(end));
 		boolean result = creatIntervalSave(start, end, pathName, mapper);
@@ -126,6 +137,7 @@ public class SaveManager {
 	public static boolean save(TypeSave type) {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
+		checkPathPathSaveDirectory(mapper,settings);
 		LocalDateTime time = LocalDateTime.now();
 		
 		
@@ -140,6 +152,7 @@ public class SaveManager {
 	public static boolean save() {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
+		checkPathPathSaveDirectory(mapper,settings);
 		LocalDateTime time = LocalDateTime.now();
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time);
@@ -150,6 +163,7 @@ public class SaveManager {
 	public static boolean saveDeco() {
 		Mapper mapper = Mapper.getInstance();
 		Settings settings = mapper.getSettings();
+		checkPathPathSaveDirectory(mapper,settings);
 		LocalDateTime time = LocalDateTime.now();
 		String pathName = settings.getPathSaveDirectory() + System.getProperty("file.separator")
 				+ DateTime.getNameSave(time)+" "+UserManager.getFullName();
