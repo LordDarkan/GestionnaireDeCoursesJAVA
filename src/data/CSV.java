@@ -429,10 +429,12 @@ public class CSV {
 	
 	public static boolean wirte(List<? extends CSVRow> list, File file) {
 		boolean save = true;
+		CSVRow rowErr = null;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), "Cp1252"))) {
 			boolean first = true;
 			for (CSVRow row : list) {
+				rowErr = row;
 				if (first) {
 					writer.write(row.getEnTeteCsv());
 					writer.newLine();
@@ -443,7 +445,11 @@ public class CSV {
 			}
 			writer.close();
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			String identity = "inconu";
+			if (rowErr != null) {
+				identity = rowErr.getRowIdentity();
+			}
+			LOG.log(Level.SEVERE, "wirte :"+identity, e);
 			save = false ;
 		}
 		return save;

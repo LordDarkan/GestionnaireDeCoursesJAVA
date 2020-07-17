@@ -52,6 +52,11 @@ public class Residence implements CSVRow {
 	}
 
 	@Override
+	public String getRowIdentity() {
+		return Residence.class.getName() + " "+name;
+	}
+	
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(name);

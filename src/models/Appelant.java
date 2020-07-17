@@ -236,6 +236,13 @@ public class Appelant implements CSVRow {
 		this.titre = titre;
 	}
 	
+
+	
+	@Override
+	public String getRowIdentity() {
+		return Appelant.class.getName();
+	}
+	
 	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
