@@ -29,7 +29,7 @@ import util.TypeIndisponibilite;
 public class CSV {
 	public static final Logger LOG = LoggerManager.getLogger();
 
-	public static List<Appelant> readAppelant(InputStreamReader inputStreamReader) {
+	public static List<Appelant> readAppelant(int version,InputStreamReader inputStreamReader) {
 		List<Appelant> appelants = new LinkedList<Appelant>();
 		Appelant appelant;
 		BufferedReader br = null;
@@ -87,6 +87,9 @@ public class CSV {
 						appelant.setAideParticuliere(row[18].trim());
 						appelant.setInfos(row[19].trim());
 						appelant.setRemarques(row[20].trim());
+						if(version >= 3) {
+							appelant.setRestrictionAStr(row[21].trim());
+						}
 						appelants.add(appelant);
 					}
 				}
@@ -429,10 +432,12 @@ public class CSV {
 	
 	public static boolean wirte(List<? extends CSVRow> list, File file) {
 		boolean save = true;
+		CSVRow rowErr = null;
 		try (BufferedWriter writer = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(file), "Cp1252"))) {
 			boolean first = true;
 			for (CSVRow row : list) {
+				rowErr = row;
 				if (first) {
 					writer.write(row.getEnTeteCsv());
 					writer.newLine();
@@ -443,7 +448,11 @@ public class CSV {
 			}
 			writer.close();
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			String identity = "inconu";
+			if (rowErr != null) {
+				identity = rowErr.getRowIdentity();
+			}
+			LOG.log(Level.SEVERE, "wirte :"+identity, e);
 			save = false ;
 		}
 		return save;
@@ -465,7 +474,7 @@ public class CSV {
 			}
 			writer.close();
 		} catch (Exception e) {
-			LOG.log(Level.SEVERE, "wirteUtilisateur", e);
+			LOG.log(Level.SEVERE, "CVS export", e);
 			save = false ;
 		}
 		return save;

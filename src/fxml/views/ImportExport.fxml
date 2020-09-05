@@ -23,7 +23,7 @@
       <VBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1">
          <children>
             <Button fx:id="exporter" mnemonicParsing="false" text="Créer une Sauvegarde" />
-            <Button fx:id="exporterInterval" mnemonicParsing="false" text="Créer une Sauvegarde du ... au .." />
+            <Button fx:id="exporterInterval" disable="true" mnemonicParsing="false" text="Créer une Sauvegarde du ... au .." />
          </children>
       </VBox>
       <!--Label prefWidth="121.0" text="Import le csv : PourDenis Requête.csv" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" /-->

@@ -5,6 +5,7 @@ import java.util.logging.Level;
 import data.Mapper;
 import data.MapperJPA;
 import data.SaveManager;
+import fxml.Message;
 import fxml.ControllerFXML.MainControllerFXML;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -65,7 +66,9 @@ public class MyApp extends Application {
 		LoggerManager.info("App CLOSED by "+UserManager.getFullName());
 		stage.close();
 		
-		SaveManager.autoSave();
+		if (!SaveManager.autoSave())
+			Message.alert(Variable.MSG_ERROR_SAVE);
+			
 
 		System.exit(0);
 	}

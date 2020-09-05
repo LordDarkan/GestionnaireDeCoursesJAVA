@@ -1,5 +1,6 @@
 package util;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,7 +30,13 @@ public class DateTime {
         return date.format(formatDateJour);
 	}
 	
-	public static String saveToString(LocalDate date) {
+	public static String saveToString(LocalDate date) throws DateTimeException {
+		/*String strDate = "ERROR";
+		try {
+			strDate = date.format(formatDateSave);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}*/
         return date.format(formatDateSave);
 	}
 	

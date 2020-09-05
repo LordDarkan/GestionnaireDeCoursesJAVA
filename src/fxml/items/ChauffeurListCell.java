@@ -40,7 +40,8 @@ public class ChauffeurListCell extends ListCell<ChauffeurItemList>{
         setContentDisplay(ContentDisplay.LEFT); 
         if (!empty && item != null) {
         	if (item.getColor() == Color.RED) {
-        		userContent.setStyle("-fx-background-color:#DD0000;");
+        		userContent.setStyle("-fx-background-color:#6C1919;");
+        		//userContent.setStyle("-fx-background-color:#DD0000;");
 			} else if (item.getColor() == Color.GREEN) {
 				userContent.setStyle("-fx-background-color:#3BB143;");
 			} else {

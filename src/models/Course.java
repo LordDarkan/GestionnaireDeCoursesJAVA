@@ -143,7 +143,8 @@ public class Course implements CSVRow {
 	}
 
 	public void setDate(LocalDate date) {
-		this.date = date;
+		if(date!=null)
+			this.date = date;
 	}
 
 	public LocalTime getHeureDomicile() {
@@ -316,6 +317,11 @@ public class Course implements CSVRow {
 	
 	public static final String enteteCSV = "NAMECREATION;DATECREATION;HEURECREATION;APPELANT;DATE;CHAUFFEUR;NAMEATTRIBUTION;DATEATTRIBUTION;HEUREDOMICILE;RESIDENCE;ADRESSEDEP;CPDEP;LOCALITEDEP;TYPECOURSE;TRAJET;HEURERDV;DESTINATION;ADRESSEDEST;VIDE;LOCALITEDEST;VIDE;VIDE;HEURERETOUR;ADRESSERET;CPRET;LOCALITERET;NOTES;ID(PEUT CHANGER);VIDE;VIDE;VIDE;END";
 
+	@Override
+	public String getRowIdentity() {
+		return Course.class.getName();
+	}
+	
 	@Override
 	public String getEnTeteCsv() {
 		return enteteCSV;

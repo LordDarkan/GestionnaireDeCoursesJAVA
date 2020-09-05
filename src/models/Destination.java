@@ -86,6 +86,10 @@ public class Destination implements CSVRow {
 		return sb.toString();
 	}
 	
+	@Override
+	public String getRowIdentity() {
+		return Destination.class.getName();
+	}
 
 	@Override
 	public String getRowCsv() {

@@ -112,6 +112,11 @@ public class Indisponibilite implements CSVRow, Comparable<Indisponibilite> {
 		
 		return resultat;
 	}
+	
+	@Override
+	public String getRowIdentity() {
+		return Indisponibilite.class.getName();
+	}
 
 	@Override
 	public String getRowCsv() {

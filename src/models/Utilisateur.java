@@ -73,6 +73,11 @@ public class Utilisateur implements CSVRow  {
 	}
 
 	@Override
+	public String getRowIdentity() {
+		return Utilisateur.class.getName()+" "+id;
+	}
+	
+	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();
 		str.append(name);

@@ -90,6 +90,8 @@ public abstract class Mapper implements Closeable{
 	public abstract void delProche(Long id, Long id2);
 	public abstract void addRestrict(Long id, Long id2);
 	public abstract void delRestrict(Long id, Long id2);
+	public abstract void addRestrictA(Long id, Long id2);
+	public abstract void delRestrictA(Long id, Long id2);
 	public abstract List<Residence> getListResidence();
 	public abstract List<Destination> getListDestination();
 	

@@ -109,6 +109,12 @@ public class Chauffeur implements CSVRow {
 	public void setDisplay(boolean display) {
 		this.display = display;
 	}
+	
+	@Override
+	public String getRowIdentity() {
+		return Chauffeur.class.getName()+ " "+id;
+	}
+	
 	@Override
 	public String getRowCsv() {
 		StringBuilder str = new StringBuilder();

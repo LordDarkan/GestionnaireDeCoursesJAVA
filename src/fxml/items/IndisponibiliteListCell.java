@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import models.Indisponibilite;
 import util.DateTime;
 import util.Trajet;
@@ -68,14 +69,17 @@ public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
         		vBox.setStyle("-fx-border-color: black;-fx-background-color:#FFAE42;");
         		str+=" - "+DateTime.toString(item.getHeureEnd());
 			} else {
-        		vBox.setStyle("-fx-border-color: black;-fx-background-color:#DD0000;");
+        		vBox.setStyle("-fx-border-color: black;-fx-background-color:#EE5151;");
+            	titre.setTextFill(Color.web("#FFFFFF"));
+            	description.setTextFill(Color.web("#FFFFFF"));
+            	heureStart.setTextFill(Color.web("#FFFFFF"));
         		str+=" - "+DateTime.toString(item.getHeureEnd());
         	}
         	
         	heureStart.setText(str);
             setText(null); 
             setGraphic(content); 
-            setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 
+            setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         } 
     }
 }
