@@ -50,6 +50,8 @@ public class Appelant implements CSVRow {
 	private String affinite = "";
 	@Column(name="restriction")
 	private String restriction = "";
+	@Column(name="str1")//TODO Changer nom colone
+	private String restrictionA = "";
 
 	@Column(name="mutualite")
 	private String mutualite = "";
@@ -67,8 +69,7 @@ public class Appelant implements CSVRow {
 	@Column(name="remarques")
 	private String remarques = "";
 	
-	@Column(name="str1")
-	private String str1 = null;
+	
 	@Column(name="str2")
 	private String str2 = null;
 	@Column(name="str3")
@@ -167,6 +168,27 @@ public class Appelant implements CSVRow {
 	public void removeRestriction(Long id) {
 		this.restriction = FLS.removeToString(restriction, id);
 	}
+	
+
+	public String getRestrictionAStr() {
+		return restrictionA;
+	}
+	public void setRestrictionAStr(String restrictionA) {
+		this.restrictionA =  Gate.encoding(restrictionA);
+	}
+	public List<Long> getRestrictionA() {
+		if(restrictionA==null)restrictionA="";//TODO verif null
+		return FLS.toList(restrictionA);
+	}
+	public void addRestrictionA(Long id) {
+		if(restrictionA==null)restrictionA="";//TODO verif null
+		this.restrictionA = FLS.addToString(restrictionA, id);
+	}
+	public void removeRestrictionA(Long id) {
+		if(restrictionA==null)restrictionA="";//TODO verif null
+		this.restrictionA = FLS.removeToString(restrictionA, id);
+	}
+	
 	public String getPayement() {
 		return payement;
 	}
@@ -288,6 +310,8 @@ public class Appelant implements CSVRow {
 		str.append(infos);
 		str.append(";");
 		str.append(remarques);
+		str.append(";");
+		str.append(restrictionA);
 		str.append(";END");
 		return str.toString();
 	}
@@ -297,7 +321,7 @@ public class Appelant implements CSVRow {
 		return enteteCSV;
 	}
 	
-	public static final String enteteCSV = "Code;Sexe;Nom;Prenom;Date de naissance;Telephone, gsm;Residence;Adresse;CP;Localite;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualite;Paiement;Cotisation;mobilite;Aide particuliere;Infos utiles;Autres remarques;END";
+	public static final String enteteCSV = "Code;Sexe;Nom;Prenom;Date de naissance;Telephone, gsm;Residence;Adresse;CP;Localite;Quartier;Famille;Conducteurs proches;Restriction chauffeurs;Mutualite;Paiement;Cotisation;mobilite;Aide particuliere;Infos utiles;Autres remarques;Restriction appelant par;END";
 	
 	public static void valdation(Appelant obj) throws IllegalArgumentException {//TODO
 		if(obj.firstname.length()<2) throw new IllegalArgumentException("Le prénom est invalide");

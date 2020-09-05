@@ -168,6 +168,14 @@ public abstract class ListeAppelantController {
 	protected void delRestrict(ChauffeurItemList chauf) {
 		mapper.delRestrict(selectedAppelant.getId(),chauf.getId());
 	}
+
+	protected void addRestrictA(Long id) {
+		mapper.addRestrictA(selectedAppelant.getId(),id);
+	}
+
+	protected void delRestrictA(ChauffeurItemList chauf) {
+		mapper.delRestrictA(selectedAppelant.getId(),chauf.getId());
+	}
 	
 	protected List<ChauffeurItemList> getChauffeurList() {
 		return mapper.getChauffeurList();

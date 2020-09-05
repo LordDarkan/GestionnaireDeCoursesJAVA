@@ -715,6 +715,32 @@ public class MapperJPA extends Mapper {
 
 		em.close();
 	}
+	
+	@Override
+	public void addRestrictA(Long id, Long id2) {
+		EntityManager em = factory.createEntityManager();
+
+		Appelant app = em.find(Appelant.class, id);
+
+		em.getTransaction().begin();
+		app.addRestrictionA(id2);
+		em.getTransaction().commit();
+
+		em.close();
+	}
+
+	@Override
+	public void delRestrictA(Long id, Long id2) {
+		EntityManager em = factory.createEntityManager();
+
+		Appelant app = em.find(Appelant.class, id);
+
+		em.getTransaction().begin();
+		app.removeRestrictionA(id2);
+		em.getTransaction().commit();
+
+		em.close();
+	}
 
 	@Override
 	public List<AppelantItemList> getAppelantList(List<Long> ids) {

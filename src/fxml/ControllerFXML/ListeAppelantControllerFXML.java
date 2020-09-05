@@ -124,11 +124,17 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private Button btnDelRestrict;
     @FXML
+    private Button btnAddRestrictA;
+    @FXML
+    private Button btnDelRestrictA;
+    @FXML
     private ListView<ChauffeurItemList> listViewProche;
     @FXML
     private ListView<ChauffeurItemList> listViewRestrict;
     @FXML
     private ListView<AppelantItemList> listViewFamille;
+    @FXML
+    private ListView<ChauffeurItemList> listViewRestrictA;
     @FXML
     private CheckBox cbOldCourse;
     @FXML
@@ -265,6 +271,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	    btnDelProche.setOnAction((ActionEvent e) -> delProche());
 	    btnAddRestrict.setOnAction((ActionEvent e) -> addRestriction());
 	    btnDelRestrict.setOnAction((ActionEvent e) -> delRestriction());
+	    btnAddRestrictA.setOnAction((ActionEvent e) -> addRestrictionA());
+	    btnDelRestrictA.setOnAction((ActionEvent e) -> delRestrictionA());
 		
 		editMode(false);
 		setListeAppelant(search(""));
@@ -347,6 +355,31 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		if (isSelected() && indice>=0 && Message.comfirmation("Supprimer", "Voulez-vous supprimer cette restriction?")) {
 			delRestrict(listViewRestrict.getItems().get(indice));
 			listViewRestrict.getItems().remove(indice);
+		}
+	}
+	
+	private void addRestrictionA() {
+		if (isSelected()) {
+			ChoiceDialog<ChauffeurItemList> dialog = new ChoiceDialog<>(null, getChauffeurList());
+			dialog.setTitle("Ajout");
+			dialog.setHeaderText("Look, a Choice Dialog");//TODO WTF ???
+			dialog.setContentText("Selectioner un chauffeur:");
+
+			// Traditional way to get the response value.
+			Optional<ChauffeurItemList> result = dialog.showAndWait();
+			if (result.isPresent() && result.get()!=null){
+				ChauffeurItemList ch = result.get();
+				addRestrictA(ch.getId());
+				listViewRestrictA.getItems().add(ch);
+			}
+		}
+	}
+	
+	private void delRestrictionA() {
+		int indice = listViewRestrictA.getSelectionModel().getSelectedIndex();
+		if (isSelected() && indice>=0 && Message.comfirmation("Supprimer", "Voulez-vous supprimer cette restriction?")) {
+			delRestrictA(listViewRestrictA.getItems().get(indice));
+			listViewRestrictA.getItems().remove(indice);
 		}
 	}
 
@@ -555,6 +588,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		setListFamille(getFamille(app.getFamille()));
 		setListProche(getChauffeurList(app.getAffinite()));
 		setListRestrict(getChauffeurList(app.getRestriction()));
+		setListRestrictA(getChauffeurList(app.getRestrictionA()));
 		setListCourse(getCourses(cbOldCourse.isSelected()));
 	}
 	
@@ -571,6 +605,11 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	private void setListRestrict(List<ChauffeurItemList> list) {
 		listViewRestrict.getItems().clear();
 		listViewRestrict.getItems().setAll(list);
+	}
+	
+	private void setListRestrictA(List<ChauffeurItemList> list) {
+		listViewRestrictA.getItems().clear();
+		listViewRestrictA.getItems().setAll(list);
 	}
 	
 	private void setListeAppelant(List<AppelantItemList> list) {
