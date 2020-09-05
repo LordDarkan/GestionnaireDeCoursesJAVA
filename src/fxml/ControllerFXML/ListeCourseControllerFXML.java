@@ -491,10 +491,15 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			Course course = getInfoCourse();
 			timeCourse(course);
 			Course.valdation(course);
-			if (Message.comfirmation("Sauvegarder", "")) {
+			int response = Message.choix("Sauvegarder", "","Sauvegarder","Sauvegarder\net Imprimer");
+			
+			if (response != 0) {
 				super.save(course);
 				editMode(false);
 				setListeCourse(getCourseList());
+				if(response == 2) {
+					imprimer();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
