@@ -204,6 +204,7 @@ public class MapperJPA extends Mapper {
 			entity.setFamilleStr(oldEntity.getFamilleStr());
 			entity.setAffiniteStr(oldEntity.getAffiniteStr());
 			entity.setRestrictionStr(oldEntity.getRestrictionStr());
+			entity.setRestrictionAStr(oldEntity.getRestrictionAStr());
 			em.merge(entity);
 			Appelant fam;
 			for (Long famille : entity.getFamille()) {

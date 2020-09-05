@@ -26,8 +26,11 @@ public class SaveManager {
 		CLOSE,
 		CLOUD;
 	}
-
-	private static final int CURRENT_VERSION = 2;
+	/** historique de version
+	 * 3 => app : ajout restriction app
+	 * 
+	 */
+	private static final int CURRENT_VERSION = 3;
 	private static final String extention = ".gdc.zip";
 
 	public static String getExtention() {
@@ -341,7 +344,7 @@ public class SaveManager {
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					chauf = true;
 				} else if (!app && chauf && entryName.equals("Appelant.csv")) {
-					mapper.importApplants(CSV.readAppelant(
+					mapper.importApplants(CSV.readAppelant(version,
 							new InputStreamReader(zf.getInputStream(zipentry), "Cp1252")));
 					app = true;
 				} else if (!course && chauf && app && entryName.equals("Course.csv")) {

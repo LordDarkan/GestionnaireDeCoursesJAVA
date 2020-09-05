@@ -153,6 +153,7 @@ public class Appelant implements CSVRow {
 	public void removeAffinite(Long id) {
 		this.affinite = FLS.removeToString(affinite, id);
 	}
+	
 	public String getRestrictionStr() {
 		return restriction;
 	}

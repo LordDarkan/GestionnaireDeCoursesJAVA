@@ -29,7 +29,7 @@ import util.TypeIndisponibilite;
 public class CSV {
 	public static final Logger LOG = LoggerManager.getLogger();
 
-	public static List<Appelant> readAppelant(InputStreamReader inputStreamReader) {
+	public static List<Appelant> readAppelant(int version,InputStreamReader inputStreamReader) {
 		List<Appelant> appelants = new LinkedList<Appelant>();
 		Appelant appelant;
 		BufferedReader br = null;
@@ -87,6 +87,9 @@ public class CSV {
 						appelant.setAideParticuliere(row[18].trim());
 						appelant.setInfos(row[19].trim());
 						appelant.setRemarques(row[20].trim());
+						if(version >= 3) {
+							appelant.setRestrictionAStr(row[21].trim());
+						}
 						appelants.add(appelant);
 					}
 				}
