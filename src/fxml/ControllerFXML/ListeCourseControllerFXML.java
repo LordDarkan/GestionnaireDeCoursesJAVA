@@ -751,10 +751,14 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		Long id;
 		List<Long> aff = appelant.getAffinite();
 		List<Long> res = appelant.getRestriction();
+		List<Long> resA = appelant.getRestrictionA();
 		
 		for (ChauffeurItemList chauffeur : chauffeurList) {
 			id = chauffeur.getId();
-			if(res.contains(id)) {
+			
+			if(resA.contains(id)) {
+				chauffeur.setColor(Color.RED);
+			} else if(res.contains(id)) {
 				chauffeur.setColor(Color.RED);
 			} else if(aff.contains(id)) {
 				chauffeur.setColor(Color.GREEN);
