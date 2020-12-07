@@ -32,6 +32,8 @@ public class PrintCourseControllerFXML implements Initializable {
     @FXML
     private Label nomCompletAppelant;
     @FXML
+    private Label mutuelle;
+    @FXML
     private Label handicapAppelant;
     @FXML
     private Label aideAppelant;
@@ -110,6 +112,7 @@ public class PrintCourseControllerFXML implements Initializable {
 	    }
 		codeApplant.setText(app.getId().toString());
 	    nomCompletAppelant.setText(app.getFullName());
+	    mutuelle.setText(app.getMutualite());
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticuliere());
 	    telAppelant.setText(app.getTel());
@@ -158,6 +161,7 @@ public class PrintCourseControllerFXML implements Initializable {
 		
 		codeApplant.setText(app.getId().toString());
 	    nomCompletAppelant.setText(app.getFullName());
+	    mutuelle.setText(app.getMutualite());
 	    handicapAppelant.setText(app.getMobilite());
 	    aideAppelant.setText(app.getAideParticuliere());
 	    telAppelant.setText(app.getTel());
