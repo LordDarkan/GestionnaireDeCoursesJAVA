@@ -210,6 +210,8 @@
                               </Label>
                               <ComboBox fx:id="residence" prefWidth="150.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                               <Label text="Residence" GridPane.columnIndex="2" />
+                              <TextField fx:id="mutuelle" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <Label text="Mutuelle" GridPane.columnIndex="3" GridPane.rowIndex="2" />
                            </children>
                            <padding>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

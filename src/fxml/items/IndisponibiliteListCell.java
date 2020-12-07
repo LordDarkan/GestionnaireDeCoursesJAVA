@@ -55,6 +55,10 @@ public class IndisponibiliteListCell extends ListCell<Indisponibilite> {
         	titre.setText(item.getTitre());
         	description.setText(item.getDescription());
         	
+        	titre.setTextFill(Color.web("#000000"));
+        	description.setTextFill(Color.web("#000000"));
+        	heureStart.setTextFill(Color.web("#000000"));
+        	
         	if (item.getType() == TypeIndisponibilite.COURSE) {
         		Trajet mode = item.getModeCourse();
         		if (mode == Trajet.ALLER) {

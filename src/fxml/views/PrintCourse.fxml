@@ -30,7 +30,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" spacing="20.0">
                      <children>
-                        <HBox alignment="BOTTOM_CENTER">
+                        <HBox alignment="BOTTOM_CENTER" minWidth="48.0">
                            <children>
                               <Label text="(" />
                               <Label fx:id="codeApplant" text=" _ _ _ _ " />
@@ -40,11 +40,25 @@
                               <Insets bottom="6.0" />
                            </padding>
                         </HBox>
-                        <Label fx:id="nomCompletAppelant" text="__________________________">
+                        <Label fx:id="nomCompletAppelant" minWidth="245.0" text="_______________________">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </Label>
+                        <HBox alignment="TOP_RIGHT">
+                           <children>
+                              <VBox>
+                                 <children>
+                                    <Label text="Mutuelle" />
+                                    <Label fx:id="mutuelle" minWidth="90.0" style="-fx-border-color: black;" wrapText="true">
+                                       <padding>
+                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                       </padding>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
                      </children>
                      <VBox.margin>
                         <Insets left="20.0" />
@@ -215,6 +229,7 @@
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="19.0" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" percentWidth="25.0" />
+                  <ColumnConstraints />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />

@@ -68,10 +68,9 @@ public class Appelant implements CSVRow {
 	private String infos = "";
 	@Column(name="remarques")
 	private String remarques = "";
+	@Column(name="str2")//TODO Changer nom colone
+	private String str2 = "";
 	
-	
-	@Column(name="str2")
-	private String str2 = null;
 	@Column(name="str3")
 	private String str3 = null;
 	

@@ -98,6 +98,8 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
     @FXML
     private TextField quartier;
     @FXML
+    private TextField mutuelle;
+    @FXML
     private TextField infos;
     @FXML
     private ComboBox<String> residence;
@@ -460,6 +462,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		app.setCp(cp.getText().trim());
 		app.setLocalite(localite.getText().trim());
 		app.setQuartier(quartier.getText().trim());
+		app.setMutualite(mutuelle.getText().trim());
 		app.setTel(tel.getText().trim());
 		app.setMobilite(mobilite.getText().trim());
 		//app.setMutualite(mutualite.getText().trim());
@@ -532,7 +535,9 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	    btnDelProche.setVisible(!b && isAdmin());
 	    btnAddRestrict.setVisible(!b && isAdmin());
 	    btnDelRestrict.setVisible(!b && isAdmin());
-		
+	    btnAddRestrictA.setVisible(!b && isAdmin());
+	    btnDelRestrictA.setVisible(!b && isAdmin());
+	    
 		btnNewCourse.setVisible(!a);
 		
 		listViewAppelant.setDisable(b);
@@ -549,6 +554,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		cp.setEditable(b);
 		localite.setEditable(b);
 		quartier.setEditable(b);
+		mutuelle.setEditable(b);
 		tel.setEditable(b);
 		mobilite.setEditable(b);
 		payement.setEditable(b);
@@ -576,6 +582,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		cp.setText(app.getCp());
 		localite.setText(app.getLocalite());
 		quartier.setText(app.getQuartier());
+		mutuelle.setText(app.getMutualite());
 		tel.setText(app.getTel());
 		mobilite.setText(app.getMobilite());
 		//mutualite.setText(app.getMutualite());
