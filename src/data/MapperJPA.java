@@ -535,7 +535,7 @@ public class MapperJPA extends Mapper {
 		List<ChauffeurItemList> result = new LinkedList<ChauffeurItemList>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name, t.firstname", Chauffeur.class);//LOWER(t.name)
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t WHERE t.display = TRUE ORDER BY t.name, t.firstname", Chauffeur.class);//LOWER(t.name)
 			for (Chauffeur tuple : q.getResultList()) {
 				result.add(new ChauffeurItemList(tuple));
 			}
