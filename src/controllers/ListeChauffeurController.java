@@ -24,7 +24,7 @@ public abstract class ListeChauffeurController {
 	protected void newLog(Utilisateur user) {
 		this.user = user;
 		mapper = Mapper.getInstance();
-		chauffeursFull = mapper.getChauffeurList();
+		chauffeursFull = mapper.getAllChauffeurList();
 		recherche = "";
 		chauffeurs = new ArrayList<ChauffeurItemList>(chauffeursFull);
 		selectedChauffeur = null;
@@ -96,14 +96,14 @@ public abstract class ListeChauffeurController {
 		if(app.getId()!=null)
 			selectedChauffeur = app;
 		mapper.addOrUpdate(app);
-		chauffeursFull = mapper.getChauffeurList();
+		chauffeursFull = mapper.getAllChauffeurList();
 		recherche(true);
 	}
 
 	protected void delete() {
 		mapper.delete(selectedChauffeur);
 		selectedChauffeur = null;
-		chauffeursFull = mapper.getChauffeurList();
+		chauffeursFull = mapper.getAllChauffeurList();
 		recherche(true);
 	}
 

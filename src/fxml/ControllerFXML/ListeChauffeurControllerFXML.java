@@ -28,7 +28,6 @@ import models.Indisponibilite;
 import models.Utilisateur;
 import models.itemList.ChauffeurItemList;
 import models.itemList.PlanningChauffeur;
-import util.Security;
 
 public class ListeChauffeurControllerFXML extends ListeChauffeurController implements Initializable,ITabController {
 	@FXML
@@ -176,7 +175,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 	}
 
 	private void deleteF() {
-		if (isSelected() && Message.comfirmation("Supprimer","")) {
+		if (isSelected() && Message.comfirmation("Supprimer","Les courses associé n'auront plus de chauffeur !")) {
 			super.delete();
 			showChauffeur(getSelectedChauffeur());
 			setListeChauffeur(search(null));
@@ -200,7 +199,7 @@ public class ListeChauffeurControllerFXML extends ListeChauffeurController imple
 		
 		btnAdd.setVisible(!b && isAdmin());
 		btnEdit.setVisible(!b && isAdmin());
-		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
+		btnDelete.setVisible(!b && isAdmin());
 		btnAnnuler.setVisible(b);
 		btnSave.setVisible(b);
 		cbDisplay.setDisable(!b);

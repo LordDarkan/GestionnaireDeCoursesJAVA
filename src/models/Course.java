@@ -358,7 +358,7 @@ public class Course implements CSVRow {
 		str.append(";");
 		str.append(localiteDep);
 		str.append(";");
-		str.append(typeCourse.toString());
+		str.append(TypeCourse.toString(typeCourse));
 		str.append(";");
 		str.append(trajet.toString());
 		str.append(";");
