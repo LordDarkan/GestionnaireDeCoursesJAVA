@@ -81,7 +81,7 @@ public class Destination implements CSVRow {
 		}
 
 		sb.append("\t|\t");
-		sb.append(typeCourse.toString());
+		sb.append(TypeCourse.toString(typeCourse));
 		
 		return sb.toString();
 	}
@@ -104,7 +104,7 @@ public class Destination implements CSVRow {
 		str.append(";");
 		str.append(tel);
 		str.append(";");
-		str.append(typeCourse.toString());
+		str.append(TypeCourse.toString(typeCourse));
 		str.append(";END");
 		return str.toString();
 	}

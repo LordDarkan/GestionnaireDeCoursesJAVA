@@ -74,6 +74,7 @@ public abstract class Mapper implements Closeable{
 	public abstract void importDestination(List<Destination> hopitals);
 	
 	public abstract List<CourseItemList> getCourse(boolean all, Long idChauffeur, Select select, LocalDate date);
+	public abstract List<ChauffeurItemList> getAllChauffeurList();
 	public abstract List<ChauffeurItemList> getChauffeurList();
 	public abstract List<AppelantItemList> getAppelantList();
 

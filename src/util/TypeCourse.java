@@ -26,4 +26,8 @@ public enum TypeCourse {
 		}
 		return type;
 	}
+	
+	public static String toString(TypeCourse type) {
+		return type==null?"NONE":type.toString();
+	}
 }

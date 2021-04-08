@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.persistence.EntityManager;
@@ -358,21 +359,26 @@ public class MapperJPA extends Mapper {
 	}
 
 	@Override
-	public void delete(Chauffeur entity) {
+	public void delete(Chauffeur entity) {//TODO
 		EntityManager em = factory.createEntityManager();
 		try {
 			entity = em.find(Chauffeur.class, entity.getId());
 			em.getTransaction().begin();
+			em.merge(entity);
+			TypedQuery<Course> q = em.createQuery("SELECT t FROM Course t WHERE t.chauffeur IS NOT NULL AND t.chauffeur.id=:idchauf", Course.class);
+			q.setParameter("idchauf", entity.getId());
+			Chauffeur none = null;
+			int i=0;
+			for (Course course : q.getResultList()) {
+				course.setChauffeur(none);
+				em.merge(course);
+				i++;
+			}
 			em.remove(entity);
 			em.getTransaction().commit();
+			LOG.info("Chauffeur: "+entity.getFullName()+" supprimé et était dans "+i+" courses");
 		} catch (Exception e) {
-			/*
-			 * TypedQuery<Course> q =
-			 * em.createQuery("SELECT t FROM Course t WHERE ",Course.class); for (Course
-			 * course : q.getResultList()) {
-			 * 
-			 * }
-			 */
+			LOG.log(Level.SEVERE, "ERR del chauffeur " +entity.getFullName()+" ("+ entity.getId()+")", e);
 		} finally {
 			em.close();
 		}
@@ -529,13 +535,29 @@ public class MapperJPA extends Mapper {
 		}
 		return result;
 	}
-
+	
+	@Override
+	public List<ChauffeurItemList> getAllChauffeurList() {
+		List<ChauffeurItemList> result = new LinkedList<ChauffeurItemList>();
+		try {
+			EntityManager em = factory.createEntityManager();
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name, t.firstname", Chauffeur.class);//LOWER(t.name)
+			for (Chauffeur tuple : q.getResultList()) {
+				result.add(new ChauffeurItemList(tuple));
+			}
+			em.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
 	@Override
 	public List<ChauffeurItemList> getChauffeurList() {
 		List<ChauffeurItemList> result = new LinkedList<ChauffeurItemList>();
 		try {
 			EntityManager em = factory.createEntityManager();
-			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t ORDER BY t.name, t.firstname", Chauffeur.class);//LOWER(t.name)
+			TypedQuery<Chauffeur> q = em.createQuery("SELECT t FROM Chauffeur t WHERE t.display = TRUE ORDER BY t.name, t.firstname", Chauffeur.class);//LOWER(t.name)
 			for (Chauffeur tuple : q.getResultList()) {
 				result.add(new ChauffeurItemList(tuple));
 			}
