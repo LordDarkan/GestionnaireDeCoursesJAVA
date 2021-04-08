@@ -3,12 +3,14 @@ package fxml.ControllerFXML;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import controllers.ImportExportController;
 import controllers.MainController;
 import data.SaveManager;
 import fxml.Message;
+import fxml.dialog.DialogSelectIntervalControllerFXML;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import models.Indisponibilite;
 import models.Utilisateur;
 
 public class ImportExportControllerFXML extends ImportExportController implements Initializable,ITabController {
@@ -99,8 +102,6 @@ public class ImportExportControllerFXML extends ImportExportController implement
 	}
 	
 	private void saveIntervalF() {
-		//TODO désactiver tant que sauvegarde année n'est pas crée
-		/*
 		DialogSelectIntervalControllerFXML dialog = new DialogSelectIntervalControllerFXML();
 		Indisponibilite i = dialog.showAndWait();
 		if (dialog.isResult()) {
@@ -115,7 +116,7 @@ public class ImportExportControllerFXML extends ImportExportController implement
 			} catch (Exception e) {
 				Message.alert("Erreur lors de la sauvagarde");
 			}
-		}*/
+		}
 	}
 
 	
