@@ -579,15 +579,13 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 
 	private void editerF() {
 		if (isSelected()) {
-			super.editer();
 			editMode(true);
-			setListeCourse(getCourseList());
+			//setListeCourse(getCourseList());
 		}
 	}
 
 	@Override
 	public void logout() {
-
 		clear();
 	}
 
@@ -605,12 +603,36 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		affEditCourse(getNewCourse(id));
 		editMode(true);
 	}
+	
+
+	
+	public void action(String action) {
+		if (isSelected()) {
+			switch (action) {//TODO enum cf MainController
+			case "dupliquer":
+				dupliquerF();
+				break;
+				
+			case "delete":
+				deleteF();
+				break;
+				
+			case "edit":
+				editerF();
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
 
 	@Override
-	public void select(Long id) {
+	public ITabController select(Long id) {
 		setSelectedCourse(id);
 		affCourse(getSelectedCourse());
 		editMode(false);
+		return this;
 	}
 
 	private void editMode(boolean edit) {

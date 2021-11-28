@@ -88,6 +88,7 @@ public class MainControllerFXML extends MainController implements Initializable 
 
 			tabsController.add(new ListeAppelantControllerFXML(this,getUser(),tabContainer));
 			tabsController.add(new ListeCourseControllerFXML(getUser(),tabContainer));
+			tabsController.add(new ViewCourseControllerFXML(this,getUser(),tabContainer));
 			tabsController.add(new PlanningControlleurFXML(this,getUser(),tabContainer));
 			tabsController.add(new ListeChauffeurControllerFXML(getUser(),tabContainer));
 			tabsController.add(new SettingsControllerFXML(getUser(),tabContainer));
@@ -101,16 +102,25 @@ public class MainControllerFXML extends MainController implements Initializable 
 		tabContainer.getSelectionModel().select(0);
 	}
 	
+	//TODO@Deprecated
+	public void selectCourse(Long idCourse) {
+		int indiceViewCourseControllerFXML = 2;
+		tabContainer.getSelectionModel().select(indiceViewCourseControllerFXML);
+		tabsController.get(indiceViewCourseControllerFXML).select(idCourse);
+	}
+	
+	//TODO@Deprecated
 	public void newCourse(Long id) {
 		int indiceCourseControllerFXML = 1;
 		tabContainer.getSelectionModel().select(indiceCourseControllerFXML);
 		((ListeCourseControllerFXML)tabsController.get(indiceCourseControllerFXML)).newCourse(id);
 	}
 	
-	public void selectCourse(Long idCourse) {
+	//TODO GoTo
+	public void GoToCourse(String tab,String action,Long idSelect) {//TODO enum + dictionaire
 		int indiceCourseControllerFXML = 1;
 		tabContainer.getSelectionModel().select(indiceCourseControllerFXML);
-		tabsController.get(indiceCourseControllerFXML).select(idCourse);
+		((ListeCourseControllerFXML)tabsController.get(indiceCourseControllerFXML)).select(idSelect).action(action);
 	}
 
 	@Override
