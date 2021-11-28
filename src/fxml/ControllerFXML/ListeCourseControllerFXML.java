@@ -63,6 +63,8 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 	@FXML
 	private Button btnImprimer;
 	@FXML
+	private Button btnDupliquer;
+	@FXML
 	private VBox affichage;
 	@FXML
 	private Button btnEdit;
@@ -328,6 +330,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 		btnSave.setOnAction((ActionEvent e) -> saveF());
 
 		btnImprimer.setOnAction((ActionEvent e) -> imprimer());
+		btnDupliquer.setOnAction((ActionEvent e) -> dupliquerF());
 
 		editMode(false);
 	}
@@ -363,6 +366,14 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 				else
 					LOG.log(Level.WARNING, "IMPRIMER FROM Course " + UserManager.getFullName());
 			}
+		}
+	}
+	
+	private void dupliquerF() {//TODO
+		if (isSelected()) {
+			super.dupliquer();
+			editMode(true);
+			setListeCourse(getCourseList());
 		}
 	}
 
@@ -609,6 +620,7 @@ public class ListeCourseControllerFXML extends ListeCourseController implements 
 			setResidence();
 
 		btnImprimer.setVisible(!edit);
+		btnDupliquer.setVisible(!edit);
 
 		btnEdit.setVisible(!edit);
 		btnDel.setVisible(!edit);

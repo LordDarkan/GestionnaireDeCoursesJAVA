@@ -106,6 +106,10 @@ public class Course implements CSVRow {
 //		//TODO
 //	}
 
+	public void resetId() {
+		id = null;
+	}
+	
 	public Long getId() {
 		return id;
 	}

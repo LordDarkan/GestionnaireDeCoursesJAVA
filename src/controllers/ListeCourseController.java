@@ -46,6 +46,12 @@ public class ListeCourseController {
 		return selected;
 	}
 	
+	protected void dupliquer() {
+		if (isSelected()) {
+			selected.resetId();
+		}
+	}
+	
 	protected boolean isAdmin(){
 		return user.isAdmin();
 	}
