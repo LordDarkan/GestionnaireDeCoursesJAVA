@@ -2,8 +2,6 @@ package fxml.dialog;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -17,8 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
-import models.Indisponibilite;
-
+//TODO a faire selection date sauvegarde /!\ get db	
 public class DialogSelectYearController implements Initializable {
 	private boolean isResult;
 	private GridPane content;
@@ -41,11 +38,11 @@ public class DialogSelectYearController implements Initializable {
     
     @Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		List<Integer> years = Mapper.getInstance().getListYears();
-		
+		selectYear.getItems().addAll(Mapper.getInstance().getListYears());
 	}
     
-    public Indisponibilite showAndWait() {
+    
+    public Integer showAndWait() {
     	isResult = false;
     	Dialog<Integer> dialog = new Dialog<>();
 		dialog.setTitle("Interval");
@@ -61,14 +58,14 @@ public class DialogSelectYearController implements Initializable {
 		    @Override
 		    public Integer call(ButtonType b) {
 		        if (b == buttonTypeOk) {
-		            return s;
+		            return selectYear.getValue();
 		        }
 
 		        return null;
 		    }
 		});
 				
-		Optional<Indisponibilite> result = dialog.showAndWait();
+		Optional<Integer> result = dialog.showAndWait();
 		if (result.isPresent()) {
 			isResult = true;
 			return result.get();
