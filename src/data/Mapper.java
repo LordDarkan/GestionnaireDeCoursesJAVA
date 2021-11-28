@@ -110,4 +110,7 @@ public abstract class Mapper implements Closeable{
 	public abstract void importUtilisateur(List<Utilisateur> readUtilisateur);
 	public abstract Long addNew(Appelant entity);
 	public abstract boolean validIdAppelant(Long id);
+	
+	
+	public abstract List<Integer> getListYears();
 }

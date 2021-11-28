@@ -232,7 +232,11 @@ public class SettingsControllerFXML extends SettingsContreller implements Initia
 	}
 
 	@Override
-	public void select(Long id) {
+	public ITabController select(Long id) {
+		throw new UnsupportedOperationException();
+	}
+	@Override
+	public void action(String action) {
 		throw new UnsupportedOperationException();
 	}
 }

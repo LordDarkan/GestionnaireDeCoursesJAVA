@@ -8,8 +8,6 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Spinner?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -35,7 +33,7 @@
                <RowConstraints />
       				</rowConstraints>
       				 <children>
-      				    <ListView fx:id="listViewCourses" GridPane.rowIndex="1" GridPane.rowSpan="3">
+      				    <ListView disable="true" GridPane.rowIndex="1" GridPane.rowSpan="3">
       			         <GridPane.margin>
       			            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
       			         </GridPane.margin>
@@ -44,8 +42,8 @@
                   <children>
                      <VBox alignment="CENTER" spacing="10.0">
                         <children>
-                  				    <DatePicker fx:id="selectDay" disable="true" prefWidth="200.0" />
-                           <ComboBox fx:id="selectChauffeur" prefWidth="200.0" />
+                  				    <DatePicker disable="true" prefWidth="200.0" />
+                           <ComboBox disable="true" prefWidth="200.0" />
                         </children>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -53,9 +51,9 @@
                      </VBox>
                      <VBox alignment="CENTER_LEFT" spacing="10.0">
                         <children>
-                           <RadioButton fx:id="selectParJour" mnemonicParsing="false" text="Par jour" />
-                           <RadioButton fx:id="selectFutur" mnemonicParsing="false" selected="true" text="Futur" />
-                           <RadioButton fx:id="selectPasse" mnemonicParsing="false" text="Passée" />
+                           <RadioButton disable="true" mnemonicParsing="false" text="Par jour" />
+                           <RadioButton disable="true" mnemonicParsing="false" text="Futur" />
+                           <RadioButton disable="true" mnemonicParsing="false" text="Passée" />
                         </children>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -97,10 +95,6 @@
                               </padding>
                            </HBox>
                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="2">
-                              <children>
-                                 <Button fx:id="btnAnn" mnemonicParsing="false" text="Annuler" />
-                                 <Button fx:id="btnSave" mnemonicParsing="false" text="Sauvegarder" />
-                              </children>
                               <padding>
                                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                               </padding>
@@ -217,20 +211,16 @@
                               <padding>
                                  <Insets left="20.0" />
                               </padding></Label>
-                           <ComboBox fx:id="editChauffeur" prefWidth="150.0" GridPane.columnIndex="1" />
-                           <Label text="Date :" GridPane.rowIndex="1" />
-                           <DatePicker fx:id="editDateCourse" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                           <Label text="Type de service :" GridPane.columnIndex="2" />
-                           <ComboBox fx:id="editType" prefWidth="150.0" visible="false" GridPane.columnIndex="3" />
                            <Label fx:id="affChaufeur" text="xxxx xxxx" visible="false" GridPane.columnIndex="1" />
+                           <Label text="Date :" GridPane.rowIndex="1" />
                            <Label fx:id="affDate" text="xx/xx/xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                           <Label text="Type de service :" GridPane.columnIndex="2" />
                            <Label fx:id="affType" text="xxxxxx" GridPane.columnIndex="3" />
                            <Label text="Trajet :" GridPane.columnIndex="2" GridPane.rowIndex="1">
                               <padding>
                                  <Insets left="20.0" />
                               </padding>
                            </Label>
-                           <ComboBox fx:id="editModeCourse" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                            <Label fx:id="affModeCourse" text="xxxx xxxx" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         </children>
                         <VBox.margin>
@@ -256,22 +246,11 @@
                        </rowConstraints>
                         <children>
                            <Label text="Heure de départ" />
-                           <HBox fx:id="edit1" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
-                              <children>
-                                 <Spinner fx:id="editHeureDepart" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="60.0" />
-                                 <Label minWidth="9.0" text="H" />
-                                 <Spinner fx:id="editMinuteDepart" minWidth="60.0" prefWidth="60.0" />
-                              </children>
-                           </HBox>
+                           <Label fx:id="affHeureDepart" text="xxHxx" GridPane.rowIndex="1" />
                            <Label text="Adresse" GridPane.columnIndex="1" />
-                           <TextField fx:id="editAdresseDepart" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="Localité" GridPane.columnIndex="2" />
-                           <TextField fx:id="editLocaliteDepart" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <TextField fx:id="editCpDepart" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                           <ComboBox fx:id="editResidence" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                            <Label text="Résidence" GridPane.columnIndex="4" />
                            <Label text="Code postal" GridPane.columnIndex="3" />
-                           <Label fx:id="affHeureDepart" text="xxHxx" visible="false" GridPane.rowIndex="1" />
                            <Label fx:id="affAdresseDepart" text="xxxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label fx:id="affLocaliteDepart" text="xxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            <Label fx:id="affCpDepart" text="_ _ _ _" GridPane.columnIndex="3" GridPane.rowIndex="1" />
@@ -298,22 +277,12 @@
                         <children>
                            <Label text="Heure de R.D.V." />
                            <Label text="Adresse" GridPane.columnIndex="1" />
-                           <TextField fx:id="editAdresseRDV" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="Localité" GridPane.columnIndex="2" />
-                           <TextField fx:id="editLocaliteRDV" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <ComboBox fx:id="editDestination" prefWidth="150.0" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1" />
                            <Label text="Destination" GridPane.columnIndex="4" />
-                           <Label fx:id="affHeureRDV" text="xxHxx" visible="false" GridPane.rowIndex="1" />
+                           <Label fx:id="affHeureRDV" text="xxHxx" GridPane.rowIndex="1" />
                            <Label fx:id="affAdresseRDV" text="xxxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label fx:id="affLocaliteRDV" text="xxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            <Label fx:id="affDestination" text="xxxxxxxxxxx xxxxxxxxxxxx xxxx x x xxxx" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-                           <HBox fx:id="edit2" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" GridPane.rowIndex="1">
-                              <children>
-                                 <Spinner fx:id="editHeureRDV" minWidth="60.0" prefWidth="60.0" />
-                                 <Label minWidth="9.0" text="H" />
-                                 <Spinner fx:id="editMinuteRDV" minWidth="60.0" prefWidth="60.0" />
-                              </children>
-                           </HBox>
                         </children>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -336,22 +305,12 @@
                         <children>
                            <Label text="Heure de retour" />
                            <Label text="Adresse" GridPane.columnIndex="1" />
-                           <TextField fx:id="editAdresseRetour" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="Localité" GridPane.columnIndex="2" />
-                           <TextField fx:id="editLocaliteRetour" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                           <TextField fx:id="editCpRetour" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                            <Label text="Code postal" GridPane.columnIndex="3" />
                            <Label fx:id="affHeureRetour" text="xxHxx" GridPane.rowIndex="1" />
                            <Label fx:id="affAdresseRetour" text="xxxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label fx:id="affLocaliteRetour" text="xxxxxxxxxxxxxxxxxxxxxxxxxx" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                            <Label fx:id="affCpRetour" text="_ _ _ _" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                           <HBox fx:id="edit3" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="2.0" visible="false" GridPane.rowIndex="1">
-                              <children>
-                                 <Spinner fx:id="editHeureRetour" minWidth="60.0" prefWidth="60.0" />
-                                 <Label minWidth="9.0" text="H" />
-                                 <Spinner fx:id="editMinuteRetour" minWidth="60.0" prefWidth="60.0" />
-                              </children>
-                           </HBox>
                         </children>
                         <padding>
                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -371,7 +330,6 @@
                                  <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                               </padding>
                            </Label>
-                           <TextField fx:id="editNote" />
                         </children>
                      </GridPane>
                      <HBox alignment="TOP_RIGHT">

@@ -1177,4 +1177,12 @@ public class MapperJPA extends Mapper {
 		em.close();
 		return app == null;
 	}
+
+	
+	
+	@Override
+	public List<Integer> getListYears() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
