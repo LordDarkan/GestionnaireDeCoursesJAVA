@@ -211,7 +211,7 @@
                               <padding>
                                  <Insets left="20.0" />
                               </padding></Label>
-                           <Label fx:id="affChaufeur" text="xxxx xxxx" visible="false" GridPane.columnIndex="1" />
+                           <Label fx:id="affChaufeur" text="xxxx xxxx" GridPane.columnIndex="1" />
                            <Label text="Date :" GridPane.rowIndex="1" />
                            <Label fx:id="affDate" text="xx/xx/xx" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            <Label text="Type de service :" GridPane.columnIndex="2" />
@@ -221,7 +221,7 @@
                                  <Insets left="20.0" />
                               </padding>
                            </Label>
-                           <Label fx:id="affModeCourse" text="xxxx xxxx" visible="false" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                           <Label fx:id="affModeCourse" text="xxxx xxxx" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         </children>
                         <VBox.margin>
                            <Insets />
