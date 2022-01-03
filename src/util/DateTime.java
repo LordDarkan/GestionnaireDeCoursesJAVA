@@ -37,6 +37,8 @@ public class DateTime {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}*/
+		if(date==null)
+			date=LocalDate.now();
         return date.format(formatDateSave);
 	}
 	
