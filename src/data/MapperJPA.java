@@ -232,10 +232,17 @@ public class MapperJPA extends Mapper {
 		try {
 			entity = em.find(Appelant.class, entity.getId());
 			em.getTransaction().begin();
+			
+			TypedQuery<Course> q = em.createQuery(
+					"SELECT c FROM Course c WHERE c.appelant.id=:arg1", Course.class);
+			q.setParameter("arg1", entity.getId());
+			for (Course tuple : q.getResultList()) {
+				em.remove(tuple);
+			}
 			em.remove(entity);
 			em.getTransaction().commit();
 		} catch (Exception e) {
-
+			//System.out.println(e);
 		} finally {
 			em.close();
 		}

@@ -34,9 +34,9 @@ public class Security {
         }
         return hexString.toString();
 	}
-
-	public static boolean isDelOk() {
-		return false;
+	
+	public static boolean isDelAppOk() {
+		return true;
 	}
 	
 	public static boolean isAnnulationOk() {

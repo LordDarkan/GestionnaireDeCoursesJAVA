@@ -478,10 +478,21 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 	}
 
 	private void deleteF() {
-		if (isSelected() && comfirmation("Supprimer","")) {
-			super.delete();
-			showAppelant(getSelectedAppelant());
-			majList();
+		if (isSelected()) {
+			
+			int futurCourse = getCourses(false).size();
+			int oldCourse = getCourses(true).size();
+			String msg = "L'appelant n'a pas de courses";
+			
+			if(futurCourse+oldCourse>0) {
+				msg = String.format("/!\\ Atention /!\\\n%d Courses à venir\net %d Courses passées\nseront aussi supprimées",futurCourse, oldCourse);
+			}
+			
+			if(comfirmation("Supprimer",msg)) {
+				super.delete();
+				showAppelant(getSelectedAppelant());
+				majList();
+			}
 		}
 	}
 
@@ -524,7 +535,7 @@ public class ListeAppelantControllerFXML extends ListeAppelantController impleme
 		listeViewCourse.setVisible(!b);
 		
 		btnAdd.setVisible(!b && isAdmin());
-		btnDelete.setVisible(Security.isDelOk() && !b && isAdmin());
+		btnDelete.setVisible(Security.isDelAppOk() && !b && isAdmin());
 		btnEdit.setVisible(!a);
 		btnAnnuler.setVisible(a);
 		btnSave.setVisible(a);
